@@ -1,0 +1,25 @@
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: gold
+      accent: gold
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+extra_css:
+  - overrides/main.css
+
+nav:
+  - Home: index.md
+  - Cloud Infrastructure: 
+    - AWS MSK: cloud_infra/aws-msk.md
+    - IAM & CLI: cloud_infra/iam-cli.md
+  - Database Engineering:
+    - MongoDB: db_eng/mongodb.md
+  - Automation:
+    - Telegram Bots: automation/tg-bots.md
+  - Digital Twin Journey:
+    - Introduction: journey/intro.md
