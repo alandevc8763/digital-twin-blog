@@ -17,6 +17,9 @@ nav:
   - Cloud Infrastructure: 
     - AWS MSK: cloud_infra/aws-msk.md
     - IAM & CLI: cloud_infra/iam-cli.md
+    - Kafka Guide:
+      - Design Philosophy: cloud_infra/kafka/design-philosophy.md
+      - Operation Guide: cloud_infra/kafka/ops-guide.md
   - Database Engineering:
     - MongoDB: db_eng/mongodb.md
   - Automation:
