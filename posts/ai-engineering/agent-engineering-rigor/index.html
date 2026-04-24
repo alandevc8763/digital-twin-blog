@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../sre-hub/">
-      
-      
-        <link rel="next" href="../homelab-hub/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>AI Hub - Alan's Digital Twin Blog</title>
+        <title>對抗不確定性：生產級 AI Agent 的「外科手術」與「量化評估」 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ai-application-engineering-hub" class="md-skip">
+        <a href="#01-surgical-changes" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AI Hub
+              對抗不確定性：生產級 AI Agent 的「外科手術」與「量化評估」
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -312,11 +308,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -335,7 +329,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../homelab-hub/" class="md-tabs__link">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../performance-hub/" class="md-tabs__link">
+      <a href="../../../performance-hub/" class="md-tabs__link">
         
   
   
@@ -373,7 +367,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -408,7 +402,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -426,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -453,7 +447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../../sre-hub/" class="md-nav__link">
         
   
   
@@ -477,19 +471,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../ai-hub/" class="md-nav__link">
         
   
   
@@ -505,7 +490,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -517,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../homelab-hub/" class="md-nav__link">
+      <a href="../../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -544,7 +528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../performance-hub/" class="md-nav__link">
+      <a href="../../../performance-hub/" class="md-nav__link">
         
   
   
@@ -571,7 +555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../../journey/intro/" class="md-nav__link">
         
   
   
@@ -608,8 +592,97 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#01-surgical-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01. 外科手術式修改 (Surgical Changes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#02-the-eval-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02. 構建量化評估體系 (The Eval Framework)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="02. 構建量化評估體系 (The Eval Framework)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-golden-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 基準集 (Golden Dataset)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-llm-as-a-judge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. LLM-as-a-Judge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 軌跡追蹤 (Tracing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#03-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03. 閉環演化：AI 系統的唯一生存方式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -626,114 +699,44 @@
 
 
 
-<style>
-.garden-card-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
-    gap: 1.5rem !important;
-    padding: 1rem 0 !important;
-    margin: 2rem 0 !important;
-}
+  <h1>對抗不確定性：生產級 AI Agent 的「外科手術」與「量化評估」</h1>
 
-.garden-card {
-    position: relative !important;
-    background: rgba(45, 55, 72, 0.6) !important;
-    border: 2px solid #D4AF37 !important; 
-    border-radius: 16px !important;
-    padding: 1.5rem !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-    color: inherit !important;
-}
-
-.garden-card:hover {
-    transform: translateY(-5px) !important;
-    background: rgba(60, 80, 110, 0.8) !important;
-    border-color: #D4AF37 !important;
-    box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.5) !important;
-}
-
-.card-icon {
-    font-size: 1.5rem !important;
-    margin-bottom: 1rem !important;
-    display: block !important;
-}
-
-.card-title {
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    color: #D4AF37 !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-    text-decoration: none !important;
-}
-
-.card-desc {
-    font-size: 0.9rem !important;
-    color: #a0aec0 !important;
-    line-height: 1.5 !important;
-}
-
-.garden-card * {
-    color: inherit !important;
-    text-decoration: none !important;
-}
-</style>
-
-<h1 id="ai-application-engineering-hub">AI Application Engineering Hub</h1>
-<div class="garden-card-grid">
-    <a href="posts/ai-engineering/agents-2-0.md" class="garden-card">
-        <span class="card-icon">🌀</span>
-        <span class="card-title">Agents 2.0</span>
-        <span class="card-desc">Symbolic Learning and the evolution from Prompting to Computational Graphs.</span>
-    </a>
-    <a href="posts/ai-engineering/autonomous-coding-agents.md" class="garden-card">
-        <span class="card-icon">💻</span>
-        <span class="card-title">Autonomous Coding Agents</span>
-        <span class="card-desc">Deconstructing OpenHands and Cline: The path to AI Software Engineers.</span>
-    </a>
-    <a href="posts/ai-engineering/agent-engineering-rigor.md" class="garden-card">
-        <span class="card-icon">🛠️</span>
-        <span class="card-title">Agent Engineering Rigor</span>
-        <span class="card-desc">Surgical changes and Eval-frameworks: Moving from Demo to Production.</span>
-    </a>
-    <a href="posts/ai-engineering/agent-verification.md" class="garden-card">
-        <span class="card-icon">✅</span>
-        <span class="card-title">Agent Verification</span>
-        <span class="card-desc">Beyond Hallucinations: The AgentV-RL paradigm and Bidirectional Verification.</span>
-    </a>
-    <a href="articles/ai-engineering/prompt-patterns.md" class="garden-card">
-        <span class="card-icon">🧩</span>
-        <span class="card-title">Prompt Patterns</span>
-        <span class="card-desc">Reducing the search space: Moving from magic spells to structural constraints.</span>
-    </a>
-    <a href="articles/ai-engineering/context-window-dynamics.md" class="garden-card">
-        <span class="card-icon">🪟</span>
-        <span class="card-title">Context Dynamics</span>
-        <span class="card-desc">The Lost-in-the-Middle problem and the art of context pruning.</span>
-    </a>
-    <a href="articles/ai-engineering/rag-truth.md" class="garden-card">
-        <span class="card-icon">🎯</span>
-        <span class="card-title">RAG Truth</span>
-        <span class="card-desc">Why vector similarity != relevance. The power of Hybrid Search and Re-ranking.</span>
-    </a>
-    <a href="articles/ai-engineering/local-ai-infra.md" class="garden-card">
-        <span class="card-icon">🏗️</span>\n        <span class="card-title">Local AI Infra</span>
-        <span class="card-desc">From Proxmox GPU Passthrough to vLLM production pipelines.</span>
-    </a>
-</div>
+<p>在 AI 開發中，最危險的時刻就是當你對老闆或客戶展示一個「看起來很神奇」的 Demo 之後。</p>
+<p>大多數 AI Agent 在 Demo 階段表現完美，是因為開發者在特定的路徑上進行了 <strong>Prompt 過度擬合 (Over-fitting)</strong>。但一旦進入生產環境，面對不可預測的用戶輸入，系統會迅速崩潰 $\rightarrow$ 出現無限循環、格式錯誤或邏輯幻覺。</p>
+<p><strong>將 AI Agent 從 Demo 推向產品，需要的是 SRE (Site Reliability Engineering) 的嚴謹度，而非更多 Prompt 的疊加。</strong></p>
+<h2 id="01-surgical-changes">01. 外科手術式修改 (Surgical Changes)</h2>
+<p>當 Agent 出現錯誤時，初學者傾向於「重新寫一遍 Prompt」或「增加更多指令」。這通常會導致 <strong>「回歸失效 (Regression)」</strong>：修好了 A Bug，卻引入了 B Bug。</p>
+<p>我推崇 <strong>「外科手術式修改」</strong> 的原則：</p>
+<ol>
+<li><strong>最小擾動</strong>：僅觸碰必須修改的那一行代碼或 Prompt 片段。</li>
+<li><strong>風格對齊</strong>：嚴格匹配現有風格，不進行無關的重構。</li>
+<li><strong>可追溯性</strong>：每一處修改都必須直接對應到一個具體的失敗案例。</li>
+</ol>
+<p>這就是為什麼在協作中，我們必須要求 LLM 停止「好心的重構」，專注於精確的修復。</p>
+<h2 id="02-the-eval-framework">02. 構建量化評估體系 (The Eval Framework)</h2>
+<p>如果你不能量化 Agent 的表現，你就無法優化它。生產級 Agent 必須擁有自己的 <strong>Harness (測試框架)</strong>。</p>
+<h3 id="1-golden-dataset">1. 基準集 (Golden Dataset)</h3>
+<p>建立一個包含 50-100 個 $\text{輸入} \rightarrow \text{期望輸出}$ 的高質量測試集。每次更新 Prompt 後，必須全量跑一遍，確保準確率沒有下降。</p>
+<h3 id="2-llm-as-a-judge">2. LLM-as-a-Judge</h3>
+<p>利用更強的模型 (如 Claude 3.5 Opus) 作為裁判，根據 <code>Faithfulness</code> (忠實度) 與 <code>Answer Relevance</code> (相關度) 給予打分。</p>
+<h3 id="3-tracing">3. 軌跡追蹤 (Tracing)</h3>
+<p>使用 Langfuse 等工具記錄每一跳的 $\text{Prompt} \rightarrow \text{Tool Call} \rightarrow \text{Observation}$。當 Agent 失敗時，我們分析的是 <strong>「軌跡 (Trace)」</strong> 而非單純的結果。</p>
+<h2 id="03-ai">03. 閉環演化：AI 系統的唯一生存方式</h2>
+<p>生產級 Agent 的生命週期應該是一個不斷縮小的負反饋環：</p>
+<p>$$\text{捕捉失敗案例} \rightarrow \text{分析 Trace 根因} \rightarrow \text{外科手術式修正} \rightarrow \text{回歸測試驗證} \rightarrow \text{部署}$$</p>
+<p><strong>不要追求一次性的完美，而要追求極速的演化。</strong></p>
+<h2 id="_1">結語</h2>
+<p>AI Agent 的工程化，本質上是在與「不確定性」作鬥爭。</p>
+<p>當我們停止對 LLM 抱有「魔法」的幻想，開始用量化指標、回歸測試與嚴謹的修改路徑去對待它時，AI 才會真正成為一個可信賴的生產力工具。</p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -777,10 +780,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
