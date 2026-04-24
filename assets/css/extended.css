@@ -1,0 +1,67 @@
+/* Gold-on-Slate Elite Theme Override */
+:root {
+    --gold-primary: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --slate-dark: #0f172a;
+    --slate-light: #1e293b;
+    --glass-bg: rgba(15, 23, 42, 0.8);
+    --glass-border: rgba(212, 175, 55, 0.4);
+}
+
+/* Global Background */
+body {
+    background-color: var(--slate-dark) !important;
+    color: #e2e8f0 !important;
+}
+
+/* Header Glassmorphism */
+.header {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid var(--gold-primary) !important;
+}
+
+/* Navigation Links */
+.nav-link, .menu-link {
+    color: #94a3b8 !important;
+    transition: all 0.3s ease !important;
+}
+
+.nav-link:hover, .menu-link:hover {
+    color: var(--gold-primary) !important;
+    text-shadow: 0 0 8px var(--gold-glow) !important;
+}
+
+/* Article Cards (Home Page) */
+.post-single {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.post-single:hover {
+    transform: translateY(-5px) !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 10px 25px -5px var(--gold-glow) !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+}
+
+.post-title a {
+    color: var(--gold-primary) !important;
+    font-weight: 700 !important;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    color: var(--gold-primary) !important;
+}
+
+/* Footer */
+.footer {
+    border-top: 1px solid var(--glass-border) !important;
+    background-color: var(--slate-dark) !important;
+}
