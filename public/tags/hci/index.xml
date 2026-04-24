@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>HCI on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/hci/</link><description>Recent content in HCI on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/hci/index.xml" rel="self" type="application/rss+xml"/><item><title>Proxmox VE: HomeLab 中的超融合基礎設施 (HCI) 實踐</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</guid><description>&lt;h1 id="proxmox-ve將家用電腦轉化為微型數據中心">Proxmox VE：將家用電腦轉化為微型數據中心&lt;/h1>
+&lt;p>對於大多數 HomeLab 玩家來說，虛擬化可能是為了「省錢」——用一台強大的主機運行十幾個服務。但從 SRE 的視角來看，Proxmox VE (PVE) 的真正價值在於它將 &lt;strong>KVM (全虛擬化)&lt;/strong> 與 &lt;strong>LXC (容器虛擬化)&lt;/strong> 完美地整合在單一的管理平面中，並原生支持 ZFS 與 Ceph，讓家用硬件也能跑出「企業級」的超融合基礎設施 (HCI)。&lt;/p>
+&lt;hr>
+&lt;h2 id="1-虛擬化策略kvm-與-lxc-的隔離-vs-性能權衡">1. 虛擬化策略：KVM 與 LXC 的「隔離 vs 性能」權衡&lt;/h2>
+&lt;p>在 PVE 中部署服務時，最容易犯的錯誤就是所有東西都用 VM (KVM)。實際上，正確的選型應該基於對 &lt;strong>Virtualization Overhead&lt;/strong> 的精確控制。&lt;/p>
+&lt;h3 id="kvm-kernel-based-virtual-machine絕對的隔離">KVM (Kernel-based Virtual Machine)：絕對的隔離&lt;/h3>
+&lt;p>KVM 是完整的硬件虛擬化，每個 VM 擁有獨立的內核。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>場景&lt;/strong>：當你需要運行 Windows、BSD，或者需要對內核進行深度調試時，KVM 是唯一選擇。&lt;/li>
+&lt;li>&lt;strong>代價&lt;/strong>：Guest OS 稅。即使是一個簡單的 Linux VM，也會消耗額外的 RAM 和 CPU 來維護其內核。&lt;/li>
+&lt;/ul>
+&lt;h3 id="lxc-linux-containers近乎原生的性能">LXC (Linux Containers)：近乎原生的性能&lt;/h3>
+&lt;p>LXC 是操作系統級虛擬化，與宿主機共享內核。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>場景&lt;/strong>：部署 Web 服務、微服務、輕量級 Bot。&lt;/li>
+&lt;li>&lt;strong>優勢&lt;/strong>：秒級啟動，內存占用極低。如果你運行一個簡單的 Nginx，LXC 的資源開銷幾乎可以忽略不計。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>SRE 決策模型&lt;/strong>：$\text{需要不同內核 / 高安全性} \rightarrow \text{KVM}$；$\text{追求性能 / 低開銷} \rightarrow \text{LXC}$。&lt;/p></description></item></channel></rss>
