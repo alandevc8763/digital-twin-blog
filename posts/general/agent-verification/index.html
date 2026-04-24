@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Agent Verification | Alans Digital Twin Blog</title>
+<meta name="keywords" content="General, Agent-Verification.Md">
+<meta name="description" content="解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式
+在目前的 LLM 應用中，我們面臨一個巨大的信任危機：幻覺 (Hallucinations)。
+大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $
+ightarrow$ 給出一個答案 $
+ightarrow$ 評分。這種模式最大的問題在於錯誤傳播：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。
+這就是為什麼我認為 AgentV-RL 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。
+從「直覺預測」到「審計驗證」
+AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個多回合的審議過程。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。
+其核心在於 雙向驗證 (Bidirectional Verification) 策略：
+
+前向追蹤 (Forward Trace)：從前提條件出發，逐步推演到結論。
+後向驗證 (Backward Verify)：從結論反向追溯到前提，確保每一步邏輯都成立。
+
+如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。
+用工具打破「內部閉環」的幻覺
+純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 工具調用 (Tool-use) 整合進驗證環節。
+當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 Grounding (對齊事實)。
+這種「推理 $
+ightarrow$ 工具驗證 $
+ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。">
+<meta name="author" content="Alan">
+<link rel="canonical" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/">
+<link crossorigin="anonymous" href="/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alandevc8763.github.io/digital-twin-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/">
+  <meta property="og:site_name" content="Alans Digital Twin Blog">
+  <meta property="og:title" content="Agent Verification">
+  <meta property="og:description" content="解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式 在目前的 LLM 應用中，我們面臨一個巨大的信任危機：幻覺 (Hallucinations)。
+大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $ ightarrow$ 給出一個答案 $ ightarrow$ 評分。這種模式最大的問題在於錯誤傳播：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。
+這就是為什麼我認為 AgentV-RL 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。
+從「直覺預測」到「審計驗證」 AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個多回合的審議過程。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。
+其核心在於 雙向驗證 (Bidirectional Verification) 策略：
+前向追蹤 (Forward Trace)：從前提條件出發，逐步推演到結論。 後向驗證 (Backward Verify)：從結論反向追溯到前提，確保每一步邏輯都成立。 如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。
+用工具打破「內部閉環」的幻覺 純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 工具調用 (Tool-use) 整合進驗證環節。
+當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 Grounding (對齊事實)。
+這種「推理 $ ightarrow$ 工具驗證 $ ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。">
+  <meta property="og:locale" content="zh_tw">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:tag" content="General">
+    <meta property="article:tag" content="Agent-Verification.Md">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Agent Verification">
+  <meta name="twitter:description" content="解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式 在目前的 LLM 應用中，我們面臨一個巨大的信任危機：幻覺 (Hallucinations)。
+大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $ ightarrow$ 給出一個答案 $ ightarrow$ 評分。這種模式最大的問題在於錯誤傳播：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。
+這就是為什麼我認為 AgentV-RL 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。
+從「直覺預測」到「審計驗證」 AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個多回合的審議過程。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。
+其核心在於 雙向驗證 (Bidirectional Verification) 策略：
+前向追蹤 (Forward Trace)：從前提條件出發，逐步推演到結論。 後向驗證 (Backward Verify)：從結論反向追溯到前提，確保每一步邏輯都成立。 如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。
+用工具打破「內部閉環」的幻覺 純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 工具調用 (Tool-use) 整合進驗證環節。
+當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 Grounding (對齊事實)。
+這種「推理 $ ightarrow$ 工具驗證 $ ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Agent Verification",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Agent Verification",
+  "name": "Agent Verification",
+  "description": "解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式 在目前的 LLM 應用中，我們面臨一個巨大的信任危機：幻覺 (Hallucinations)。\n大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $ ightarrow$ 給出一個答案 $ ightarrow$ 評分。這種模式最大的問題在於錯誤傳播：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。\n這就是為什麼我認為 AgentV-RL 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。\n從「直覺預測」到「審計驗證」 AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個多回合的審議過程。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。\n其核心在於 雙向驗證 (Bidirectional Verification) 策略：\n前向追蹤 (Forward Trace)：從前提條件出發，逐步推演到結論。 後向驗證 (Backward Verify)：從結論反向追溯到前提，確保每一步邏輯都成立。 如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。\n用工具打破「內部閉環」的幻覺 純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 工具調用 (Tool-use) 整合進驗證環節。\n當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 Grounding (對齊事實)。\n這種「推理 $ ightarrow$ 工具驗證 $ ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。\n",
+  "keywords": [
+    "General", "Agent-Verification.Md"
+  ],
+  "articleBody": "解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式 在目前的 LLM 應用中，我們面臨一個巨大的信任危機：幻覺 (Hallucinations)。\n大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $ ightarrow$ 給出一個答案 $ ightarrow$ 評分。這種模式最大的問題在於錯誤傳播：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。\n這就是為什麼我認為 AgentV-RL 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。\n從「直覺預測」到「審計驗證」 AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個多回合的審議過程。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。\n其核心在於 雙向驗證 (Bidirectional Verification) 策略：\n前向追蹤 (Forward Trace)：從前提條件出發，逐步推演到結論。 後向驗證 (Backward Verify)：從結論反向追溯到前提，確保每一步邏輯都成立。 如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。\n用工具打破「內部閉環」的幻覺 純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 工具調用 (Tool-use) 整合進驗證環節。\n當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 Grounding (對齊事實)。\n這種「推理 $ ightarrow$ 工具驗證 $ ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。\n結語：驗證是智能的最後一道防線 AI 的競爭正在從「生成能力」轉向「驗證能力」。\n當我們能構建出一個比生成者更嚴格、更理性且能利用工具的驗證器時，我們才真正擁有了一個可以交付給生產環境的 AI 系統。AgentV-RL 告訴我們：智能不在於能說出多少正確答案，而在於能剔除多少錯誤答案。\n技術關鍵字：\nAgentic Verifier (Agent 化驗證器) Bidirectional Verification (雙向驗證) Reward Modeling (獎勵建模) Grounding (事實對齊) ",
+  "wordCount" : "91",
+  "inLanguage": "en",
+  "datePublished": "2026-04-24T00:00:00Z",
+  "dateModified": "2026-04-24T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Alan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Alans Digital Twin Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://alandevc8763.github.io/digital-twin-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://alandevc8763.github.io/digital-twin-blog/" accesskey="h" title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/sre-hub/" title="SRE Hub">
+                    <span>SRE Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/ai-hub/" title="AI Hub">
+                    <span>AI Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/homelab-hub/" title="HomeLab Hub">
+                    <span>HomeLab Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/journey/" title="Journey">
+                    <span>Journey</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Agent Verification
+    </h1>
+    <div class="post-meta"><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h1 id="解決-ai-的一本正經胡說八道從預測轉向驗證的-agentv-rl-範式">解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式<a hidden class="anchor" aria-hidden="true" href="#解決-ai-的一本正經胡說八道從預測轉向驗證的-agentv-rl-範式">#</a></h1>
+<p>在目前的 LLM 應用中，我們面臨一個巨大的信任危機：<strong>幻覺 (Hallucinations)</strong>。</p>
+<p>大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $
+ightarrow$ 給出一個答案 $
+ightarrow$ 評分。這種模式最大的問題在於<strong>錯誤傳播</strong>：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。</p>
+<p>這就是為什麼我認為 <strong>AgentV-RL</strong> 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。</p>
+<h2 id="從直覺預測到審計驗證">從「直覺預測」到「審計驗證」<a hidden class="anchor" aria-hidden="true" href="#從直覺預測到審計驗證">#</a></h2>
+<p>AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個<strong>多回合的審議過程</strong>。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。</p>
+<p>其核心在於 <strong>雙向驗證 (Bidirectional Verification)</strong> 策略：</p>
+<ol>
+<li><strong>前向追蹤 (Forward Trace)</strong>：從前提條件出發，逐步推演到結論。</li>
+<li><strong>後向驗證 (Backward Verify)</strong>：從結論反向追溯到前提，確保每一步邏輯都成立。</li>
+</ol>
+<p>如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。</p>
+<h2 id="用工具打破內部閉環的幻覺">用工具打破「內部閉環」的幻覺<a hidden class="anchor" aria-hidden="true" href="#用工具打破內部閉環的幻覺">#</a></h2>
+<p>純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 <strong>工具調用 (Tool-use)</strong> 整合進驗證環節。</p>
+<p>當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 <strong>Grounding (對齊事實)</strong>。</p>
+<p>這種「推理 $
+ightarrow$ 工具驗證 $
+ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。</p>
+<h2 id="結語驗證是智能的最後一道防線">結語：驗證是智能的最後一道防線<a hidden class="anchor" aria-hidden="true" href="#結語驗證是智能的最後一道防線">#</a></h2>
+<p>AI 的競爭正在從「生成能力」轉向「驗證能力」。</p>
+<p>當我們能構建出一個比生成者更嚴格、更理性且能利用工具的驗證器時，我們才真正擁有了一個可以交付給生產環境的 AI 系統。AgentV-RL 告訴我們：<strong>智能不在於能說出多少正確答案，而在於能剔除多少錯誤答案。</strong></p>
+<hr>
+<p><strong>技術關鍵字：</strong></p>
+<ul>
+<li>Agentic Verifier (Agent 化驗證器)</li>
+<li>Bidirectional Verification (雙向驗證)</li>
+<li>Reward Modeling (獎勵建模)</li>
+<li>Grounding (事實對齊)</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/general/">General</a></li>
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/agent-verification.md/">Agent-Verification.Md</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://alandevc8763.github.io/digital-twin-blog/">Alans Digital Twin Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

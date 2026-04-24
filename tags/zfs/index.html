@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ZFS | Alans Digital Twin Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="SRE, HomeLab, and AI Engineering Insights">
+<meta name="author" content="Alan">
+<link rel="canonical" href="https://alandevc8763.github.io/digital-twin-blog/tags/zfs/">
+<link crossorigin="anonymous" href="/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alandevc8763.github.io/digital-twin-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://alandevc8763.github.io/digital-twin-blog/tags/zfs/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://alandevc8763.github.io/digital-twin-blog/tags/zfs/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/tags/zfs/">
+  <meta property="og:site_name" content="Alans Digital Twin Blog">
+  <meta property="og:title" content="ZFS">
+  <meta property="og:description" content="SRE, HomeLab, and AI Engineering Insights">
+  <meta property="og:locale" content="zh_tw">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ZFS">
+  <meta name="twitter:description" content="SRE, HomeLab, and AI Engineering Insights">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://alandevc8763.github.io/digital-twin-blog/" accesskey="h" title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/sre-hub/" title="SRE Hub">
+                    <span>SRE Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/ai-hub/" title="AI Hub">
+                    <span>AI Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/homelab-hub/" title="HomeLab Hub">
+                    <span>HomeLab Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/journey/" title="Journey">
+                    <span>Journey</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    ZFS
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">NAS ZFS Truth
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>NAS 的真相：為什麼你需要的不是「容量」，而是「完整性」？ 核心視角：從「被動桶子」到「主動引擎」 大多數人看待 NAS 時，首先想到的是「容量」——多少 TB 的空間能存我的電影和照片。但對於 SRE 來說，這是一個危險的誤區。
+專業的 NAS 不應該被視為一個「裝滿硬碟的盒子」，而應該是一個旨在最大化 數據持久性 (Data Durability) 與 可用性 (Availability) 的系統。真正的分水嶺在於你使用的是傳統的硬件 RAID，還是像 ZFS 這樣具備「自癒能力」的軟件定義存儲。
+1. 物理層的陷阱：CMR vs SMR 在購買硬碟前，你必須面對一個隱形的陷阱：SMR (疊瓦式磁記錄)。 SMR 硬碟為了增加密度，將數據像瓦片一樣重疊寫入。這在單純的存檔時沒問題，但在 RAID 重構 (Rebuild) 過程中，SMR 的寫入放大效應會導致重構速度慢到令人絕望，甚至直接導致整個陣列崩潰。
+SRE 建議：永遠選擇 CMR (傳統磁記錄) 硬碟，並使用 IT Mode (Initiator Target) 的 HBA 卡將原盤直接交給操作系統，徹底擺脫私有 RAID 卡的廠商鎖定。
+2. ZFS：數據完整性的黃金標準 為什麼 ZFS 被稱為存儲界的「黃金標準」？因為它解決了傳統存儲最恐懼的問題：靜默數據損壞 (Silent Data Corruption / Bit Rot)。
+Copy-on-Write (CoW)：消除寫入空洞 傳統文件系統在更新數據時會覆蓋原位。如果在此過程中斷電，會產生所謂的「寫入空洞 (Write Hole)」，導致文件損毀。ZFS 採用 CoW 機制：永遠不覆蓋原數據，而是先將新數據寫入新塊，最後才更新指針。這意味著你的數據在寫入完成前，原件永遠是安全的。
+ARC 與 ZIL：性能與安全的分離 ZFS 並不依賴傳統的 LRU 緩存，而是使用 ARC (Adaptive Replacement Cache)，同時追蹤數據的「頻率」與「近期性」，讓緩存命中率大幅提升。而對於同步寫入，則通過 ZIL (ZFS Intent Log) 確保在不犧牲性能的前提下，數據能立即持久化。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span></footer>
+  <a class="entry-link" aria-label="post link to NAS ZFS Truth" href="https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://alandevc8763.github.io/digital-twin-blog/">Alans Digital Twin Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

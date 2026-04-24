@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ops-Guide.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/</link>
+    <description>Recent content in Ops-Guide.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ops Guide</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</guid>
+      <description>&lt;h1 id=&#34;kafka-快速操作指南從部署到調試&#34;&gt;Kafka 快速操作指南：從部署到調試&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Cloud Operations / SRE&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥉 Bronze (Operational Tooling)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;對於 SRE 而言，掌握 Kafka 的 CLI 工具不僅是為了部署，更是為了在故障發生時快速定位問題。理解 &lt;code&gt;kafka-topics&lt;/code&gt; → &lt;code&gt;kafka-console-producer&lt;/code&gt; → &lt;code&gt;kafka-console-consumer&lt;/code&gt; 的數據流向是所有調試的基礎。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-核心指令速查表&#34;&gt;🛠️ 核心指令速查表&lt;/h3&gt;
+&lt;h4 id=&#34;1-topic-管理-the-skeleton&#34;&gt;1. Topic 管理 (The Skeleton)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;創建 Topic&lt;/strong&gt;：
+&lt;code&gt;kafka-topics.sh --create --topic my-topic --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看 Topic 詳情&lt;/strong&gt;：
+&lt;code&gt;kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;刪除 Topic&lt;/strong&gt;：
+&lt;code&gt;kafka-topics.sh --delete --topic my-topic --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-數據生產與消費-the-flow&#34;&gt;2. 數據生產與消費 (The Flow)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;快速發送消息 (Producer)&lt;/strong&gt;：
+&lt;code&gt;kafka-console-producer.sh --topic my-topic --bootstrap-server localhost:9092&lt;/code&gt; → &lt;em&gt;進入交互模式後輸入消息&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;從頭讀取所有消息 (Consumer)&lt;/strong&gt;：
+&lt;code&gt;kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指定消費者組讀取 (Consumer Group)&lt;/strong&gt;：
+&lt;code&gt;kafka-console-consumer.sh --topic my-topic --group my-group --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-狀態監控-the-health-check&#34;&gt;3. 狀態監控 (The Health Check)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;查看消費者組偏移量 (Consumer Lag)&lt;/strong&gt;：
+&lt;code&gt;kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092&lt;/code&gt;
+&lt;em&gt;$\text{關鍵指標}$：$\text{LOG-END-OFFSET} - \text{CURRENT-OFFSET} = \text{LAG}$&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-sre-實操坑洞&#34;&gt;⚠️ SRE 實操坑洞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Zookeeper 依賴&lt;/strong&gt;：在舊版本中，所有元數據都在 ZK，如果 ZK 響應慢，會導致所有 Broker 劇烈抖動。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Partition 數量不可減少&lt;/strong&gt;：一旦 Topic 創建，Partition 數量只能增加不能減少。建議在創建時根據預期吞吐量合理設定。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Prometheus Monitoring&lt;/strong&gt;：建議將 &lt;code&gt;kafka-exporter&lt;/code&gt; 接入 Prometheus，將上述 CLI 指標轉化為實時 Dashboard 監控。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Log Aggregation&lt;/strong&gt;：Kafka 是 ELK 棧 (Elasticsearch-Logstash-Kibana) 中最核心的緩衝層。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>

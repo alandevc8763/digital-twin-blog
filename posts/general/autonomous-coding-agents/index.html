@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Autonomous Coding Agents | Alans Digital Twin Blog</title>
+<meta name="keywords" content="General, Autonomous-Coding-Agents.Md">
+<meta name="description" content="從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑
+大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $
+ightarrow$ 手動複製 $
+ightarrow$ 貼上 $
+ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。
+但真正的範式轉移正在發生：AI 正在從「建議代碼」轉向「自主執行」。
+最近我對比了 OpenHands 與 Cline 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 AI Software Engineer 的跨越。
+核心差異：插件 vs 獨立環境
+雖然兩者都追求自主化，但其工程路徑截然不同：
+1. Cline：極致的 IDE 融合
+Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。
+
+體驗：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。
+適用場景：快速功能開發、局部重構。
+
+2. OpenHands：工業級的 Agent 基礎設施
+與 Cline 不同，OpenHands 的定位更像是一個 Agent 平台。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。">
+<meta name="author" content="Alan">
+<link rel="canonical" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/">
+<link crossorigin="anonymous" href="/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alandevc8763.github.io/digital-twin-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/">
+  <meta property="og:site_name" content="Alans Digital Twin Blog">
+  <meta property="og:title" content="Autonomous Coding Agents">
+  <meta property="og:description" content="從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑 大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $ ightarrow$ 手動複製 $ ightarrow$ 貼上 $ ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。
+但真正的範式轉移正在發生：AI 正在從「建議代碼」轉向「自主執行」。
+最近我對比了 OpenHands 與 Cline 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 AI Software Engineer 的跨越。
+核心差異：插件 vs 獨立環境 雖然兩者都追求自主化，但其工程路徑截然不同：
+1. Cline：極致的 IDE 融合 Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。
+體驗：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。 適用場景：快速功能開發、局部重構。 2. OpenHands：工業級的 Agent 基礎設施 與 Cline 不同，OpenHands 的定位更像是一個 Agent 平台。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。">
+  <meta property="og:locale" content="zh_tw">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:tag" content="General">
+    <meta property="article:tag" content="Autonomous-Coding-Agents.Md">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Autonomous Coding Agents">
+  <meta name="twitter:description" content="從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑 大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $ ightarrow$ 手動複製 $ ightarrow$ 貼上 $ ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。
+但真正的範式轉移正在發生：AI 正在從「建議代碼」轉向「自主執行」。
+最近我對比了 OpenHands 與 Cline 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 AI Software Engineer 的跨越。
+核心差異：插件 vs 獨立環境 雖然兩者都追求自主化，但其工程路徑截然不同：
+1. Cline：極致的 IDE 融合 Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。
+體驗：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。 適用場景：快速功能開發、局部重構。 2. OpenHands：工業級的 Agent 基礎設施 與 Cline 不同，OpenHands 的定位更像是一個 Agent 平台。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Autonomous Coding Agents",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Autonomous Coding Agents",
+  "name": "Autonomous Coding Agents",
+  "description": "從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑 大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $ ightarrow$ 手動複製 $ ightarrow$ 貼上 $ ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。\n但真正的範式轉移正在發生：AI 正在從「建議代碼」轉向「自主執行」。\n最近我對比了 OpenHands 與 Cline 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 AI Software Engineer 的跨越。\n核心差異：插件 vs 獨立環境 雖然兩者都追求自主化，但其工程路徑截然不同：\n1. Cline：極致的 IDE 融合 Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。\n體驗：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。 適用場景：快速功能開發、局部重構。 2. OpenHands：工業級的 Agent 基礎設施 與 Cline 不同，OpenHands 的定位更像是一個 Agent 平台。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。\n",
+  "keywords": [
+    "General", "Autonomous-Coding-Agents.Md"
+  ],
+  "articleBody": "從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑 大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $ ightarrow$ 手動複製 $ ightarrow$ 貼上 $ ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。\n但真正的範式轉移正在發生：AI 正在從「建議代碼」轉向「自主執行」。\n最近我對比了 OpenHands 與 Cline 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 AI Software Engineer 的跨越。\n核心差異：插件 vs 獨立環境 雖然兩者都追求自主化，但其工程路徑截然不同：\n1. Cline：極致的 IDE 融合 Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。\n體驗：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。 適用場景：快速功能開發、局部重構。 2. OpenHands：工業級的 Agent 基礎設施 與 Cline 不同，OpenHands 的定位更像是一個 Agent 平台。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。\n體驗：它提供了一個完整的沙盒環境。Agent 在一個獨立的容器中運行，擁有自己的 shell 和文件系統。 工業能力：支持 Kubernetes 部署、RBAC 權限管理以及多用戶協作。這意味著它可以被規模化部署在企業內部，而非僅僅是單機插件。 性能：在 SWE-bench 等標準測試中表現強悍，證明了其處理複雜、跨文件工程任務的能力。 自主編碼的「信任鏈」：為什麼我們還不能完全放手？ 儘管 OpenHands 和 Cline 能自動修 Bug，但生產環境中依然存在一個核心問題：信任 (Trust)。\n一個能自主執行 rm -rf 或 git push 的 Agent 具有極高的風險。因此，目前的演進方向是 「人類在環 (Human-in-the-Loop)」 的權限管理：\n權限分級：讀取 $ ightarrow$ 建議 $ ightarrow$ 執行 (需確認) $ ightarrow$ 全自動。 軌跡審核：透過詳細的 Trace 記錄，人類可以隨時介入並修正 Agent 的路徑。 結語：開發者的角色將如何演變？ 當 AI 能自主完成 $\text{分析} ightarrow ext{編碼} ightarrow ext{測試} ightarrow ext{部署}$ 的閉環時，開發者的價值將從「寫代碼 (Coding)」轉向「定義問題 (Problem Definition)」與「審核架構 (Architecture Review)」。\n我們不再是搬運工，而變成了 Agent 的領隊 (Agent Orchestrator)。\n技術關鍵字：\nAutonomous Coding Agents (自主編碼 Agent) Sandbox Execution (沙盒執行) SWE-bench (軟體工程基準測試) Human-in-the-Loop (人類在環) ",
+  "wordCount" : "164",
+  "inLanguage": "en",
+  "datePublished": "2026-04-24T00:00:00Z",
+  "dateModified": "2026-04-24T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Alan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Alans Digital Twin Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://alandevc8763.github.io/digital-twin-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://alandevc8763.github.io/digital-twin-blog/" accesskey="h" title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/sre-hub/" title="SRE Hub">
+                    <span>SRE Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/ai-hub/" title="AI Hub">
+                    <span>AI Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/homelab-hub/" title="HomeLab Hub">
+                    <span>HomeLab Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/journey/" title="Journey">
+                    <span>Journey</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Autonomous Coding Agents
+    </h1>
+    <div class="post-meta"><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h1 id="從-copilot-到-software-engineer解構-openhands-與-cline-的自主編碼路徑">從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑<a hidden class="anchor" aria-hidden="true" href="#從-copilot-到-software-engineer解構-openhands-與-cline-的自主編碼路徑">#</a></h1>
+<p>大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $
+ightarrow$ 手動複製 $
+ightarrow$ 貼上 $
+ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。</p>
+<p>但真正的範式轉移正在發生：<strong>AI 正在從「建議代碼」轉向「自主執行」</strong>。</p>
+<p>最近我對比了 <strong>OpenHands</strong> 與 <strong>Cline</strong> 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 <strong>AI Software Engineer</strong> 的跨越。</p>
+<h2 id="核心差異插件-vs-獨立環境">核心差異：插件 vs 獨立環境<a hidden class="anchor" aria-hidden="true" href="#核心差異插件-vs-獨立環境">#</a></h2>
+<p>雖然兩者都追求自主化，但其工程路徑截然不同：</p>
+<h3 id="1-cline極致的-ide-融合">1. Cline：極致的 IDE 融合<a hidden class="anchor" aria-hidden="true" href="#1-cline極致的-ide-融合">#</a></h3>
+<p>Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。</p>
+<ul>
+<li><strong>體驗</strong>：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。</li>
+<li><strong>適用場景</strong>：快速功能開發、局部重構。</li>
+</ul>
+<h3 id="2-openhands工業級的-agent-基礎設施">2. OpenHands：工業級的 Agent 基礎設施<a hidden class="anchor" aria-hidden="true" href="#2-openhands工業級的-agent-基礎設施">#</a></h3>
+<p>與 Cline 不同，OpenHands 的定位更像是一個 <strong>Agent 平台</strong>。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。</p>
+<ul>
+<li><strong>體驗</strong>：它提供了一個完整的沙盒環境。Agent 在一個獨立的容器中運行，擁有自己的 shell 和文件系統。</li>
+<li><strong>工業能力</strong>：支持 Kubernetes 部署、RBAC 權限管理以及多用戶協作。這意味著它可以被規模化部署在企業內部，而非僅僅是單機插件。</li>
+<li><strong>性能</strong>：在 SWE-bench 等標準測試中表現強悍，證明了其處理複雜、跨文件工程任務的能力。</li>
+</ul>
+<h2 id="自主編碼的信任鏈為什麼我們還不能完全放手">自主編碼的「信任鏈」：為什麼我們還不能完全放手？<a hidden class="anchor" aria-hidden="true" href="#自主編碼的信任鏈為什麼我們還不能完全放手">#</a></h2>
+<p>儘管 OpenHands 和 Cline 能自動修 Bug，但生產環境中依然存在一個核心問題：<strong>信任 (Trust)</strong>。</p>
+<p>一個能自主執行 <code>rm -rf</code> 或 <code>git push</code> 的 Agent 具有極高的風險。因此，目前的演進方向是 <strong>「人類在環 (Human-in-the-Loop)」</strong> 的權限管理：</p>
+<ul>
+<li><strong>權限分級</strong>：讀取 $
+ightarrow$ 建議 $
+ightarrow$ 執行 (需確認) $
+ightarrow$ 全自動。</li>
+<li><strong>軌跡審核</strong>：透過詳細的 Trace 記錄，人類可以隨時介入並修正 Agent 的路徑。</li>
+</ul>
+<h2 id="結語開發者的角色將如何演變">結語：開發者的角色將如何演變？<a hidden class="anchor" aria-hidden="true" href="#結語開發者的角色將如何演變">#</a></h2>
+<p>當 AI 能自主完成 $	ext{分析}
+ightarrow 	ext{編碼}
+ightarrow 	ext{測試}
+ightarrow 	ext{部署}$ 的閉環時，開發者的價值將從「寫代碼 (Coding)」轉向「定義問題 (Problem Definition)」與「審核架構 (Architecture Review)」。</p>
+<p>我們不再是搬運工，而變成了 <strong>Agent 的領隊 (Agent Orchestrator)</strong>。</p>
+<hr>
+<p><strong>技術關鍵字：</strong></p>
+<ul>
+<li>Autonomous Coding Agents (自主編碼 Agent)</li>
+<li>Sandbox Execution (沙盒執行)</li>
+<li>SWE-bench (軟體工程基準測試)</li>
+<li>Human-in-the-Loop (人類在環)</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/general/">General</a></li>
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/">Autonomous-Coding-Agents.Md</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://alandevc8763.github.io/digital-twin-blog/">Alans Digital Twin Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

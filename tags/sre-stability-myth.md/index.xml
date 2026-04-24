@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Sre-Stability-Myth.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/sre-stability-myth.md/</link>
+    <description>Recent content in Sre-Stability-Myth.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/sre-stability-myth.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sre Stability Myth</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-stability-myth/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-stability-myth/</guid>
+      <description>&lt;h1 id=&#34;為什麼學完-k8s-和-terraform-之後你依然無法構建高可用系統&#34;&gt;為什麼學完 K8s 和 Terraform 之後，你依然無法構建高可用系統？&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Taxonomy:&lt;/strong&gt; SRE / 基礎設施架構 (Infrastructure Architecture)
+&lt;strong&gt;Signal:&lt;/strong&gt; 🟡 Gold (高影響力 / 核心心法)&lt;/p&gt;
+&lt;h2 id=&#34;核心洞察-core-insight&#34;&gt;核心洞察 (Core Insight)&lt;/h2&gt;
+&lt;p&gt;穩定性不來自於對工具 (K8s, Terraform, Ansible) 的熟練度，而來自於對**「失效模式 (Failure Modes)」**的精確預判與解耦。工具是實現手段，而「系統化思考」才是防止 3 AM On-call 的唯一方法。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;正文&#34;&gt;正文&lt;/h2&gt;
+&lt;p&gt;許多工程師陷入了一個誤區：認為只要掌握了最流行的工具鏈，就等同於掌握了 SRE。&lt;/p&gt;
+&lt;p&gt;但現實是，工具只是手段。真正的穩定性，來自於對失效模式的預判。我在構建高負載系統時發現，最致命的崩潰往往不是因為工具不好用，而是因為**「強耦合」**。&lt;/p&gt;
+&lt;h3 id=&#34;1-從強耦合到異步解耦&#34;&gt;1. 從「強耦合」到「異步解耦」&lt;/h3&gt;
+&lt;p&gt;當你單純依賴同步調用 (Synchronous Calls)，一個下游服務的延遲會像多米諾骨牌一樣，迅速癱瘓整個集群。這是我在架構中引入 &lt;strong&gt;Apache Kafka&lt;/strong&gt; 的核心原因：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;將「即時響應」轉化為「最終一致」&lt;/strong&gt;：通過消息隊列將生產者與消費者解耦。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;緩衝壓力&lt;/strong&gt;：在高流量尖峰時，Kafka 充當緩衝池，防止後端服務被沖垮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;結果&lt;/strong&gt;：系統不再因為單點延遲而發生連鎖反應。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-從事後監控到事前可觀測&#34;&gt;2. 從「事後監控」到「事前可觀測」&lt;/h3&gt;
+&lt;p&gt;大多數人的監控是「事後通知」：系統崩了 → 收到告警 → 開始排查。這不叫可觀測性，這叫「死後驗屍」。&lt;/p&gt;
+&lt;p&gt;真正的可觀測性應該是**「預警」**。&lt;/p&gt;
+&lt;p&gt;例如，我建立的&lt;strong&gt;憑證監控平台 (Certificate Monitoring Platform)&lt;/strong&gt;，目標不是告訴我憑證「已經過期」，而是在過期前 30 天就將風險量化並觸發自動化流程。當你能看到風險在發生前就處於可控狀態，你才真正擁有穩定性。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;極客筆記-geek-note&#34;&gt;極客筆記 (Geek Note)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Kafka 實踐&lt;/strong&gt;：在處理高吞吐量時，關注 Partition 分區策略與 Consumer Group 的再平衡 (Rebalance) 成本，這才是決定延遲的關鍵。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Observability 升級&lt;/strong&gt;：不要只看 CPU/Memory，要定義對業務有意義的 &lt;strong&gt;SLO (Service Level Objective)&lt;/strong&gt;，並將其轉化為 &lt;strong&gt;Error Budget&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;協同效應-synergy&#34;&gt;協同效應 (Synergy)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;高規模基礎設施 (High-Scale Infra) → 主動可觀測性 (Proactive Observability) → AI-SRE 自動化 (Agentic SRE)&lt;/strong&gt;
+當你擁有結構化的數據流 (Kafka) 和精準的觀測指標 (Cert Monitoring) 後，接下來的進化方向就是引入 AI Agent 實現自動化的根因分析 (Root Cause Analysis) 與自我修復。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

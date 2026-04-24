@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Nas-Zfs-Integrity.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/nas-zfs-integrity.md/</link><description>Recent content in Nas-Zfs-Integrity.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/nas-zfs-integrity.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Nas Zfs Integrity</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</guid><description>&lt;h1 id="別把-nas-當成儲存盒zfs-與數據完整性的真相">別把 NAS 當成儲存盒：ZFS 與數據完整性的真相&lt;/h1>
+&lt;p>很多人對 NAS 的認知還停留在「買個機殼 $\rightarrow$ 插滿硬碟 $\rightarrow$ 設定 RAID $\rightarrow$ 儲存檔案」。在這種認知下，NAS 就像是一個巨大的儲存桶，只要 RAID 顯示 &lt;code>Healthy&lt;/code>，數據就是安全的。
+但對 SRE 來說，這是最危險的錯覺。
+真正的儲存挑戰不在於「硬碟壞了怎麼辦」（這是 20 年前的問題），而是在於 &lt;strong>Silent Data Corruption (靜默數據損毀)&lt;/strong>，也就是俗稱的 &lt;strong>Bit Rot&lt;/strong>。當你的 RAID 顯示健康，但打開一個 5 年前的 PDF 卻提示「檔案損毀」時，你才會意識到，傳統的 RAID 其實根本沒在保護你的數據。&lt;/p>
+&lt;h2 id="硬件層被忽視的地雷">硬件層：被忽視的「地雷」&lt;/h2>
+&lt;p>在討論軟體之前，硬件層有兩個最容易掉進去的坑。&lt;/p>
+&lt;h3 id="1-smr-硬碟raid-的噩夢">1. SMR 硬碟：RAID 的噩夢&lt;/h3>
+&lt;p>如果你在買硬碟時沒區分 &lt;strong>CMR (Conventional Magnetic Recording)&lt;/strong> 和 &lt;strong>SMR (Shingled Magnetic Recording)&lt;/strong>，你可能已經埋下了炸彈。
+SMR 為了增加容量，將數據像瓦片一樣重疊寫入。這導致它在進行大量隨機寫入或 RAID 重構（Rebuild）時，會產生極其嚴重的寫入放大。我見過太多人在 Rebuild 時因為 SMR 的性能崩潰，導致重建時間從 24 小時拉長到一週，甚至直接導致另一顆硬碟崩潰而全盤丟失。&lt;/p>
+&lt;h3 id="2-ecc-ramzfs-的保命符">2. ECC RAM：ZFS 的保命符&lt;/h3>
+&lt;p>很多人覺得家用伺服器不需要 ECC 記憶體，但如果你用 ZFS，這不是選項，而是必要條件。
+ZFS 的 ARC (Adaptive Replacement Cache) 會在記憶體中快取大量的 metadata 和數據。如果記憶體發生一次 Bit-flip（位元翻轉），而你沒有 ECC 糾錯，ZFS 可能會將這個錯誤的數據「忠實地」寫入硬碟。這就變成了一場悲劇：你的文件系統在努力地幫你把損毀的數據永久化。&lt;/p></description></item></channel></rss>

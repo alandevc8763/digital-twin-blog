@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Vfs-Tracing.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/vfs-tracing.md/</link>
+    <description>Recent content in Vfs-Tracing.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/vfs-tracing.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vfs Tracing</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</guid>
+      <description>&lt;h1 id=&#34;隱藏的-io-稅vfs-與-page-cache-的追蹤實踐&#34;&gt;隱藏的 I/O 稅：VFS 與 Page Cache 的追蹤實踐&lt;/h1&gt;
+&lt;p&gt;當你調用 &lt;code&gt;read()&lt;/code&gt; 讀取一個檔案時，你以為數據直接從磁碟來到記憶體？
+不，它經歷了一場極其複雜的旅程。&lt;/p&gt;
+&lt;h2 id=&#34;vfs文件系統的外交官&#34;&gt;VFS：文件系統的「外交官」&lt;/h2&gt;
+&lt;p&gt;VFS (Virtual File System) 是 Linux 內核的一層抽象。無論底層是 Ext4、XFS 還是 NFS，對應用程序來說都一樣。但這個抽象層是有成本的。&lt;/p&gt;
+&lt;h3 id=&#34;1-dentry-cache名稱的陷阱&#34;&gt;1. Dentry Cache：名稱的陷阱&lt;/h3&gt;
+&lt;p&gt;每次打開檔案，內核都要將路徑（如 &lt;code&gt;/var/log/syslog&lt;/code&gt;）轉換為 Inode 編號。這個過程依賴於 &lt;strong&gt;Dentry Cache&lt;/strong&gt;。如果你的系統有數百萬個小檔案且快取不足，你會發現 CPU 消耗在 &lt;code&gt;dentry_lookup&lt;/code&gt; 上，而磁碟 IOPS 卻很低。&lt;/p&gt;
+&lt;h3 id=&#34;2-page-cache最強的加速器也是最大的坑&#34;&gt;2. Page Cache：最強的加速器，也是最大的坑&lt;/h3&gt;
+&lt;p&gt;Linux 會利用幾乎所有剩餘記憶體作為 Page Cache。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Read-ahead (預讀)&lt;/strong&gt;：內核猜測你要讀接下來的塊，提前加載。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Write-back (回寫)&lt;/strong&gt;：&lt;code&gt;write()&lt;/code&gt; 調用幾乎總是瞬間完成，因為它只寫到了記憶體。
+&lt;strong&gt;SRE 的噩夢：Write-out Spike&lt;/strong&gt;
+當記憶體中的髒頁 (Dirty Pages) 過多，觸發內核的 &lt;code&gt;pdflush&lt;/code&gt; 強制回寫時，整個系統的 I/O 會突然被佔滿，導致所有讀寫操作卡死。這就是為什麼有些系統會莫名其妙地出現數秒的「凍結」。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;實戰用-ebpf-穿透-vfs&#34;&gt;實戰：用 eBPF 穿透 VFS&lt;/h2&gt;
+&lt;p&gt;當 &lt;code&gt;iostat&lt;/code&gt; 告訴你磁碟很慢，但你懷疑是內核層的問題時，請使用 eBPF。
+使用 &lt;code&gt;bpftrace&lt;/code&gt; 追蹤 &lt;code&gt;vfs_read&lt;/code&gt; 的延遲分佈：
+&lt;code&gt;bpftrace -e &#39;kprobe:vfs_read { @start[tid] = nsecs; } kretprobe:vfs_read /@start[tid]/ { @latency = hist(nsecs - @start[tid]); delete(@start[tid]); }&#39;&lt;/code&gt;
+這能讓你一眼看出：延遲是發生在 &lt;strong&gt;VFS 層 (軟體開銷)&lt;/strong&gt; 還是 &lt;strong&gt;Block Layer (硬體開銷)&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Agent-Engineering-Rigor.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/agent-engineering-rigor.md/</link>
+    <description>Recent content in Agent-Engineering-Rigor.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/agent-engineering-rigor.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agent Engineering Rigor</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-engineering-rigor/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-engineering-rigor/</guid>
+      <description>&lt;h1 id=&#34;對抗不確定性生產級-ai-agent-的外科手術與量化評估&#34;&gt;對抗不確定性：生產級 AI Agent 的「外科手術」與「量化評估」&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;發佈日期&lt;/strong&gt;: 2026-04-22
+&lt;strong&gt;分類&lt;/strong&gt;: LLMOps / SRE / Agent-Engineering
+&lt;strong&gt;關鍵字&lt;/strong&gt;: Agent穩定性, Eval-Framework, Karpathy-Guidelines, 閉環演化&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;01-demo-與產品之間的死亡之谷&#34;&gt;01. Demo 與產品之間的「死亡之谷」&lt;/h2&gt;
+&lt;p&gt;在 AI 開發中，最危險的時刻就是當你對老闆或客戶展示一個「看起來很神奇」的 Demo 之後。&lt;/p&gt;
+&lt;p&gt;大多數 AI Agent 在 Demo 階段表現完美，是因為開發者在特定的路徑上進行了- &lt;strong&gt;Prompt 過度擬合 (Over-fitting)&lt;/strong&gt;。但一旦進入生產環境，面對不可預測的用戶輸入，系統會迅速崩潰 → 出現無限循環、格式錯誤或邏輯幻覺。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;將 AI Agent 從 Demo 推向產品，需要的是 SRE (Site Reliability Engineering) 的嚴謹度，而非更多 Prompt 的疊加。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;02-外科手術式修改-surgical-changes&#34;&gt;02. 外科手術式修改 (Surgical Changes)&lt;/h2&gt;
+&lt;p&gt;當 Agent 出現錯誤時，初學者傾向於「重新寫一遍 Prompt」或「增加更多指令」。這通常會導致 &lt;strong&gt;「回歸失效 (Regression)」&lt;/strong&gt;：修好了 A Bug，卻引入了 B Bug。&lt;/p&gt;
+&lt;p&gt;我推崇 &lt;strong&gt;「外科手術式修改」&lt;/strong&gt; 的原則：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;最小擾動&lt;/strong&gt;：僅觸碰必須修改的那一行代碼或 Prompt 片段。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;風格對齊&lt;/strong&gt;：嚴格匹配現有風格，不進行無關的重構。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可追溯性&lt;/strong&gt;：每一處修改都必須直接對應到一個具體的失敗案例。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;這就是為什麼在協作中，我們必須要求 LLM 停止「好心的重構」，專注於精確的修復。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

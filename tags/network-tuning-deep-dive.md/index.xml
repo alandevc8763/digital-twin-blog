@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Network-Tuning-Deep-Dive.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/network-tuning-deep-dive.md/</link>
+    <description>Recent content in Network-Tuning-Deep-Dive.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/network-tuning-deep-dive.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Network Tuning Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/network-tuning-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/network-tuning-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;從黑洞到-bufferbloat高併發環境下的-linux-核心網路調優實戰&#34;&gt;從「黑洞」到 Bufferbloat：高併發環境下的 Linux 核心網路調優實戰&lt;/h1&gt;
+&lt;p&gt;很多 SRE 在面對網路問題時，習慣於在 L7（應用層）找 Bug，或者在 L3（路由層）檢查連通性。但最棘手的問題往往發生在 L4（傳輸層）與核心之間的&lt;strong&gt;灰色地帶&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這裡有兩道隱形的牆：一道是 &lt;strong&gt;Conntrack (連線追蹤)&lt;/strong&gt;，一旦滿了，你的服務會瞬間變成一個「黑洞」；另一道是 &lt;strong&gt;Socket Buffers (套接字緩衝區)&lt;/strong&gt;，配置不當會導致你的延遲在沒有丟包的情況下莫名飆升。&lt;/p&gt;
+&lt;h2 id=&#34;第一道牆conntrack--靜默丟包的罪魁禍首&#34;&gt;第一道牆：Conntrack —— 靜默丟包的罪魁禍首&lt;/h2&gt;
+&lt;p&gt;在 K8s 叢集中，&lt;code&gt;kube-proxy&lt;/code&gt; 使用的 &lt;code&gt;iptables&lt;/code&gt; 模式極度依賴核心的 &lt;code&gt;nf_conntrack&lt;/code&gt; 模組。它為每個流 (Flow) 建立一個「影子狀態」，記錄封包的來源、目的地與狀態。&lt;/p&gt;
+&lt;h3 id=&#34;1-當核心變成黑洞&#34;&gt;1. 當核心變成「黑洞」&lt;/h3&gt;
+&lt;p&gt;Conntrack 的失敗模式是二元的：一旦達到 &lt;code&gt;nf_conntrack_max&lt;/code&gt; 的上限，核心會直接&lt;strong&gt;停止路由&lt;/strong&gt;，將新封包靜默丟棄 (Silent Drop)。&lt;/p&gt;
+&lt;p&gt;這最讓人崩潰的地方在於：&lt;strong&gt;應用程式完全健康，CPU 沒滿，記憶體充足，但連線卻隨機超時。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-sre-的除錯軌跡追蹤黑洞連線&#34;&gt;2. SRE 的除錯軌跡：追蹤「黑洞」連線&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;現象&lt;/strong&gt;：高流量 API Gateway 開始出現 1% 的隨機 &lt;code&gt;Connection Timeout&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Trace 過程&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;檢查核心日誌&lt;/strong&gt;：&lt;code&gt;dmesg -T | grep -i conntrack&lt;/code&gt; $
+ightarrow$ 發現 &lt;code&gt;nf_conntrack: table full, dropping packet&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量化飽和度&lt;/strong&gt;：&lt;code&gt;sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max&lt;/code&gt; $
+ightarrow$ 發現 count 剛好等於 max。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分析 churn (流轉率)&lt;/strong&gt;：使用 &lt;code&gt;conntrack -L&lt;/code&gt; 分析發現，大量連線處於 &lt;code&gt;TIME_WAIT&lt;/code&gt; 狀態。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;根因&lt;/strong&gt;：後端 legacy API 不支援 Keep-Alive，導致每次請求都建立新連線，填滿表單的速度快於核心回收的速度。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;對策&lt;/strong&gt;：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

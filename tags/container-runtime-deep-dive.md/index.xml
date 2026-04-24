@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Container-Runtime-Deep-Dive.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/container-runtime-deep-dive.md/</link>
+    <description>Recent content in Container-Runtime-Deep-Dive.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/container-runtime-deep-dive.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Container Runtime Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-runtime-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-runtime-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;解構容器運行時從-kubelet-意圖到二進制執行的完整路徑&#34;&gt;解構容器運行時：從 Kubelet 意圖到二進制執行的完整路徑&lt;/h1&gt;
+&lt;p&gt;如果你問一個開發者「容器是什麼？」，他可能會回答「一個打包了環境的鏡像」。但如果你問一個 SRE「容器是如何啟動的？」，答案將會是一場複雜的系統呼叫交響曲。&lt;/p&gt;
+&lt;p&gt;很多工程師以為 &lt;code&gt;docker run&lt;/code&gt; 或 &lt;code&gt;kubectl apply&lt;/code&gt; 之後，容器就直接「跑起來」了。事實上，從 K8s 的宣告式意圖到核心執行二進制文件，中間經過了一套由 &lt;strong&gt;OCI 標準&lt;/strong&gt; 治理的模塊化鏈路。&lt;/p&gt;
+&lt;h2 id=&#34;1-權責分離高級運行時-vs-低級運行時&#34;&gt;1. 權責分離：高級運行時 vs 低級運行時&lt;/h2&gt;
+&lt;p&gt;現代容器棧不再是一個單體，而是分為兩層：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;高級運行時 (High-Level Runtime)&lt;/strong&gt;：如 &lt;code&gt;containerd&lt;/code&gt; 或 &lt;code&gt;CRI-O&lt;/code&gt;。它們是「管理員」，負責拉取鏡像、管理存儲、設置網路以及與 Kubelet 通信。它們不直接創建容器，而是編排資源。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;低級運行時 (Low-Level Runtime)&lt;/strong&gt;：如 &lt;code&gt;runc&lt;/code&gt;。它是「工人」，一個短暫的進程。它的唯一目標是：與 Linux 核心交互，創建命名空間、設置控制組 (Cgroups)、切換根目錄，然後執行目標程序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這就是 OCI (Open Container Initiative) 的核心價值：只要符合標準，你可以隨意替換 &lt;code&gt;runc&lt;/code&gt; 為 &lt;code&gt;Kata Containers&lt;/code&gt; (輕量級 VM) 或 &lt;code&gt;gVisor&lt;/code&gt; (用戶態內核)，而無需修改 K8s。&lt;/p&gt;
+&lt;h2 id=&#34;2-啟動之舞runc-的執行生命週期&#34;&gt;2. 啟動之舞：&lt;code&gt;runc&lt;/code&gt; 的執行生命週期&lt;/h2&gt;
+&lt;p&gt;容器的啟動並非單一事件，而是一系列精確的系統呼叫順序。當 &lt;code&gt;containerd&lt;/code&gt; 要求啟動容器時，&lt;code&gt;runc&lt;/code&gt; 會執行以下「舞蹈」：&lt;/p&gt;
+&lt;h3 id=&#34;第一步分叉與克隆-fork--clone&#34;&gt;第一步：分叉與克隆 (Fork &amp;amp; Clone)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;runc&lt;/code&gt; 不使用簡單的 &lt;code&gt;fork()&lt;/code&gt;，而是使用 &lt;code&gt;clone()&lt;/code&gt; 並帶上特定的標誌 (Flags)：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

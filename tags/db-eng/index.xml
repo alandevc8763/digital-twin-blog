@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Db Eng on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/db-eng/</link>
+    <description>Recent content in Db Eng on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/db-eng/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mongodb</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/mongodb/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/mongodb/</guid>
+      <description>&lt;h1 id=&#34;mongodb資料備份與還原實踐-dump--restore&#34;&gt;MongoDB：資料備份與還原實踐 (Dump &amp;amp; Restore)&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Database Engineering / Disaster Recovery&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥈 Silver (Operational Standard)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;資料備份是資料庫維運的最後一道防線。&lt;code&gt;mongodump&lt;/code&gt; 與 &lt;code&gt;mongorestore&lt;/code&gt; 構成了 MongoDB 基礎備份的閉環。關鍵在於理解 &lt;strong&gt;BSON 格式&lt;/strong&gt; 的高效性以及在大規模資料恢復時的 &lt;strong&gt;性能影響&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-備份流程-mongodump&#34;&gt;📦 備份流程 (mongodump)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;mongodump&lt;/code&gt; 將資料導出為 BSON 格式，確保資料類型的原生保留。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;常用指令組合：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;全庫備份&lt;/strong&gt;：&lt;code&gt;mongodump --db &amp;lt;db_name&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特定集合備份&lt;/strong&gt;：&lt;code&gt;mongodump --db &amp;lt;db_name&amp;gt; --collection &amp;lt;coll_name&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;遠端伺服器備份&lt;/strong&gt;：使用 URI 格式 &lt;code&gt;mongodump --uri=&amp;quot;mongodb://user:pass@host:port/db&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-還原流程-mongorestore&#34;&gt;🔄 還原流程 (mongorestore)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;mongorestore&lt;/code&gt; 負責將 BSON 檔案還原至目標庫。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;關鍵指令：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;全庫還原&lt;/strong&gt;：&lt;code&gt;mongorestore --db &amp;lt;db_name&amp;gt; &amp;lt;backup_path&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特定集合還原&lt;/strong&gt;：&lt;code&gt;mongorestore --db &amp;lt;db_name&amp;gt; --collection &amp;lt;coll_name&amp;gt; &amp;lt;path_to_bson&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-運維坑洞&#34;&gt;⚠️ 運維坑洞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;性能衝擊&lt;/strong&gt;：在生產環境執行 &lt;code&gt;mongodump&lt;/code&gt; 可能導致 I/O 飆高。建議在從庫 (Secondary) 執行或在低峰期操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;空間壓力&lt;/strong&gt;：BSON 格式相對較大，還原時需確保目標磁碟有足夠緩衝空間。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;版本兼容&lt;/strong&gt;：確保 &lt;code&gt;mongodump&lt;/code&gt; 與 &lt;code&gt;mongorestore&lt;/code&gt; 的版本與資料庫版本一致，避免 BSON 格式不兼容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SRE 自動化&lt;/strong&gt;：建議將此流程封裝進 CronJob 或 Kubernetes Job，實現每日自動快照。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cloud Migration&lt;/strong&gt;：這是將資料從 On-premise 遷移至 MongoDB Atlas 的最快路徑。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>

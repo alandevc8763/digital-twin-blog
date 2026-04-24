@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Iam-Cli.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/</link>
+    <description>Recent content in Iam-Cli.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Iam Cli</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</guid>
+      <description>&lt;h1 id=&#34;aws-cli高效帳號切換實踐&#34;&gt;AWS-CLI：高效帳號切換實踐&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Cloud Operations / CLI Efficiency&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥉 Bronze (Productivity Hack)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;對於管理多個 AWS 環境 (Dev/Staging/Prod) 的 SRE 而言，頻繁的帳號切換是最高頻的痛點。透過 &lt;strong&gt;環境變數隔離&lt;/strong&gt; 與 &lt;strong&gt;Shell Function 封裝&lt;/strong&gt;，可以將切換成本從「手動修改配置」降低至「單次指令」。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-三種切換方案對比&#34;&gt;🚀 三種切換方案對比&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;方案&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;操作方式&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;適用場景&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;優缺點&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;&amp;ndash;profile 參數&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;aws s3 ls --profile lab&lt;/code&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;單次指令&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;$\checkmark$ 最安全 $\text{X}$ 輸入冗長&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;環境變數&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;export AWS_PROFILE=lab&lt;/code&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;當前 Session&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;$\checkmark$ 快速 $\text{X}$ 容易忘記切換導致誤操作&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Shell Function&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;change_aws_profile lab&lt;/code&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;全局快速切換&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;$\checkmark$ 極速 $\text{X}$ 需配置 &lt;code&gt;.zshrc/.bashrc&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;-最佳實踐shell-function-封裝&#34;&gt;🛠️ 最佳實踐：Shell Function 封裝&lt;/h3&gt;
+&lt;p&gt;在 &lt;code&gt;.zshrc&lt;/code&gt; 或 &lt;code&gt;.bashrc&lt;/code&gt; 中添加以下代碼：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

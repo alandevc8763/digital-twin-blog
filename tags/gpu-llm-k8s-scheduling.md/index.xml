@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Gpu-Llm-K8S-Scheduling.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/gpu-llm-k8s-scheduling.md/</link>
+    <description>Recent content in Gpu-Llm-K8S-Scheduling.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/gpu-llm-k8s-scheduling.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gpu Llm K8S Scheduling</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/gpu-llm-k8s-scheduling/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/gpu-llm-k8s-scheduling/</guid>
+      <description>&lt;h1 id=&#34;從-ollama-到生產環境如何在-kubernetes-中大規模部署-gpu-加速的-llm&#34;&gt;從 Ollama 到生產環境：如何在 Kubernetes 中大規模部署 GPU 加速的 LLM&lt;/h1&gt;
+&lt;p&gt;對於大多數 AI 開發者來說，部署第一個 LLM 模型的體驗通常是：安裝 Ollama $
+ightarrow$ &lt;code&gt;ollama run llama3&lt;/code&gt; $
+ightarrow$ 跑通。這在本地開發時非常完美，但當你需要將其推向生產環境時，你會發現本地工具完全無法處理以下問題：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;GPU 資源碎片化&lt;/strong&gt;：如何高效分配多張 GPU？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;冷啟動延遲&lt;/strong&gt;：數十 GB 的模型權重加載需要多久？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可用性保障&lt;/strong&gt;：單機崩潰怎麼辦？如何實現自動擴縮容？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合規與隔離&lt;/strong&gt;：在金融或醫療等受管制行業，如何實現完全的 Air-gapped (氣隙) 部署？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這正是 &lt;strong&gt;LLMKube&lt;/strong&gt; 類型的 K8s Operator 試圖解決的核心痛點。&lt;/p&gt;
+&lt;h2 id=&#34;1-突破單機限制gpu-的-k8s-編排&#34;&gt;1. 突破「單機」限制：GPU 的 K8s 編排&lt;/h2&gt;
+&lt;p&gt;在 K8s 中運行 GPU 任務，最簡單的做法是使用 NVIDIA GPU Operator，但這僅僅解決了「能看到 GPU」的問題，沒有解決「如何高效用好 GPU」的問題。&lt;/p&gt;
+&lt;h3 id=&#34;從--a-la-carte-到--封裝化部署&#34;&gt;從- a la carte 到- 封裝化部署&lt;/h3&gt;
+&lt;p&gt;傳統方式需要 SRE 手動配置 CUDA 版本、安裝 Driver、設定環境變數 $
+ightarrow$ 過程極其痛苦且易錯。
+LLMKube 將其轉化為&lt;strong&gt;宣告式 API&lt;/strong&gt;：通過單個命令 &lt;code&gt;llmkube deploy&lt;/code&gt;，它在底層自動完成了：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
