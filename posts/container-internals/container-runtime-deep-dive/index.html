@@ -1,0 +1,864 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>解構容器運行時：從 Kubelet 意圖到二進制執行的完整路徑 - Alan's Digital Twin Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../overrides/main.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<style>
+  :root {
+    --gold-primary: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --slate-dark: #0f172a;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(212, 175, 55, 0.4);
+  }
+
+  /* 強制覆蓋 Material 主題的核心顏色 */
+  body.md-light {
+    --md-primary-fg-color: var(--gold-primary) !important;
+  }
+  body.md-dark {
+    --md-primary-fg-color: var(--gold-primary) !important;
+    --md-primary-bg-color: var(--slate-dark) !important;
+  }
+
+  /* Header 顏色強行修正 */
+  .md-header {
+    background-color: var(--slate-dark) !important;
+    border-bottom: 1px solid var(--gold-primary) !important;
+  }
+
+  /* 數位花園卡片佈局 - 強制權重 */
+  .garden-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin: 2rem 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .garden-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: block !important;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .garden-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 10px 25px -5px var(--gold-glow) !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+  }
+
+  .garden-card h3 {
+    color: var(--gold-primary) !important;
+    margin-top: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+  }
+
+  .garden-card p {
+    color: #94a3b8 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 隱藏 Material 預設的連結底線 */
+  .md-typeset a {
+    text-decoration: none !important;
+  }
+  
+  .md-typeset .garden-card a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+</style>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-vs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Alan's Digital Twin Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              解構容器運行時：從 Kubelet 意圖到二進制執行的完整路徑
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../sre-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../ai-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  AI Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  HomeLab Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../performance-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Performance Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../journey/intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Journey
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Alan's Digital Twin Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sre-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../homelab-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HomeLab Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../performance-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journey/intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 權責分離：高級運行時 vs 低級運行時
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-runc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 啟動之舞：runc 的執行生命週期
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 啟動之舞：runc 的執行生命週期">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fork-clone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一步：分叉與克隆 (Fork &amp; Clone)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cgroup-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二步：資源枷鎖 (Cgroup Handshake)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pivot_root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三步：根目錄切換 (pivot_root)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第四步：最終轉化 (execve)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-containerd-shim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 穩定錨點：containerd-shim 的必要性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. SRE 診斷矩陣：當容器啟動失敗時
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：從「黑盒」到「透明」
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>解構容器運行時：從 Kubelet 意圖到二進制執行的完整路徑</h1>
+
+<p>如果你問一個開發者「容器是什麼？」，他可能會回答「一個打包了環境的鏡像」。但如果你問一個 SRE「容器是如何啟動的？」，答案將會是一場複雜的系統呼叫交響曲。</p>
+<p>很多工程師以為 <code>docker run</code> 或 <code>kubectl apply</code> 之後，容器就直接「跑起來」了。事實上，從 K8s 的宣告式意圖到核心執行二進制文件，中間經過了一套由 <strong>OCI 標準</strong> 治理的模塊化鏈路。</p>
+<h2 id="1-vs">1. 權責分離：高級運行時 vs 低級運行時</h2>
+<p>現代容器棧不再是一個單體，而是分為兩層：</p>
+<ul>
+<li><strong>高級運行時 (High-Level Runtime)</strong>：如 <code>containerd</code> 或 <code>CRI-O</code>。它們是「管理員」，負責拉取鏡像、管理存儲、設置網路以及與 Kubelet 通信。它們不直接創建容器，而是編排資源。</li>
+<li><strong>低級運行時 (Low-Level Runtime)</strong>：如 <code>runc</code>。它是「工人」，一個短暫的進程。它的唯一目標是：與 Linux 核心交互，創建命名空間、設置控制組 (Cgroups)、切換根目錄，然後執行目標程序。</li>
+</ul>
+<p>這就是 OCI (Open Container Initiative) 的核心價值：只要符合標準，你可以隨意替換 <code>runc</code> 為 <code>Kata Containers</code> (輕量級 VM) 或 <code>gVisor</code> (用戶態內核)，而無需修改 K8s。</p>
+<h2 id="2-runc">2. 啟動之舞：<code>runc</code> 的執行生命週期</h2>
+<p>容器的啟動並非單一事件，而是一系列精確的系統呼叫順序。當 <code>containerd</code> 要求啟動容器時，<code>runc</code> 會執行以下「舞蹈」：</p>
+<h3 id="fork-clone">第一步：分叉與克隆 (Fork &amp; Clone)</h3>
+<p><code>runc</code> 不使用簡單的 <code>fork()</code>，而是使用 <code>clone()</code> 並帶上特定的標誌 (Flags)：
+- <code>CLONE_NEWNET</code> $\rightarrow$ 創建私有網路棧。
+- <code>CLONE_NEWPID</code> $\rightarrow$ 讓進程以為自己是 <code>PID 1</code>。
+- <code>CLONE_NEWNS</code> $\rightarrow$ 隔離掛載點。</p>
+<p>這決定了容器的「視角」隔離。</p>
+<h3 id="cgroup-handshake">第二步：資源枷鎖 (Cgroup Handshake)</h3>
+<p>在執行應用之前，必須先限制它的能力。<code>runc</code> 將新進程的 PID 寫入 <code>/sys/fs/cgroup/.../cgroup.procs</code>。至此，核心的 CFS 調度器和記憶體管理模組開始對該進程實施配額管控。</p>
+<h3 id="pivot_root">第三步：根目錄切換 (<code>pivot_root</code>)</h3>
+<p>為了防止容器看到主機的文件系統，<code>runc</code> 使用 <code>pivot_root</code> 將根目錄切換到鏡像解壓後的目錄。</p>
+<p><strong>SRE 坑點</strong>：<code>pivot_root</code> 要求新根目錄必須是一個「掛載點」。如果你手動執行 <code>runc</code> 且路徑只是個普通目錄，會直接報 <code>EINVAL (Invalid Argument)</code>。</p>
+<h3 id="execve">第四步：最終轉化 (<code>execve</code>)</h3>
+<p>環境鎖定完成後，<code>runc</code> 呼叫 <code>execve()</code>。這會用目標應用程序的二進制文件替換掉 <code>runc</code> 進程本身。</p>
+<hr />
+<h2 id="3-containerd-shim">3. 穩定錨點：<code>containerd-shim</code> 的必要性</h2>
+<p>如果你觀察 <code>ps -ef</code>，你會發現應用進程的父進程不是 <code>containerd</code>，而是一個叫 <code>containerd-shim</code> 的小程序。為什麼需要這個中間層？</p>
+<p><strong>Shim 是容器生命週期的「穩定錨點」。</strong></p>
+<ul>
+<li><strong>解耦生命週期</strong>：如果沒有 Shim，<code>containerd</code> 必須維持所有容器的標準輸出/錯誤管道。如果 <code>containerd</code> 崩潰或升級重啟，所有容器都會跟著死掉。有了 Shim，<code>containerd</code> 重啟後可以重新連接到 Shim，而容器毫髮無傷。</li>
+<li><strong>僵屍進程回收</strong>：Shim 負責 <code>waitpid</code>，確保容器退出後能正確記錄退出碼並清理資源，防止主機出現大量 <code>&lt;defunct&gt;</code> 僵屍進程。</li>
+</ul>
+<h2 id="4-sre">4. SRE 診斷矩陣：當容器啟動失敗時</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">症狀</th>
+<th style="text-align: left;">潛在位置</th>
+<th style="text-align: left;">核心訊號</th>
+<th style="text-align: left;">診斷工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>ContainerCreating</code> 永久掛起</strong></td>
+<td style="text-align: left;">高級運行時 (CRI)</td>
+<td style="text-align: left;"><code>TaskService</code> gRPC 錯誤</td>
+<td style="text-align: left;"><code>journalctl -u containerd</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>CreateContainerError</code></strong></td>
+<td style="text-align: left;">低級運行時 (<code>runc</code>)</td>
+<td style="text-align: left;"><code>pivot_root: invalid argument</code></td>
+<td style="text-align: left;"><code>runc</code> 執行日誌</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>Running</code> 但無日誌/不響應</strong></td>
+<td style="text-align: left;">穩定錨點 (Shim)</td>
+<td style="text-align: left;">PPID 為 1 (Shim 已死)</td>
+<td style="text-align: left;"><code>ps -ef</code> $\rightarrow$ 檢查父進程</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>啟動速度極慢</strong></td>
+<td style="text-align: left;">核心/儲存層</td>
+<td style="text-align: left;"><code>mount</code> 系統呼叫延遲</td>
+<td style="text-align: left;"><code>strace</code> $\rightarrow$ <code>sys_mount</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_1">結語：從「黑盒」到「透明」</h2>
+<p>容器並不是什麼神奇的封裝，它只是 Linux 核心功能的巧妙組合。從 Kubelet 的意圖 $\rightarrow$ CRI 的編排 $\rightarrow$ Shim 的錨定 $\rightarrow$ <code>runc</code> 的執行 $\rightarrow$ 核心的強制執行。</p>
+<p>理解這一路徑，能讓你從「根據日誌猜測」轉化為「根據系統呼叫斷定」故障根因。</p>
+<hr />
+<p><strong>關鍵概念總結：</strong>
+- <strong>OCI (Open Container Initiative)</strong>：定義鏡像與運行時標準的業界規範。
+- <strong>containerd / CRI-O</strong>：負責生命週期管理的高級運行時。
+- <strong>runc</strong>：直接與核心交互的低級運行時。
+- <strong>containerd-shim</strong>：確保容器在運行時管理程序重啟後依然存活的穩定層。
+- <strong>pivot_root</strong>：將進程根路徑切換到新目錄的核心操作。</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
