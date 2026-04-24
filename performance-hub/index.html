@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../homelab-hub/">
       
       
-        <link rel="next" href="../ai-hub/">
+        <link rel="next" href="../journey/intro/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>SRE Hub - Alan's Digital Twin Blog</title>
+        <title>Performance Hub - Alan's Digital Twin Blog</title>
       
     
     
@@ -157,7 +157,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sre-infra-hub" class="md-skip">
+        <a href="#performance-hub-index-page" class="md-skip">
           Skip to content
         </a>
       
@@ -191,7 +191,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SRE Hub
+              Performance Hub
             
           </span>
         </div>
@@ -293,11 +293,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../sre-hub/" class="md-tabs__link">
         
   
   
@@ -352,9 +350,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../performance-hub/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -450,19 +450,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../sre-hub/" class="md-nav__link">
         
   
   
@@ -478,7 +469,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -541,10 +531,19 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../performance-hub/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -560,6 +559,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -626,94 +626,21 @@
 
 
 
-<style>
-.garden-card-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
-    gap: 1.5rem !important;
-    padding: 1rem 0 !important;
-    margin: 2rem 0 !important;
-}
-
-.garden-card {
-    position: relative !important;
-    background: rgba(45, 55, 72, 0.6) !important;
-    border: 2px solid #D4AF37 !important; 
-    border-radius: 16px !important;
-    padding: 1.5rem !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-    color: inherit !important;
-}
-
-.garden-card:hover {
-    transform: translateY(-5px) !important;
-    background: rgba(60, 80, 110, 0.8) !important;
-    border-color: #D4AF37 !important;
-    box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.5) !important;
-}
-
-.card-icon {
-    font-size: 1.5rem !important;
-    margin-bottom: 1rem !important;
-    display: block !important;
-}
-
-.card-title {
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    color: #D4AF37 !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-    text-decoration: none !important;
-}
-
-.card-desc {
-    font-size: 0.9rem !important;
-    color: #a0aec0 !important;
-    line-height: 1.5 !important;
-}
-
-.garden-card * {
-    color: inherit !important;
-    text-decoration: none !important;
-}
-</style>
-
-<h1 id="sre-infra-hub">SRE &amp; Infra Hub</h1>
-<div class="garden-card-grid">
-    <a href="articles/performance/cpu-numa.md" class="garden-card">
-        <span class="card-icon">⚡</span>
-        <span class="card-title">CPU Topology & NUMA</span>
-        <span class="card-desc">The physics of memory access and how to eliminate the Remote Access penalty.</span>
-    </a>
-    <a href="articles/performance/cfs-scheduler.md" class="garden-card">
-        <span class="card-icon">⚖️</span>
-        <span class="card-title">CFS Scheduler</span>
-        <span class="card-desc">Beyond fairness: How to achieve deterministic execution in Linux.</span>
-    </a>
-    <a href="articles/performance/psi-metrics.md" class="garden-card">
-        <span class="card-icon">📉</span>
-        <span class="card-title">PSI Metrics</span>
-        <span class="card-desc">Stop looking at utilization. Measure system suffering via pressure stalls.</span>
-    </a>
-    <a href="articles/performance/vfs-tracing.md" class="garden-card">
-        <span class="card-icon">🔍</span>
-        <span class="card-title">VFS Tracing</span>
-        <span class="card-desc">Uncovering the hidden I/O tax between syscalls and disk platters.</span>
-    </a>
-    <a href="articles/sre-stability-myth.md" class="garden-card">
-        <span class="card-icon">🛡️</span>
-        <span class="card-title">SRE Stability Myth</span>
-        <span class="card-desc">The architectural truth about building systems that don't break.</span>
-    </a>
-</div>
+<hr />
+<h1 id="performance-hub-index-page">Performance Hub Index Page</h1>
+<hr />
+<h1 id="performance-hub-extreme-tuning-kernel-internals">Performance Hub: Extreme Tuning &amp; Kernel Internals</h1>
+<p>Welcome to the Performance Hub. Here we dissect the interaction between software and silicon to eliminate the last microsecond of latency.</p>
+<h2 id="deep-dives">🚀 Deep Dives</h2>
+<ul>
+<li><a href="../posts/performance/cpu-topology/">性能的「隱形牆」：CPU Topology 與 NUMA 的深度對齊實踐</a> - 探討數據局部性、L3 快取爭搶與 NUMA 節點對齊。</li>
+</ul>
+<h2 id="tuning-stack">🛠️ Tuning Stack</h2>
+<ul>
+<li><strong>Hardware</strong>: CPU Topology $\rightarrow$ NUMA $\rightarrow$ PCIe Bus</li>
+<li><strong>Kernel</strong>: CFS Scheduler $\rightarrow$ VFS $\rightarrow$ PSI</li>
+<li><strong>Observation</strong>: <code>perf</code> $\rightarrow$ <code>ebpf</code> $\rightarrow$ <code>numastat</code></li>
+</ul>
 
 
 

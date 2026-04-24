@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="..">
-      
-      
-        <link rel="next" href="../ai-hub/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>SRE Hub - Alan's Digital Twin Blog</title>
+        <title>性能的「隱形牆」：CPU Topology 與 NUMA 的深度對齊實踐 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sre-infra-hub" class="md-skip">
+        <a href="#cpu-topology-numa" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SRE Hub
+              性能的「隱形牆」：CPU Topology 與 NUMA 的深度對齊實踐
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -293,11 +289,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -316,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -335,7 +329,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../homelab-hub/" class="md-tabs__link">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../performance-hub/" class="md-tabs__link">
+      <a href="../../../performance-hub/" class="md-tabs__link">
         
   
   
@@ -373,7 +367,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -408,7 +402,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -426,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -450,19 +444,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../sre-hub/" class="md-nav__link">
         
   
   
@@ -478,7 +463,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -490,7 +474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../../ai-hub/" class="md-nav__link">
         
   
   
@@ -517,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../homelab-hub/" class="md-nav__link">
+      <a href="../../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -544,7 +528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../performance-hub/" class="md-nav__link">
+      <a href="../../../performance-hub/" class="md-nav__link">
         
   
   
@@ -571,7 +555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../../journey/intro/" class="md-nav__link">
         
   
   
@@ -611,6 +595,131 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#01-l1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01. 數據局部性：L1 到遠端記憶體的延遲鴻溝
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="01. 數據局部性：L1 到遠端記憶體的延遲鴻溝">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        延遲的量級對比
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#02-k8s-pod-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02. 從 K8s Pod 到矽片：Topology 對齊路徑
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="02. 從 K8s Pod 到矽片：Topology 對齊路徑">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        拓撲對齊的四層結構
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#03-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03. SRE 的診斷工具箱：捕捉「隱形」的延遲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="03. SRE 的診斷工具箱：捕捉「隱形」的延遲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-remote-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信號 1：遠端記憶體訪問 (Remote Memory)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2l3-noisy-neighbor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信號 2：L3 快取爭搶 (Noisy Neighbor)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-smt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信號 3：超執行緒 (SMT) 的陷阱
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：對齊即性能
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -626,100 +735,54 @@
 
 
 
-<style>
-.garden-card-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
-    gap: 1.5rem !important;
-    padding: 1rem 0 !important;
-    margin: 2rem 0 !important;
-}
-
-.garden-card {
-    position: relative !important;
-    background: rgba(45, 55, 72, 0.6) !important;
-    border: 2px solid #D4AF37 !important; 
-    border-radius: 16px !important;
-    padding: 1.5rem !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-    color: inherit !important;
-}
-
-.garden-card:hover {
-    transform: translateY(-5px) !important;
-    background: rgba(60, 80, 110, 0.8) !important;
-    border-color: #D4AF37 !important;
-    box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.5) !important;
-}
-
-.card-icon {
-    font-size: 1.5rem !important;
-    margin-bottom: 1rem !important;
-    display: block !important;
-}
-
-.card-title {
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    color: #D4AF37 !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-    text-decoration: none !important;
-}
-
-.card-desc {
-    font-size: 0.9rem !important;
-    color: #a0aec0 !important;
-    line-height: 1.5 !important;
-}
-
-.garden-card * {
-    color: inherit !important;
-    text-decoration: none !important;
-}
-</style>
-
-<h1 id="sre-infra-hub">SRE &amp; Infra Hub</h1>
-<div class="garden-card-grid">
-    <a href="articles/performance/cpu-numa.md" class="garden-card">
-        <span class="card-icon">⚡</span>
-        <span class="card-title">CPU Topology & NUMA</span>
-        <span class="card-desc">The physics of memory access and how to eliminate the Remote Access penalty.</span>
-    </a>
-    <a href="articles/performance/cfs-scheduler.md" class="garden-card">
-        <span class="card-icon">⚖️</span>
-        <span class="card-title">CFS Scheduler</span>
-        <span class="card-desc">Beyond fairness: How to achieve deterministic execution in Linux.</span>
-    </a>
-    <a href="articles/performance/psi-metrics.md" class="garden-card">
-        <span class="card-icon">📉</span>
-        <span class="card-title">PSI Metrics</span>
-        <span class="card-desc">Stop looking at utilization. Measure system suffering via pressure stalls.</span>
-    </a>
-    <a href="articles/performance/vfs-tracing.md" class="garden-card">
-        <span class="card-icon">🔍</span>
-        <span class="card-title">VFS Tracing</span>
-        <span class="card-desc">Uncovering the hidden I/O tax between syscalls and disk platters.</span>
-    </a>
-    <a href="articles/sre-stability-myth.md" class="garden-card">
-        <span class="card-icon">🛡️</span>
-        <span class="card-title">SRE Stability Myth</span>
-        <span class="card-desc">The architectural truth about building systems that don't break.</span>
-    </a>
-</div>
+<h1 id="cpu-topology-numa">性能的「隱形牆」：CPU Topology 與 NUMA 的深度對齊實踐</h1>
+<p>在追求極致性能的系統優化中，大多數開發者的直覺是「增加 CPU 核心數」或「提升時鐘頻率」。但在 SRE 的視角裡，性能的真正瓶頸往往不在於計算速度，而在於<strong>數據搬運的延遲</strong>。</p>
+<p>如果你發現系統 CPU 使用率不高，但 p99 延遲卻出現了無法解釋的尖峰，你可能已經撞上了 CPU Topology 的「性能懸崖」。</p>
+<h2 id="01-l1">01. 數據局部性：L1 到遠端記憶體的延遲鴻溝</h2>
+<p>現代伺服器的 CPU 並非一個單一的計算單元，而是一個複雜的層級結構。數據從記憶體搬運到 CPU 寄存器的路徑，決定了你的程式能跑多快。</p>
+<h3 id="_1">延遲的量級對比</h3>
+<ul>
+<li><strong>L1 Cache</strong>: $\approx 1\text{ns}$ (極速，核心私有)</li>
+<li><strong>L2 Cache</strong>: $\approx 4\text{ns}$ (快速，核心私有)</li>
+<li><strong>L3 Cache (LLC)</strong>: $\approx 10\text{ns} - 40\text{ns}$ (共享，跨核心通信的橋樑)</li>
+<li><strong>Local DRAM</strong>: $\approx 100\text{ns}$ (記憶體本地訪問)</li>
+<li><strong>Remote NUMA Node</strong>: $\approx 200\text{ns} - 300\text{ns}$ (跨 Socket 訪問，需經過 UPI/QPI 總線)</li>
+</ul>
+<p><strong>核心洞察</strong>：一旦你的進程被 Linux 核心從 CPU 0 遷移到 CPU 1，原本在 L1/L2 的熱數據會被全部清空 (Cache Flush)。更糟糕的是，如果記憶體分配在 Node 0 而執行在 Node 1，每一次記憶體訪問都要跨越總線 $\rightarrow$ 這就是所謂的 <strong>NUMA Miss</strong>。</p>
+<h2 id="02-k8s-pod-topology">02. 從 K8s Pod 到矽片：Topology 對齊路徑</h2>
+<p>在雲原生環境中，我們不能直接操作 <code>taskset</code>，但我們可以透過 K8s 的拓撲管理實現「硬核對齊」。</p>
+<h3 id="_2">拓撲對齊的四層結構</h3>
+<ol>
+<li><strong>K8s Topology Manager</strong>: 負責協調 CPU 與周邊設備（如 GPU、高效能 NIC）的對齊。確保 GPU 和其驅動進程位於同一個 NUMA 節點，避免 PCIe 總線的額外延遲。</li>
+<li><strong>K8s CPU Manager</strong>: 使用 <code>Static</code> 策略將 Pod 綁定到特定的物理核心。這防止了 Linux CFS 調度器將進程在不同核心間「跳來跳去」，從而保護 L1/L2 快取。</li>
+<li><strong>Linux <code>cpuset</code></strong>: 內核層級的限制機制，強制進程只能在指定的 CPU 集合中運行。</li>
+<li><strong>Hardware Topology</strong>: 最終落在物理 L1 $\rightarrow$ L2 $\rightarrow$ L3 $\rightarrow$ NUMA Node 的層級上。</li>
+</ol>
+<h2 id="03-sre">03. SRE 的診斷工具箱：捕捉「隱形」的延遲</h2>
+<p>當你懷疑系統存在拓撲失配時，不要只看 <code>top</code>，請使用以下信號：</p>
+<h3 id="1-remote-memory">信號 1：遠端記憶體訪問 (Remote Memory)</h3>
+<p><strong>症狀</strong>：CPU 使用率低，但 IPC (每指令週期數) 極低。
+- <strong>診斷</strong>：<code>numastat -p &lt;pid&gt;</code>
+- <strong>觀察</strong>：若 <code>numa_miss</code> 和 <code>numa_foreign</code> 計數快速增加 $\rightarrow$ 確定發生了跨節點訪問。</p>
+<h3 id="2l3-noisy-neighbor">信號 2：L3 快取爭搶 (Noisy Neighbor)</h3>
+<p><strong>症狀</strong>：吞吐量突然下降，但 CPU 使用率沒有增加。
+- <strong>診斷</strong>：<code>perf stat -e LLC-load-misses -p &lt;pid&gt;</code>
+- <strong>觀察</strong>：高 <code>LLC-load-miss</code> 率意味著你的工作集 (Working Set) 正在被同一個 Socket 上的另一個「嘈雜鄰居」不斷地從 L3 中剔除。</p>
+<h3 id="3-smt">信號 3：超執行緒 (SMT) 的陷阱</h3>
+<p><strong>症狀</strong>：計算密集型任務性能下降 $\approx 50\%$。
+- <strong>洞察</strong>：邏輯 CPU 0 和 1 共享同一個物理核心的執行單元 (ALU/FPU)。對於 I/O 密集型任務，SMT 能提升吞吐；但對於計算密集型任務，SMT 會導致流水線爭搶 $\rightarrow$ 建議在極致性能場景下關閉 SMT 或進行物理核心隔離。</p>
+<h2 id="_3">結語：對齊即性能</h2>
+<p>在分佈式系統中，最昂貴的資源不是 CPU 週期，而是<strong>路徑</strong>。</p>
+<p>將進程綁定在正確的核心 $\rightarrow$ 將記憶體分配在本地節點 $\rightarrow$ 將周邊設備對齊到同一拓撲。這套「對齊」實踐，能讓你的服務在不更換硬件的情況下，獲得 20% - 50% 的 p99 延遲優化。</p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -763,10 +826,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
