@@ -10,25 +10,23 @@
       
       
       
-        <link rel="next" href="sre-hub/">
-      
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Alan's Digital Twin Blog</title>
+        <title>Digital Twin Blog Implementation Plan - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -155,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-mkdocs" class="md-skip">
+        <a href="#digital-twin-blog-implementation-plan" class="md-skip">
           Skip to content
         </a>
       
@@ -169,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -189,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Digital Twin Blog Implementation Plan
             
           </span>
         </div>
@@ -272,11 +270,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -333,7 +329,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="homelab-hub/" class="md-tabs__link">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -352,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -387,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -402,37 +398,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -448,48 +417,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Commands
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -501,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -528,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -555,7 +482,7 @@
   
   
     <li class="md-nav__item">
-      <a href="homelab-hub/" class="md-nav__link">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -582,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -629,24 +556,213 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
+  <a href="#phase-1-infrastructure-base-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Commands
+        Phase 1: Infrastructure &amp; Base Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: Infrastructure &amp; Base Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-initialize-project-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: Initialize Project Directory
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#task-2-install-dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project layout
+        Task 2: Install Dependencies
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-basic-mkdocs-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Basic MkDocs Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-configure-material-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Configure Material Theme
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-implement-gold-on-slate-visuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: Implement "Gold-on-Slate" Visuals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-taxonomy-structure-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Taxonomy &amp; Structure Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: Taxonomy &amp; Structure Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-6-define-navigation-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6: Define Navigation Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-create-folder-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7: Create Folder Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-content-engineering-the-digital-twin-part" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Content Engineering (The Digital Twin Part)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3: Content Engineering (The Digital Twin Part)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-8-source-content-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8: Source Content Extraction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-9-rewrite-content-to-elite-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 9: Rewrite Content to "Elite" Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-10-create-homepage-the-digital-twin-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 10: Create Homepage (The Digital Twin Identity)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-deployment-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Deployment Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4: Deployment Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-11-initialize-github-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 11: Initialize GitHub Repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-12-setup-github-actions-for-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 12: Setup GitHub Actions for Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-13-final-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 13: Final Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -667,21 +783,113 @@
 
 
 
-<h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
-<ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
-</ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
+<h1 id="digital-twin-blog-implementation-plan">Digital Twin Blog Implementation Plan</h1>
+<blockquote>
+<p><strong>For Hermes:</strong> Use subagent-driven-development skill to implement this plan task-by-task.</p>
+</blockquote>
+<p><strong>Goal:</strong> Build a professional, structured knowledge base (MkDocs Material) that acts as a digital twin for Alan, hosted on GitHub Pages, featuring an "Elite" visual style and rewritten high-value content.</p>
+<p><strong>Architecture:</strong>
+- Static Site Generator: MkDocs with Material theme.
+- Visuals: Custom CSS for "Gold-on-Slate" aesthetic (Dark slate backgrounds, gold accents).
+- Content Pipeline: Extraction from <code>sz9751210.github.io</code> $\rightarrow$ Rewrite into "Elite" format $\rightarrow$ Markdown files.
+- Deployment: GitHub Pages via GitHub Actions.</p>
+<p><strong>Tech Stack:</strong>
+- Python 3.11+
+- mkdocs, mkdocs-material
+- GitHub Actions
+- Custom CSS</p>
+<hr />
+<h2 id="phase-1-infrastructure-base-setup">Phase 1: Infrastructure &amp; Base Setup</h2>
+<h3 id="task-1-initialize-project-directory">Task 1: Initialize Project Directory</h3>
+<p><strong>Objective:</strong> Create basic folder structure.
+- Create: <code>~/digital-twin-blog/docs</code>
+- Create: <code>~/digital-twin-blog/overrides/main.css</code></p>
+<h3 id="task-2-install-dependencies">Task 2: Install Dependencies</h3>
+<p><strong>Objective:</strong> Ensure all required packages are present.
+Run: <code>pip install mkdocs mkdocs-material</code>
+Expected: SUCCESS</p>
+<h3 id="task-3-basic-mkdocs-initialization">Task 3: Basic MkDocs Initialization</h3>
+<p><strong>Objective:</strong> Generate default config.
+Run: <code>mkdocs new .</code> in <code>~/digital-twin-blog</code>
+Expected: <code>mkdocs.yml</code> and <code>docs/index.md</code> created.</p>
+<h3 id="task-4-configure-material-theme">Task 4: Configure Material Theme</h3>
+<p><strong>Objective:</strong> Enable Material theme and dark mode.
+Modify: <code>~/digital-twin-blog/mkdocs.yml</code>
+Add:</p>
+<pre><code class="language-yaml">theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: gold
+      accent: gold
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
 </code></pre>
+<h3 id="task-5-implement-gold-on-slate-visuals">Task 5: Implement "Gold-on-Slate" Visuals</h3>
+<p><strong>Objective:</strong> Apply custom elite styling.
+Modify: <code>~/digital-twin-blog/mkdocs.yml</code> to include:</p>
+<pre><code class="language-yaml">extra_css:
+  - overrides/main.css
+</code></pre>
+<p>Modify: <code>~/digital-twin-blog/overrides/main.css</code>
+Add:</p>
+<pre><code class="language-css">:root {
+  --md-primary-fg-color: #D4AF37; /* Gold */
+  --md-accent-fg-color: #D4AF37;
+}
+.md-header {
+  background-color: #1a1a1a;
+}
+</code></pre>
+<hr />
+<h2 id="phase-2-taxonomy-structure-design">Phase 2: Taxonomy &amp; Structure Design</h2>
+<h3 id="task-6-define-navigation-taxonomy">Task 6: Define Navigation Taxonomy</h3>
+<p><strong>Objective:</strong> Create a logical structure based on the user's professional focus.
+Modify: <code>~/digital-twin-blog/mkdocs.yml</code>
+Add <code>nav</code> section:
+- Cloud Infrastructure (AWS, MSK, IAM)
+- Database Engineering (MongoDB, Optimization)
+- Automation &amp; Tooling (Python, Telegram Bots)
+- Digital Twin Journey (Reflection, Vibe Coding)</p>
+<h3 id="task-7-create-folder-structure">Task 7: Create Folder Structure</h3>
+<p><strong>Objective:</strong> Mirror navigation in the filesystem.
+Create directories:
+- <code>docs/cloud_infra/</code>
+- <code>docs/db_eng/</code>
+- <code>docs/automation/</code>
+- <code>docs/journey/</code></p>
+<hr />
+<h2 id="phase-3-content-engineering-the-digital-twin-part">Phase 3: Content Engineering (The Digital Twin Part)</h2>
+<h3 id="task-8-source-content-extraction">Task 8: Source Content Extraction</h3>
+<p><strong>Objective:</strong> Extract posts from <code>sz9751210.github.io</code>.
+Action: Use browser to read posts $\rightarrow$ save raw text to <code>docs/raw/</code>.</p>
+<h3 id="task-9-rewrite-content-to-elite-format">Task 9: Rewrite Content to "Elite" Format</h3>
+<p><strong>Objective:</strong> Transform raw posts into high-value knowledge assets.
+Template:
+- <strong>Taxonomy</strong>: (Domain/Signal)
+- <strong>Core Insight</strong>: (The "So What?")
+- <strong>Implementation/Details</strong>: (Technical walkthrough)
+- <strong>Synergy</strong>: (Relation to other topics)
+Files: <code>docs/[category]/[post_name].md</code></p>
+<h3 id="task-10-create-homepage-the-digital-twin-identity">Task 10: Create Homepage (The Digital Twin Identity)</h3>
+<p><strong>Objective:</strong> Define the "Digital Twin" persona.
+Modify: <code>docs/index.md</code>
+Content: Professional summary, current trajectory, and link to the a-priori brainstorming.</p>
+<hr />
+<h2 id="phase-4-deployment-pipeline">Phase 4: Deployment Pipeline</h2>
+<h3 id="task-11-initialize-github-repository">Task 11: Initialize GitHub Repository</h3>
+<p><strong>Objective:</strong> Create the remote host.
+Run: <code>git init</code>, <code>git add .</code>, <code>git commit -m "init: digital twin blog"</code>
+Action: Create repo <code>digital-twin-blog</code> via GH CLI/API and push.</p>
+<h3 id="task-12-setup-github-actions-for-deployment">Task 12: Setup GitHub Actions for Deployment</h3>
+<p><strong>Objective:</strong> Automate the build and deploy process.
+Create: <code>.github/workflows/deploy.yml</code>
+Content: MkDocs-Material standard deployment workflow to <code>gh-pages</code> branch.</p>
+<h3 id="task-13-final-verification">Task 13: Final Verification</h3>
+<p><strong>Objective:</strong> End-to-end check.
+Run: <code>mkdocs serve</code> $\rightarrow$ Check visuals $\rightarrow$ Push to GH $\rightarrow$ Verify live URL.</p>
 
 
 
@@ -731,10 +939,10 @@ docs/
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

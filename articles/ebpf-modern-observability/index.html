@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#tcpdump-ebpf-linux" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,75 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ebpf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eBPF 的本質：在核心內部植入「探針」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="eBPF 的本質：在核心內部植入「探針」">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 從代碼到執行的「垂直路徑」
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-hook-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 選擇你的「掛鉤點」 (Hook Points)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        實戰案例：追蹤「消失的封包」
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：從「猜測」到「確定」
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +633,95 @@
 
 
 
+<h1 id="tcpdump-ebpf-linux">超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎</h1>
+<p>對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：<code>ping</code> $
+ightarrow$ <code>curl</code> $
+ightarrow$ <code>tcpdump</code> $
+ightarrow$ <code>strace</code>。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。</p>
+<p><code>tcpdump</code> 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；<code>strace</code> 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。</p>
+<p>這正是 <strong>eBPF (Extended Berkeley Packet Filter)</strong> 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個<strong>可編程的平台</strong>。</p>
+<h2 id="ebpf">eBPF 的本質：在核心內部植入「探針」</h2>
+<p>簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。</p>
+<h3 id="1">1. 從代碼到執行的「垂直路徑」</h3>
+<p>一個 eBPF 程序的旅程如下：
+<strong>SRE 腳本 (<code>bpftrace</code>/<code>Cilium</code>)</strong> $
+ightarrow$ <strong>LLVM 編譯</strong> $
+ightarrow$ <strong><code>bpf()</code> 系統呼叫</strong> $
+ightarrow$ <strong>Verifier (驗證器)</strong> $
+ightarrow$ <strong>JIT 編譯</strong> $
+ightarrow$ <strong>核心掛鉤點 (Hook Point)</strong> $
+ightarrow$ <strong>事件觸發</strong>。</p>
+<p>其中最關鍵的是 <strong>Verifier (驗證器)</strong>。它會對字節碼進行靜態分析，確保程序沒有無限循環、沒有越界訪問內存。這就是為什麼 eBPF 能在核心中運行而不會導致系統崩潰的原因。</p>
+<h3 id="2-hook-points">2. 選擇你的「掛鉤點」 (Hook Points)</h3>
+<p>根據你要解決的問題，你可以選擇不同的掛鉤點：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">掛鉤類型</th>
+<th style="text-align: left;">層級</th>
+<th style="text-align: left;">SRE 訊號 / 應用場景</th>
+<th style="text-align: left;">推薦工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>kprobes</strong></td>
+<td style="text-align: left;">核心函數</td>
+<td style="text-align: left;">追蹤核心內部函數的延遲、狀態偏移</td>
+<td style="text-align: left;"><code>bpftrace</code>, <code>bcc</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>uprobes</strong></td>
+<td style="text-align: left;">用戶空間</td>
+<td style="text-align: left;">追蹤應用層延遲 (例如：SSL 握手耗時)</td>
+<td style="text-align: left;"><code>bpftrace</code>, <code>bcc</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>tracepoints</strong></td>
+<td style="text-align: left;">靜態標記</td>
+<td style="text-align: left;">觀察穩定的系統事件 (例如：調度器切換)</td>
+<td style="text-align: left;"><code>perf</code>, <code>ftrace</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>XDP</strong></td>
+<td style="text-align: left;">網卡驅動</td>
+<td style="text-align: left;">處理入站封包丟棄、DDoS 防護、L3/L4 過濾</td>
+<td style="text-align: left;"><code>Cilium</code>, <code>Hubble</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>LSM</strong></td>
+<td style="text-align: left;">安全模組</td>
+<td style="text-align: left;">攔截未授權的系統呼叫、特權提升嘗試</td>
+<td style="text-align: left;"><code>Tetragon</code></td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
+<h2 id="_1">實戰案例：追蹤「消失的封包」</h2>
+<p>這是 SRE 最頭痛的場景：<strong>封包到了，但應用程式沒收到。</strong></p>
+<p><strong>現象</strong>：服務出現間歇性連線超時。<code>tcpdump</code> 顯示封包確實到達了物理網卡 $    ext{eth0}$，但應用程式日誌裡一片空白，完全沒有收到請求。</p>
+<p><strong>診斷路徑</strong>：
+1. <strong>確認網卡接收</strong>：<code>tcpdump</code> 確認封包已到達。
+2. <strong>檢查棧丟包</strong>：<code>netstat -s</code> 看到 <code>TCPBacklogDrop</code> 在增加，但它沒告訴我們封包在哪裡被丟掉的。
+3. <strong>部署 eBPF 探針</strong>：使用 <code>bpftrace</code> 直接掛鉤到核心的 <code>tcp_drop</code> 函數：
+   <code>bpftrace
+   kprobe:tcp_drop {
+     printf("發現丟包! SKB: %p, 原因: %s\n", args-&gt;skb, kstack);
+   }</code>
+4. <strong>分析結果</strong>：Trace 顯示 <code>tcp_drop</code> 在 <code>tcp_v4_rcv</code> 中被觸發，原因是 Socket 的接收隊列已滿 (<code>sk_max_buff</code> 超限)。
+5. <strong>根因</strong>：應用程式處理封包的速度慢於到達速度，導致核心在封包進入 Socket 緩衝區之前就將其靜默丟棄。</p>
+<p><strong>解決方案</strong>：調優 <code>net.core.rmem_max</code> 並優化應用程式的 Event Loop 併發能力。</p>
+<h2 id="_2">結語：從「猜測」到「確定」</h2>
+<p>當標準工具失效時，eBPF 提供了那塊缺失的拼圖。它讓你能夠觀察<strong>硬件與應用程式之間的過渡地帶</strong>。</p>
+<p>如果你發現某個資源在核心內部「消失」了，或者某個系統呼叫莫名其妙地變慢，不要再嘗試用 <code>strace</code> 這種會干擾性能的工具。直接在相關的 <code>kprobe</code> 或 <code>tracepoint</code> 上部署 eBPF 探針，將「猜測」轉化為「確定的數據」。</p>
 <hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
-<ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
-</ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<p><strong>技術關鍵字：</strong>
+- eBPF (Extended Berkeley Packet Filter)
+- Verifier (驗證器)
+- JIT (Just-In-Time Compilation)
+- kprobes / uprobes (核心/用戶探針)
+- XDP (eXpress Data Path)
+- Cilium / Tetragon (基於 eBPF 的雲原生工具)</p>
 
 
 
@@ -645,10 +771,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

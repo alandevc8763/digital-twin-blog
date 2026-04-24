@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>MongoDB：資料備份與還原實踐 (Dump & Restore) - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#mongodb-dump-restore" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              MongoDB：資料備份與還原實踐 (Dump &amp; Restore)
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,97 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Insight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Details
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mongodump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 備份流程 (mongodump)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mongorestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 還原流程 (mongorestore)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 運維坑洞
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synergy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synergy
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,21 +655,36 @@
 
 
 
-<hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
+<h1 id="mongodb-dump-restore">MongoDB：資料備份與還原實踐 (Dump &amp; Restore)</h1>
+<h2 id="taxonomy">Taxonomy</h2>
 <ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
+<li><strong>Domain</strong>: Database Engineering / Disaster Recovery</li>
+<li><strong>Signal</strong>: 🥈 Silver (Operational Standard)</li>
 </ul>
-<h2 id="core-components">🛠️ Core Components</h2>
+<h2 id="core-insight">Core Insight</h2>
+<p>資料備份是資料庫維運的最後一道防線。<code>mongodump</code> 與 <code>mongorestore</code> 構成了 MongoDB 基礎備份的閉環。關鍵在於理解 <strong>BSON 格式</strong> 的高效性以及在大規模資料恢復時的 <strong>性能影響</strong>。</p>
+<h2 id="implementation-details">Implementation Details</h2>
+<h3 id="mongodump">📦 備份流程 (mongodump)</h3>
+<p><code>mongodump</code> 將資料導出為 BSON 格式，確保資料類型的原生保留。</p>
+<p><strong>常用指令組合：</strong>
+- <strong>全庫備份</strong>：<code>mongodump --db &lt;db_name&gt;</code>
+- <strong>特定集合備份</strong>：<code>mongodump --db &lt;db_name&gt; --collection &lt;coll_name&gt;</code>
+- <strong>遠端伺服器備份</strong>：使用 URI 格式 <code>mongodump --uri="mongodb://user:pass@host:port/db"</code></p>
+<h3 id="mongorestore">🔄 還原流程 (mongorestore)</h3>
+<p><code>mongorestore</code> 負責將 BSON 檔案還原至目標庫。</p>
+<p><strong>關鍵指令：</strong>
+- <strong>全庫還原</strong>：<code>mongorestore --db &lt;db_name&gt; &lt;backup_path&gt;</code>
+- <strong>特定集合還原</strong>：<code>mongorestore --db &lt;db_name&gt; --collection &lt;coll_name&gt; &lt;path_to_bson&gt;</code></p>
+<h3 id="_1">⚠️ 運維坑洞</h3>
 <ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
+<li><strong>性能衝擊</strong>：在生產環境執行 <code>mongodump</code> 可能導致 I/O 飆高。建議在從庫 (Secondary) 執行或在低峰期操作。</li>
+<li><strong>空間壓力</strong>：BSON 格式相對較大，還原時需確保目標磁碟有足夠緩衝空間。</li>
+<li><strong>版本兼容</strong>：確保 <code>mongodump</code> 與 <code>mongorestore</code> 的版本與資料庫版本一致，避免 BSON 格式不兼容。</li>
+</ul>
+<h2 id="synergy">Synergy</h2>
+<ul>
+<li><strong>SRE 自動化</strong>：建議將此流程封裝進 CronJob 或 Kubernetes Job，實現每日自動快照。</li>
+<li><strong>Cloud Migration</strong>：這是將資料從 On-premise 遷移至 MongoDB Atlas 的最快路徑。</li>
 </ul>
 
 
@@ -645,10 +735,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

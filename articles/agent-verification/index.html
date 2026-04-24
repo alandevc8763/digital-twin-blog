@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#ai-agentv-rl" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        從「直覺預測」到「審計驗證」
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用工具打破「內部閉環」的幻覺
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：驗證是智能的最後一道防線
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +605,33 @@
 
 
 
+<h1 id="ai-agentv-rl">解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式</h1>
+<p>在目前的 LLM 應用中，我們面臨一個巨大的信任危機：<strong>幻覺 (Hallucinations)</strong>。</p>
+<p>大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $
+ightarrow$ 給出一個答案 $
+ightarrow$ 評分。這種模式最大的問題在於<strong>錯誤傳播</strong>：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。</p>
+<p>這就是為什麼我認為 <strong>AgentV-RL</strong> 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。</p>
+<h2 id="_1">從「直覺預測」到「審計驗證」</h2>
+<p>AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個<strong>多回合的審議過程</strong>。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。</p>
+<p>其核心在於 <strong>雙向驗證 (Bidirectional Verification)</strong> 策略：
+1. <strong>前向追蹤 (Forward Trace)</strong>：從前提條件出發，逐步推演到結論。
+2. <strong>後向驗證 (Backward Verify)</strong>：從結論反向追溯到前提，確保每一步邏輯都成立。</p>
+<p>如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。</p>
+<h2 id="_2">用工具打破「內部閉環」的幻覺</h2>
+<p>純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 <strong>工具調用 (Tool-use)</strong> 整合進驗證環節。</p>
+<p>當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 <strong>Grounding (對齊事實)</strong>。</p>
+<p>這種「推理 $
+ightarrow$ 工具驗證 $
+ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。</p>
+<h2 id="_3">結語：驗證是智能的最後一道防線</h2>
+<p>AI 的競爭正在從「生成能力」轉向「驗證能力」。</p>
+<p>當我們能構建出一個比生成者更嚴格、更理性且能利用工具的驗證器時，我們才真正擁有了一個可以交付給生產環境的 AI 系統。AgentV-RL 告訴我們：<strong>智能不在於能說出多少正確答案，而在於能剔除多少錯誤答案。</strong></p>
 <hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
-<ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
-</ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<p><strong>技術關鍵字：</strong>
+- Agentic Verifier (Agent 化驗證器)
+- Bidirectional Verification (雙向驗證)
+- Reward Modeling (獎勵建模)
+- Grounding (事實對齊)</p>
 
 
 
@@ -645,10 +681,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

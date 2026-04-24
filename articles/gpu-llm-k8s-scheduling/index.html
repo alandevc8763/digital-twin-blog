@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>從 Ollama 到生產環境：如何在 Kubernetes 中大規模部署 GPU 加速的 LLM - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#ollama-kubernetes-gpu-llm" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              從 Ollama 到生產環境：如何在 Kubernetes 中大規模部署 GPU 加速的 LLM
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,114 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-gpu-k8s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 突破「單機」限制：GPU 的 K8s 編排
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 突破「單機」限制：GPU 的 K8s 編排">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-a-la-carte-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        從- a la carte 到- 封裝化部署
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-llm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 生產級 LLM 基礎設施的三大支柱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 生產級 LLM 基礎設施的三大支柱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. 性能極大化 (Performance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. 可觀測性 (Observability)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-cost-efficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. 成本優化 (Cost Efficiency)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-air-gapped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 實戰場景：受管制環境的 Air-gapped 部署
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：從工具到平台的演進
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +672,58 @@
 
 
 
-<hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
+<h1 id="ollama-kubernetes-gpu-llm">從 Ollama 到生產環境：如何在 Kubernetes 中大規模部署 GPU 加速的 LLM</h1>
+<p>對於大多數 AI 開發者來說，部署第一個 LLM 模型的體驗通常是：安裝 Ollama $
+ightarrow$ <code>ollama run llama3</code> $
+ightarrow$ 跑通。這在本地開發時非常完美，但當你需要將其推向生產環境時，你會發現本地工具完全無法處理以下問題：
+- <strong>GPU 資源碎片化</strong>：如何高效分配多張 GPU？
+- <strong>冷啟動延遲</strong>：數十 GB 的模型權重加載需要多久？
+- <strong>可用性保障</strong>：單機崩潰怎麼辦？如何實現自動擴縮容？
+- <strong>合規與隔離</strong>：在金融或醫療等受管制行業，如何實現完全的 Air-gapped (氣隙) 部署？</p>
+<p>這正是 <strong>LLMKube</strong> 類型的 K8s Operator 試圖解決的核心痛點。</p>
+<h2 id="1-gpu-k8s">1. 突破「單機」限制：GPU 的 K8s 編排</h2>
+<p>在 K8s 中運行 GPU 任務，最簡單的做法是使用 NVIDIA GPU Operator，但這僅僅解決了「能看到 GPU」的問題，沒有解決「如何高效用好 GPU」的問題。</p>
+<h3 id="-a-la-carte-">從- a la carte 到- 封裝化部署</h3>
+<p>傳統方式需要 SRE 手動配置 CUDA 版本、安裝 Driver、設定環境變數 $
+ightarrow$ 過程極其痛苦且易錯。
+LLMKube 將其轉化為<strong>宣告式 API</strong>：通過單個命令 <code>llmkube deploy</code>，它在底層自動完成了：
+- <strong>驅動與工具鏈自動化</strong>：與 NVIDIA GPU Operator 集成，確保 CUDA 環境一致性。
+- <strong>層級卸載 (Layer Offloading)</strong>：優化權重加載路徑，減少模型啟動時間。
+- <strong>自動化調度</strong>：利用 K8s 的調度能力，將模型分發到最適合的節點。</p>
+<h2 id="2-llm">2. 生產級 LLM 基礎設施的三大支柱</h2>
+<p>要將 LLM 從「Demo」變為「產品」，需要構建以下三層能力：</p>
+<h3 id="a-performance">A. 性能極大化 (Performance)</h3>
 <ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
+<li><strong>GPU 深度集成</strong>：通過 <code>llama.cpp</code> 的 CUDA 實現，將推理速度提升一個數量級。</li>
+<li><strong>資源分片</strong>：針對不同規模的模型，動態調整 GPU 記憶體分配，避免記憶體碎片化導致的 <code>Out of Memory</code>。</li>
 </ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<h3 id="b-observability">B. 可觀測性 (Observability)</h3>
+<p>在生產環境中，僅僅知道「服務在運行」是不夠的。你需要知道：
+- <strong>GPU 利用率 (Duty Cycle)</strong>：GPU 是在全力運算，還是在等待數據？
+- <strong>顯存佔用 (VRAM Usage)</strong>：模型權重與 KV Cache 佔用了多少空間？
+- <strong>吞吐量 (Tokens/sec)</strong>：單個請求的響應速度如何？
+通過集成 Prometheus 和 DCGM (Data Center GPU Manager)，這些指標被轉化為實時的 Grafana 面板，讓 SRE 能在延遲飆升前發現異常。</p>
+<h3 id="c-cost-efficiency">C. 成本優化 (Cost Efficiency)</h3>
+<p>GPU 是目前最昂貴的計算資源。
+- <strong>Spot 實例策略</strong>：利用 K8s 的彈性，在 Spot 實例上部署非關鍵路徑的模型，大幅降低運算成本。
+- <strong>Auto-scale to Zero</strong>：當沒有請求時，自動縮減 GPU 節點至零，避免昂貴的空轉開銷。</p>
+<h2 id="3-air-gapped">3. 實戰場景：受管制環境的 Air-gapped 部署</h2>
+<p>在醫療或國防等行業，模型不能連接公網。這對 LLM 部署提出了極高要求：
+- <strong>私有鏡像倉庫</strong>：所有 CUDA 驅動與模型權重必須預先同步至內部倉庫。
+- <strong>本地調度</strong>：完全脫離外部 API，在私有叢集內完成從權重加載 $
+ightarrow$  lora 適配 $
+ightarrow$ 推理服務的全鏈路。</p>
+<p>這使得 LLMKube 類型的工具不再僅僅是一個部署腳本，而是一套<strong>生產級的 AI 基礎設施框架</strong>。</p>
+<h2 id="_1">結語：從工具到平台的演進</h2>
+<p>AI 的競爭最終會演變成<strong>基礎設施的競爭</strong>。</p>
+<p>能夠在 1 分鐘內在 100 個 GPU 節點上部署一個 70B 參數模型，且具備完整的監控與成本管控能力，這才是真正的生產力。從 Ollama 的便捷出發，最終落地於 Kubernetes 的剛性管控，這就是 LLM 部署的必經之路。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- NVIDIA GPU Operator (GPU 驅動管理)
+- DCGM (GPU 監控)
+- Air-gapped Deployment (氣隙部署)
+- Auto-scale to Zero (自動縮容至零)
+- CUDA / llama.cpp (高性能推理)</p>
 
 
 
@@ -645,10 +773,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>從 Ingress 到 Gateway API：Kubernetes 流量管理的範式轉移 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#ingress-gateway-apikubernetes" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              從 Ingress 到 Gateway API：Kubernetes 流量管理的範式轉移
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 角色分離：誰該負責什麼？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 核心能力：從「漏水抽象」到「標準化」
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SRE 視角：為什麼你應該遷移？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：擺脫註釋，擁抱標準
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +616,45 @@
 
 
 
-<hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
+<h1 id="ingress-gateway-apikubernetes">從 Ingress 到 Gateway API：Kubernetes 流量管理的範式轉移</h1>
+<p>如果你在 K8s 中管理過流量，你一定被 Ingress 的「註釋地獄 (Annotation Hell)」折磨過。</p>
+<p>為了實現一個簡單的金絲雀發佈 (Canary Release) 或路徑重寫，你得在 YAML 裡寫上一大堆像 <code>nginx.ingress.kubernetes.io/rewrite-target: /</code> 這樣的註釋。這不僅讓配置變得難以維護，更糟糕的是，這些註석是<strong>供應商綁定</strong>的 $
+ightarrow$ 如果你從 Nginx 換到 Istio，所有的配置全部得重寫。</p>
+<p>這就是為什麼 Kubernetes 推出了 <strong>Gateway API</strong>。它不是對 Ingress 的小修小補，而是一次權責分離的範式轉移。</p>
+<h2 id="1">1. 角色分離：誰該負責什麼？</h2>
+<p>Ingress 的問題在於它試圖用一個資源解決所有問題。而 Gateway API 引入了<strong>角色導向 (Role-oriented)</strong> 的模型：</p>
 <ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
+<li><strong>基礎設施提供商 (Infrastructure Provider)</strong> $
+ightarrow$ 定義 <code>GatewayClass</code>：決定使用哪種硬體或軟體 (例如 AWS ALB 或 Istio)。</li>
+<li><strong>叢集運維人員 (Cluster Operator)</strong> $
+ightarrow$ 定義 <code>Gateway</code>：實例化一個負載均衡器，決定它監聽哪個端口、哪個證書。</li>
+<li><strong>應用開發者 (App Developer)</strong> $
+ightarrow$ 定定義 <code>HTTPRoute</code> / <code>TCPRoute</code>：決定流量如何分發到自己的 Service。</li>
 </ul>
-<h2 id="core-components">🛠️ Core Components</h2>
+<p><strong>這種分離意味著：</strong> 開發者可以自由地管理自己的路由規則，而不需要擁有整個叢集或負載均衡器的管理權限，實現了真正的自服務。</p>
+<h2 id="2">2. 核心能力：從「漏水抽象」到「標準化」</h2>
+<p>Ingress 是一個「漏水抽象 (Leaky Abstraction)」，很多高級功能得靠廠商私有的註釋來實現。Gateway API 將這些能力直接寫入了標準 API 規範中：</p>
 <ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
+<li><strong>權重流量切分 (Traffic Splitting)</strong>：原生支持 <code>weight: 10%</code> $
+ightarrow$ <code>weight: 90%</code>，無需依賴 Nginx 插件。</li>
+<li><strong>標頭路由 (Header-based Routing)</strong>：根據 HTTP Header (例如 <code>user-agent: mobile</code>) 輕鬆導流。</li>
+<li><strong>跨命名空間路由 (Cross-namespace Routing)</strong>：允許一個 Gateway 跨越 Namespace 將流量導向不同的服務，極大簡化了多租戶架構。</li>
 </ul>
+<h2 id="3-sre">3. SRE 視角：為什麼你應該遷移？</h2>
+<p>從運維角度看，Gateway API 帶來了兩個核心收益：</p>
+<ol>
+<li><strong>GitOps 友好的結構</strong>：開發者只需提交一個 <code>HTTPRoute</code> 資源，無需修改複雜的 Ingress 配置，降低了誤操作導致全站崩潰的風險。</li>
+<li><strong>生態系統融合</strong>：它與 <strong>Istio</strong> 和 <strong>Linkerd</strong> 等 Service Mesh 深度集成。你可以用一套 API 統一管理從邊緣 (Edge) 到內部 (Internal) 的所有流量路徑。</li>
+</ol>
+<h2 id="_1">結語：擺脫註釋，擁抱標準</h2>
+<p>如果你還在為 <code>rewrite-target</code> 的正則表達式抓狂，是時候考慮 Gateway API 了。它將流量管理從「配置技巧」提升到了「架構設計」的高度。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- Gateway API (K8s 流量 API)
+- Role-oriented Model (角色導向模型)
+- HTTPRoute (HTTP 路由)
+- Traffic Splitting (流量切分)
+- Canary Release (金絲雀發佈)</p>
 
 
 
@@ -645,10 +704,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

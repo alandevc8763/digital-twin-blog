@@ -1,0 +1,56 @@
+
+body .md-content .garden-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 1.5rem !important;
+    padding: 1rem 0 !important;
+    margin: 2rem 0 !important;
+}
+
+body .md-content .garden-card {
+    position: relative !important;
+    background: rgba(45, 55, 72, 0.6) !important;
+    border: 2px solid rgba(212, 175, 55, 0.8) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+body .md-content .garden-card:hover {
+    transform: translateY(-5px) !important;
+    background: rgba(60, 80, 110, 0.8) !important;
+    border-color: rgba(212, 175, 55, 1) !important;
+    box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.5) !important;
+}
+
+body .md-content .card-icon {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+    display: block !important;
+}
+
+body .md-content .card-title {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #D4AF37 !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+    text-decoration: none !important;
+}
+
+body .md-content .card-desc {
+    font-size: 0.9rem !important;
+    color: #a0aec0 !important;
+    line-height: 1.5 !important;
+}
+
+body .md-content .garden-card a {
+    color: inherit !important;
+    text-decoration: none !important;
+}

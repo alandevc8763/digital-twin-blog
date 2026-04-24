@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>K8s Resource Limits 的真相：為什麼你的 CPU 使用率很低，延遲卻在飆升？ - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#k8s-resource-limits-cpu" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              K8s Resource Limits 的真相：為什麼你的 CPU 使用率很低，延遲卻在飆升？
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,103 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-cpu-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. CPU Limit：隱形的「凍結」陷阱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. CPU Limit：隱形的「凍結」陷阱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cfs-quota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心機制：CFS Quota (完全公平調度配額)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE 如何捕捉這個訊號？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-memory-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Memory Limit：殘酷的「死刑」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Memory Limit：殘酷的「死刑」">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hard-limit-oom-killer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心機制：Hard Limit 與 OOM Killer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 資源調優矩陣：從現象到根因
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：不要被 YAML 欺騙
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +661,76 @@
 
 
 
+<h1 id="k8s-resource-limits-cpu">K8s Resource Limits 的真相：為什麼你的 CPU 使用率很低，延遲卻在飆升？</h1>
+<p>在 Kubernetes 的 YAML 設定中，<code>resources.limits</code> 是每個開發者都會寫的配置。但大多數人對它的理解僅停留在「限制資源使用量」這個表面層級。</p>
+<p>事實上，K8s 的 Limits 不是「預留 (Reservation)」，而是「天花板 (Ceiling)」。而且，CPU Limit 和 Memory Limit 在核心層級的執行機制截然不同：<strong>一個導致的是「慢 (Throttling)」，另一個導致的是「死 (OOM Kill)」。</strong></p>
+<h2 id="1-cpu-limit">1. CPU Limit：隱形的「凍結」陷阱</h2>
+<p>許多 SRE 曾遇到過這種詭異現象：<code>kubectl top pod</code> 顯示 CPU 使用率僅 30%，但服務的 P99 延遲卻從 20ms 飆升到 200ms。</p>
+<h3 id="cfs-quota">核心機制：CFS Quota (完全公平調度配額)</h3>
+<p>當你設定 <code>limits.cpu: 500m</code> 時，核心並不是在監控每秒的平均值，而是在執行一個<strong>時間窗 (Window)</strong> 遊戲：
+- <strong>周期 (Period)</strong>：預設為 100ms。
+- <strong>配額 (Quota)</strong>：50ms。</p>
+<p>如果你的一個請求觸發了 4 個執行緒並行處理，每個執行緒消耗 25ms，那麼在短短 <strong>25ms 的牆鐘時間 (Wall-clock time)</strong> 內，你就用完了整個 100ms 周期所有的 50ms 配額。</p>
+<p><strong>結果</strong>：核心會直接將你的整個 Cgroup <strong>暫停 (Deschedule)</strong>，強迫你進入 75ms 的「冷凍期」。這就是為什麼你的平均 CPU 使用率看起來很低，但每個請求卻被強行注入了 75ms 的延遲。</p>
+<h3 id="sre">SRE 如何捕捉這個訊號？</h3>
+<p>不要相信 <code>kubectl top</code>，直接去看核心的統計：
+<code>cat /sys/fs/cgroup/cpu.stat</code> $\rightarrow$ 觀察 <code>nr_throttled</code> 是否在快速增加。如果這個數字在跳動，說明你的服務正在被核心「掐脖子」。</p>
 <hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
+<h2 id="2-memory-limit">2. Memory Limit：殘酷的「死刑」</h2>
+<p>與 CPU 不同，記憶體是一種<strong>不可壓縮資源</strong>。你不能透過「讓記憶體慢一點」來解決壓力。</p>
+<h3 id="hard-limit-oom-killer">核心機制：Hard Limit 與 OOM Killer</h3>
+<p>當容器的記憶體使用量 (RSS + Cache) 觸及 <code>memory.max</code> 時，核心會嘗試進行頁快取回收 (Page Cache Reclaim)。如果回收後依然無法滿足新的分配請求，核心會啟動 <strong>OOM Killer</strong>。</p>
+<p><strong>執行路徑</strong>：
+<code>記憶體壓力</code> $\rightarrow$ <code>嘗試回收快取</code> $\rightarrow$ <code>回收失敗</code> $\rightarrow$ <code>計算 oom_score</code> $\rightarrow$ <code>發送 SIGKILL</code>。</p>
+<p><strong>SRE 訊號</strong>：
+- <code>kubectl describe pod</code> $\rightarrow$ <code>Reason: OOMKilled</code>。
+- <code>dmesg -T | grep -i oom</code> $\rightarrow$ 看到明確的 <code>Memory cgroup out of memory: Killed process...</code>。</p>
 <hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
-<ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
-</ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<h2 id="3">3. 資源調優矩陣：從現象到根因</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">觀察現象</th>
+<th style="text-align: left;">檢查維度</th>
+<th style="text-align: left;">核心訊號</th>
+<th style="text-align: left;">診斷結論</th>
+<th style="text-align: left;">建議動作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>P99 延遲飆升 / CPU 貌似不高</strong></td>
+<td style="text-align: left;">Cgroup CPU Stat</td>
+<td style="text-align: left;"><code>nr_throttled</code> $\uparrow$</td>
+<td style="text-align: left;"><strong>CPU Throttling</strong></td>
+<td style="text-align: left;">提高 <code>limits.cpu</code> 或優化並行度</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Pod 隨機重啟 / 狀態 OOMKilled</strong></td>
+<td style="text-align: left;">Kernel Log</td>
+<td style="text-align: left;"><code>oom_score</code> $\uparrow$</td>
+<td style="text-align: left;"><strong>Memory Limit Breach</strong></td>
+<td style="text-align: left;">檢查記憶體洩漏或提高 <code>limits.memory</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>啟動緩慢 / 響應遲鈍</strong></td>
+<td style="text-align: left;">CPU Weight</td>
+<td style="text-align: left;"><code>cpu.weight</code> 低且節點擁擠</td>
+<td style="text-align: left;"><strong>CPU Contention</strong></td>
+<td style="text-align: left;">提高 <code>requests.cpu</code> 以獲取更高權重</td>
+</tr>
+</tbody>
+</table>
+<h2 id="yaml">結語：不要被 YAML 欺騙</h2>
+<p><code>resources.limits</code> 是一把雙面刃。設定太高會導致節點資源碎片化，設定太低則會讓你的服務在核心層級遭遇「靜默處決」。</p>
+<p>真正的資源調優，應該是<strong>基於 <code>cpu.stat</code> 的 Throttling 數據</strong>與 <strong><code>dmesg</code> 的 OOM 記錄</strong>，而不是拍腦袋決定一個數字。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- CFS (Completely Fair Scheduler)
+- CPU Throttling (CPU 節流)
+- OOM Killer (記憶體溢出殺手)
+- Cgroup v2 (控制組)
+- BDP (Bandwidth-Delay Product)</p>
 
 
 
@@ -645,10 +780,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

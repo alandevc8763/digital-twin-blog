@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#packet-loss-tcpip-conntrack" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,97 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        封包的「垂直旅程」：從 Pod 到物理網卡
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="封包的「垂直旅程」：從 Pod 到物理網卡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pod-the-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Pod 命名空間 (The Source)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-jump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 命名空間跳躍 (The Jump)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-netfilter-kube-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 主機導向邏輯 (Netfilter &amp; Kube-Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-tcp-the-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. TCP 狀態機 (The Engine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mtu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：從「看日誌」到「看軌跡」
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +655,45 @@
 
 
 
+<h1 id="packet-loss-tcpip-conntrack">當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤</h1>
+<p>對於大多數開發者來說，發送一個網路請求就像是按下開關 $
+ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的<strong>路徑導向 (Steering)</strong>。</p>
+<p>如果你曾經遇到過這種情況：<code>ping</code> 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 <code>Connection Timeout</code> —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。</p>
+<h2 id="pod">封包的「垂直旅程」：從 Pod 到物理網卡</h2>
+<p>在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 <strong>Context Handoffs (上下文交接)</strong>。這正是潛在延遲和丟包的來源。</p>
+<h3 id="1-pod-the-source">1. Pod 命名空間 (The Source)</h3>
+<p>應用程式呼叫 <code>connect()</code>，核心在 Pod 的網路命名空間 (<code>netns</code>) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。
+- <strong>追蹤點</strong>：<code>Pod App</code> $
+ightarrow$ <code>Socket Buffer (sk_buff)</code> $
+ightarrow$ <code>eth0</code>。</p>
+<h3 id="2-the-jump">2. 命名空間跳躍 (The Jump)</h3>
+<p>封包離開 Pod 的 <code>eth0</code>，通過一個 <strong>Virtual Ethernet (<code>veth</code>) pair</strong>。<code>veth</code> 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。
+- <strong>SRE 訊號</strong>：如果這裡丟包，通常意味著 CNI 插件崩潰或介面被意外刪除。</p>
+<h3 id="3-netfilter-kube-proxy">3. 主機導向邏輯 (Netfilter &amp; Kube-Proxy)</h3>
+<p>進入 root 命名空間後，封包會撞上 <strong>Netfilter</strong> 的鉤子。如果目標是 <code>ClusterIP</code>，<code>iptables</code> 或 <code>IPVS</code> 會執行 <strong>DNAT (目的地址轉換)</strong>，將虛擬 IP 改為真實的 Pod IP。
+- <strong>致命瓶頸：Conntrack (連接追蹤)</strong>
+  核心必須記錄每一次轉換的狀態。如果 <code>nf_conntrack_max</code> 達到上限，核心會<strong>靜默丟棄 (Silent Drop)</strong> 封包。這就是為什麼在高併發環境下，你會看到隨機的連線失敗，而日誌裡卻找不到任何錯誤。</p>
+<h3 id="4-tcp-the-engine">4. TCP 狀態機 (The Engine)</h3>
+<p>最後，核心處理 TCP 協議邏輯：管理三次握手、計算擁塞窗口 (<code>cwnd</code>) 以及處理重傳定時器 (RTO)。</p>
 <hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
+<h2 id="mtu">實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞)</h2>
+<p>這是 SRE 面試中最經典的場景：<strong>小請求秒回，大請求超時。</strong></p>
+<p><strong>現象</strong>：API 呼叫 <code>GET /health</code> 正常，但 <code>GET /large-report</code> 導致連線永久掛起。</p>
+<p><strong>底層 Trace 過程</strong>：
+1. <strong>抓包分析</strong>：在 Pod 和 Host 同時 <code>tcpdump</code>。發現伺服器發出了 1500 bytes 的大封包，但客戶端永遠沒有回傳 <code>ACK</code>。
+2. <strong>MTU 驗證</strong>：檢查發現 Pod 的 MTU 是 1500，但 CNI 的 Overlay 網路 (如 VXLAN) 因為封裝開銷，實際 MTU 只有 1450。
+3. <strong>根因</strong>：這是一個 <strong>「MTU 黑洞」</strong>。封包太大，中間路由器丟棄了它並發出 <code>Fragmentation Needed</code> 訊號，但該訊號被防火牆攔截了。發送端在傻傻地等待一個永遠不會到來的 <code>ACK</code>。</p>
+<p><strong>解決方案</strong>：統一對齊 MTU，或開啟 <strong>TCP MSS Clamping</strong>，強制在握手階段協商較小的最大段大小。</p>
+<h2 id="_1">結語：從「看日誌」到「看軌跡」</h2>
+<p>真正的 SRE 不應該依賴 <code>kubectl logs</code>，而應該依賴於對 <strong>軌跡 (Trace)</strong> 的理解。</p>
+<p>當你能從 <code>ss -ntie</code> 查看 <code>cwnd</code>，用 <code>conntrack -L</code> 檢查狀態表，用 <code>tcpdump</code> 對比 <code>veth</code> 與 <code>eth0</code> 的時間戳時，網路就不再是一個黑盒，而是一條清晰的數據流。</p>
 <hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
-<ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
-</ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<p><strong>技術關鍵字：</strong>
+- Netfilter / Conntrack (連線追蹤)
+- veth Pair (虛擬乙太網)
+- MTU Mismatch (最大傳輸單元不匹配)
+- TCP State Machine (TCP 狀態機)
+- DNAT / ClusterIP (目的地址轉換)</p>
 
 
 
@@ -645,10 +743,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

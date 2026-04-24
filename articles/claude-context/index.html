@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>當 Context Window 依然不夠用時：用 Claude Context 構建程式碼的「語義地圖」 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#context-window-claude-context" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              當 Context Window 依然不夠用時：用 Claude Context 構建程式碼的「語義地圖」
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,86 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        為什麼簡單的 RAG 對於程式碼來說是失敗的？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="為什麼簡單的 RAG 對於程式碼來說是失敗的？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ast-aware-chunking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. AST-Aware Chunking (基於抽象語法樹的切分)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-semantic-hybrid-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 混合搜索 (Semantic Hybrid Search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-incremental-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 增量索引 (Incremental Indexing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agentic-refactoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        從「搜索」到「Agentic Refactoring」
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：上下文的質量高於數量
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +644,41 @@
 
 
 
+<h1 id="context-window-claude-context">當 Context Window 依然不夠用時：用 Claude Context 構建程式碼的「語義地圖」</h1>
+<p>很多開發者在面對 200K 甚至 1M 的上下文窗口 (Context Window) 時，容易陷入一個誤區：認為只要把所有程式碼全部塞進去，LLM 就能理解一切。</p>
+<p>但事實是，即使窗口夠大，<strong>「大海撈針 (Needle In A Haystack)」</strong> 效應依然存在。過多的冗餘資訊會稀釋關鍵信號，導致模型產生幻覺或遺漏細節。對於真正的生產級 codebase 來說，我們需要的不是更大的窗口，而是一個能精確導航的 <strong>「語義地圖」</strong>。</p>
+<p>這就是 <strong>Claude Context</strong> 試圖解決的問題。</p>
+<h2 id="rag">為什麼簡單的 RAG 對於程式碼來說是失敗的？</h2>
+<p>大多數的 RAG (檢索增強生成) 系統在處理文本時表現良好，但在處理程式碼時往往表現糟糕。原因在於：
+- <strong>塊分割 (Chunking) 太隨機</strong>：傳統 RAG 按照字符數分割，經常把一個函數切成兩半，導致語義丟失。
+- <strong>缺乏結構意識</strong>：它不理解函數調用鏈、類繼承或模組依賴，只把程式碼當成普通的字符串。</p>
+<p>Claude Context 透過以下技術打破了這個僵局：</p>
+<h3 id="1-ast-aware-chunking">1. AST-Aware Chunking (基於抽象語法樹的切分)</h3>
+<p>它不再隨機切分，而是利用 <strong>AST (Abstract Syntax Tree)</strong> 根據程式碼的邏輯結構（如函數邊界、類定義）進行切分。這確保了被檢索出來的每一個片段都是一個「完整的邏輯單元」。</p>
+<h3 id="2-semantic-hybrid-search">2. 混合搜索 (Semantic Hybrid Search)</h3>
+<p>單純的向量搜索 (Dense Vector Search) 有時會太過「模糊」，而關鍵字搜索 (BM25) 又太過「死板」。Claude Context 將兩者結合：
+- <strong>精確匹配</strong>：快速定位特定的函數名或變量名。
+- <strong>概念關聯</strong>：即使你沒有使用精確的詞彙，也能通過語義關聯找到相關邏輯。</p>
+<h3 id="3-incremental-indexing">3. 增量索引 (Incremental Indexing)</h3>
+<p>對於大型項目，重新索引整個 codebase 是不可接受的。它引入了 <strong>Merkle Tree</strong> 機制，僅對修改過的檔案進行更新，確保索引始終與最新代碼同步，且幾乎不消耗額外資源。</p>
+<h2 id="agentic-refactoring">從「搜索」到「Agentic Refactoring」</h2>
+<p>當 Claude Context 作為 MCP (Model Context Protocol) 插件集成到 AI Agent 中時，它賦予了 Agent 一種全新的能力：<strong>深層探索 (Deep Exploration)</strong>。</p>
+<p>在進行大規模重構時，Agent 不再是盲目地修改一個檔案，而是：
+<code>語義搜索相關函數</code> $
+ightarrow$ <code>分析依賴關係</code> $
+ightarrow$ <code>定位所有受影響的呼叫端</code> $
+ightarrow$ <code>制定全局重構計劃</code> $
+ightarrow$ <code>執行修改</code>。</p>
+<p>這種能力將 AI 從一個「代碼片段生成器」提升到了「系統架構理解者」的高度。</p>
+<h2 id="_1">結語：上下文的質量高於數量</h2>
+<p>我們正處在一個對抗「token 爆炸」的時代。真正的效率提升不在於增加窗口大小，而在於提高<strong>上下文的信噪比 (Signal-to-Noise Ratio)</strong>。</p>
+<p>Claude Context 提供了一種典範：透過將 domain-specific 的結構知識（如 AST）與現代向量檢索結合，我們可以為 LLM 構建一個高效的外部記憶體。</p>
 <hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
-<ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
-</ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<p><strong>技術關鍵字：</strong>
+- MCP (Model Context Protocol)
+- AST-Aware Chunking (基於 AST 的切分)
+- Semantic Hybrid Search (語義混合搜索)
+- Merkle Tree Indexing (默克爾樹索引)</p>
 
 
 
@@ -645,10 +728,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

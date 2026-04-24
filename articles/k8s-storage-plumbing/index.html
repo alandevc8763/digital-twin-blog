@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#pod-containercreating-k8s" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,97 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        儲存請求的「垂直路徑」：從 API 到 Block
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="儲存請求的「垂直路徑」：從 API 到 Block">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-k8s-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 宣告層 (K8s API)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kubelet-csi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 編排層 (Kubelet &amp; CSI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-vfs-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 核心層 (VFS &amp; Kernel)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE 除錯矩陣：從現象到原點
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        避坑指南：那些隱形的儲存陷阱
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：不要只看 kubectl
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +655,93 @@
 
 
 
-<hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
+<h1 id="pod-containercreating-k8s">為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」</h1>
+<p>在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 <code>ContainerCreating</code>。</p>
+<p>大多數人習慣執行 <code>kubectl describe pod</code> 看到 <code>MountVolume.SetUp failed</code> 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：<strong>K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。</strong></p>
+<p>從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
+ightarrow$ CSI 驅動 $
+ightarrow$ Kubelet $
+ightarrow$ Linux 核心 VFS 的長途跋涉。</p>
+<h2 id="api-block">儲存請求的「垂直路徑」：從 API 到 Block</h2>
+<h3 id="1-k8s-api">1. 宣告層 (K8s API)</h3>
+<p>一切始於 <code>PersistentVolumeClaim</code> (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (<code>ReadWriteOnce</code> 等)。
+- <strong>SRE 訊號</strong>：如果 PVC 狀態一直是 <code>Pending</code>，請直接檢查 <code>StorageClass</code> 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。</p>
+<h3 id="2-kubelet-csi">2. 編排層 (Kubelet &amp; CSI)</h3>
+<p>當 Pod 被調度到節點後，真正的「搬運」開始了：
+1. <strong>Attach (附加)</strong>：控制平面通知 CSI 驅動，將雲端磁碟（如 AWS EBS）附加到該 VM 實例。
+2. <strong>Mount (掛載)</strong>：主機上的 <code>Kubelet</code> 呼叫 CSI Node Plugin，將遠端磁碟掛載到主機的一個全域目錄（例如 <code>/var/lib/kubelet/plugins/...</code>）。
+3. <strong>Bind Mount (綁定掛載)</strong>：這是最關鍵的一步。Kubelet 將上述全域目錄<strong>再次綁定掛載</strong>到 Pod 的特定路徑中。</p>
 <ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
+<li><strong>SRE 訊號</strong>：<code>MountVolume.SetUp failed</code> 通常意味著 CSI 驅動無法連接後端儲存，或者磁碟被之前的節點「佔住」了（典型的 Multi-Attach 錯誤）。</li>
 </ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
-</ul>
+<h3 id="3-vfs-kernel">3. 核心層 (VFS &amp; Kernel)</h3>
+<p>最後，Linux 核心接管 I/O。無論底層是 XFS, ext4 還是 NFS，對應用程式來說都經過 <strong>VFS (Virtual File System)</strong>。
+- <strong>SRE 訊號</strong>：如果你在日誌中看到 <code>EIO (Input/Output error)</code>，這通常是驅動層級的災難（例如 NFS 網路超時或硬體損毀），與 K8s 配置無關。</p>
+<hr />
+<h2 id="sre">SRE 除錯矩陣：從現象到原點</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">現象</th>
+<th style="text-align: left;">K8s 訊號</th>
+<th style="text-align: left;">核心/主機原語</th>
+<th style="text-align: left;">推薦工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Pod 永久掛起</strong></td>
+<td style="text-align: left;"><code>ContainerCreating</code></td>
+<td style="text-align: left;"><code>dmesg</code> (Timeout)</td>
+<td style="text-align: left;"><code>kubectl describe</code> $</td>
+</tr>
+<tr>
+<td style="text-align: left;">ightarrow$ <code>dmesg</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>檔案系統唯讀</strong></td>
+<td style="text-align: left;"><code>Read-only file system</code></td>
+<td style="text-align: left;"><code>mount -o remount,rw</code></td>
+<td style="text-align: left;"><code>mount \| grep &lt;path&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>NFS 句柄失效</strong></td>
+<td style="text-align: left;"><code>Stale NFS file handle</code></td>
+<td style="text-align: left;"><code>nfsstat</code> / <code>rpcdebug</code></td>
+<td style="text-align: left;"><code>df -h</code> (會直接卡死)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>I/O 極慢</strong></td>
+<td style="text-align: left;">高 <code>iowait</code></td>
+<td style="text-align: left;"><code>bio</code> 請求隊列</td>
+<td style="text-align: left;"><code>iostat -xz 1</code> / <code>biotop</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_1">避坑指南：那些隱形的儲存陷阱</h2>
+<ol>
+<li><strong>儲存「殭屍」 (Orphaned Mounts)</strong>：
+   有時候 Pod 刪除了，但核心的掛載點沒被清理掉。這會導致新 Pod 嘗試掛載同一個 Volume 時發生衝突。</li>
+<li><strong>掛載傳播 (Mount Propagation)</strong>：
+   如果 CSI 驅動的 <code>mountPropagation</code> 沒有設定為 <code>Bidirectional</code>，驅動容器內建立的掛載對主機或 Pod 來說是不可見的。</li>
+<li><strong>根分區壓力</strong>：
+   如果主機根分區滿了，Kubelet 可能無法建立 bind-mount 所需的目錄結構，導致 Volume 掛載失敗。</li>
+</ol>
+<h2 id="kubectl">結語：不要只看 <code>kubectl</code></h2>
+<p>面對儲存故障，最強大的工具不是 <code>kubectl get pvc</code>，而是<strong>直接登入節點</strong>。</p>
+<p>檢查 <code>dmesg</code> 看核心錯誤 $
+ightarrow$ 檢查 <code>mount</code> 確認綁定鏈 $
+ightarrow$ 檢查 <code>iostat</code> 確認後端響應。當你能跳出 K8s 的抽象層，直接面對 Linux 核心的 VFS 時，儲存問題才真正變得可控。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- CSI (Container Storage Interface)
+- Bind Mount (綁定掛載)
+- VFS (Virtual File System)
+- Multi-Attach Error (多重附加錯誤)
+- Mount Propagation (掛載傳播)</p>
 
 
 
@@ -645,10 +791,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

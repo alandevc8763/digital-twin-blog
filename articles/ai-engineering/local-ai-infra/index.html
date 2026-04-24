@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>構建私有 AI 研發環境：從 Proxmox GPU 穿透到本地 LLM 生產線 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#ai-proxmox-gpu-llm" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              構建私有 AI 研發環境：從 Proxmox GPU 穿透到本地 LLM 生產線
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gpu-passthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一層：打破虛擬化的壁壘 (GPU Passthrough)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vllm-vs-ollama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二層：推理引擎的選擇 (vLLM vs Ollama)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三層：從「聊天機器人」到「生產線」 (Local RAG)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        總結：構建 AI 時代的「數字主權」
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Related Insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,21 +627,41 @@
 
 
 
+<h1 id="ai-proxmox-gpu-llm">構建私有 AI 研發環境：從 Proxmox GPU 穿透到本地 LLM 生產線</h1>
+<p>很多 AI 工程師的開發流程是這樣的：寫一個 Prompt $\rightarrow$ 調用 OpenAI API $\rightarrow$ 等待結果 $\rightarrow$ 調整 Prompt $\rightarrow$ 重複。
+這種模式在原型階段很高效，但在工程實踐中存在三個致命缺陷：<strong>隱私洩漏、Token 成本不可控、以及對第三方 API 的絕對依賴</strong>。如果你在構建一個企業級的 AI 應用，將「推理能力」視為外部依賴，就如同將數據庫託管在一個你無法控制其延遲的第三方服務上。
+對於 SRE 或 DevOps 工程師來說，真正的解決方案是構建一套 <strong>「主權 AI (Sovereign AI)」</strong> 基礎設施。</p>
+<h2 id="gpu-passthrough">第一層：打破虛擬化的壁壘 (GPU Passthrough)</h2>
+<p>要在 HomeLab 中運行本地 LLM，首先要解決的是 GPU 的訪問問題。
+很多人嘗試在 LXC 容器中部署 GPU，但如果你追求的是生產級的穩定性，<strong>VM (虛擬機) + PCIe Passthrough</strong> 是唯一的選擇。LXC 雖然輕量，但在處理 NVIDIA 驅動版本更新或內核模塊衝突時，經常會導致宿主機崩潰。
+<strong>SRE 的實踐路徑：</strong>
+1. <strong>IOMMU 隔離</strong>：在 Proxmox 的 GRUB 中開啟 <code>intel_iommu=on</code>，確保 GPU 被正確隔離到獨立的 IOMMU 組中。
+2. <strong>PCI Passthrough</strong>：將 GPU 直接映射給 Ubuntu Server VM。這樣 VM 看到的不是「虛擬 GPU」，而是一個原生的 PCIe 設備。
+3. <strong>驅動對齊</strong>：在 VM 內部安裝匹配的 CUDA Toolkit。
+<strong>避坑指南</strong>：如果你遇到 <code>nvidia-smi</code> 在宿主機可用但在 VM 中失效，通常是 PCIe 電源狀態或 IOMMU 分 grouped 過大導致的。這時需要開啟 <code>pcie_acs_override</code> 來強制分割設備組。</p>
+<h2 id="vllm-vs-ollama">第二層：推理引擎的選擇 (vLLM vs Ollama)</h2>
+<p>有了硬件訪問權後，接下來是選擇「推理引擎」。這裡的關鍵在於 <strong>吞吐量 (Throughput)</strong> 與 <strong>延遲 (Latency)</strong> 的權衡。
+- <strong>Ollama</strong>：它是 AI 界的「Docker」，極其簡單。適合快速原型開發和單人使用。
+- <strong>vLLM</strong>：如果你在構建一個需要支持多個併發請求的應用，vLLM 是工業標準。它引入了 <strong>PagedAttention</strong> 技術，將 KV Cache (鍵值快取) 像操作系統管理內存分頁一樣進行管理，極大地提升了顯存利用率。
+<strong>關於量化 (Quantization) 的權衡</strong>：
+你不需要 16-bit 的原版模型。透過 <strong>GGUF</strong> 或 <strong>EXL2</strong> 量化到 4-bit 或 8-bit，你可以用 24GB 的 VRAM 跑起原本需要 80GB 的模型，而精度損失在大多數應用場景中幾乎不可察覺。<strong>本地 AI 的遊戲規則就是：用量化換取更大的模型參數，因為模型規模 $\rightarrow$ 智能水平 $\rightarrow$ 最終效果。</strong></p>
+<h2 id="local-rag">第三層：從「聊天機器人」到「生產線」 (Local RAG)</h2>
+<p>本地 LLM 僅僅是「大腦」，要讓它有用，必須給它「記憶」與「工具」。
+這就是將本地 AI 基礎設施與 <strong>RAG (檢索增強生成)</strong> 結合的時刻。在私有環境中，你可以構建一個完全閉環的數據流：
+<code>本地文檔 (Markdown/PDF)</code> $\rightarrow$ <code>本地 Embedding 模型</code> $\rightarrow$ <code>本地向量庫 (Milvus/Qdrant)</code> $\rightarrow$ <code>本地 LLM (vLLM)</code>。
+<strong>這種架構的絕對優勢在於：</strong>
+- <strong>零延遲</strong>：數據在本地局域網流動，無需經過公網。
+- <strong>零成本</strong>：除了電費，你不再需要為每一萬個 Token 付費。
+- <strong>絕對私有</strong>：你的核心代碼庫或公司私密文檔永遠不會離開你的伺服器。</p>
+<h2 id="ai">總結：構建 AI 時代的「數字主權」</h2>
+<p>構建本地 AI 基礎設施並非為了追求「極客感」，而是一種對 <strong>計算控制權</strong> 的奪回。
+當你擁有從 Proxmox 底層、GPU 驅動、推理引擎到 RAG 應用鏈路的完整掌控力時，你就不再是一個單純的 API 調用者，而是一個真正的 <strong>AI 系統工程師</strong>。
+<strong>最好的 AI 應用，不是依賴於最強的雲端模型，而是依賴於一套可控、可演進且高度集成的本地基礎設施。</strong></p>
 <hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
+<h2 id="related-insights">🔗 Related Insights</h2>
 <ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
-</ul>
-<h2 id="core-components">🛠️ Core Components</h2>
-<ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
+<li>The Proxmox foundation required for this AI stack: Local Ai Infra Proxmox [TBD]</li>
+<li>Tuning the underlying CPU topology for LLM throughput: <a href="../../performance/cpu-numa/">Cpu Numa</a></li>
 </ul>
 
 
@@ -645,10 +712,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

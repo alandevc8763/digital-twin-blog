@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../ai-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>HomeLab Hub - Alan's Digital Twin Blog</title>
+        <title>K8s Pod 生命週期：為什麼 API 狀態總是在「欺騙」SRE？ - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homelab-hub-index-page" class="md-skip">
+        <a href="#k8s-pod-api-sre" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HomeLab Hub
+              K8s Pod 生命週期：為什麼 API 狀態總是在「欺騙」SRE？
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -331,11 +327,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -354,7 +348,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -389,7 +383,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../sre-hub/" class="md-nav__link">
         
   
   
@@ -461,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../ai-hub/" class="md-nav__link">
         
   
   
@@ -485,19 +479,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -513,7 +498,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../journey/intro/" class="md-nav__link">
         
   
   
@@ -565,6 +549,97 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 從「意圖」到「過程」：Pod 的垂直路徑
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 從「意圖」到「過程」：Pod 的垂直路徑">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#orchestration-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一階段：控制平面 (Orchestration Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二階段：節點實現 (Runtime Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三階段：反饋迴路 (Observability)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sre-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SRE 除錯矩陣：不要被 API 蒙蔽
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SRE 避坑指南：那些隱形的生命週期陷阱
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：地圖 $
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -580,22 +655,106 @@
 
 
 
-<hr />
-<h1 id="homelab-hub-index-page">HomeLab Hub Index Page</h1>
-<hr />
-<h1 id="homelab-hub-private-infrastructure-digital-sovereignty">HomeLab Hub: Private Infrastructure &amp; Digital Sovereignty</h1>
-<p>Welcome to the HomeLab section. Here we explore the intersection of enterprise SRE practices and home-scale infrastructure.</p>
-<h2 id="featured-guides">🚀 Featured Guides</h2>
+<h1 id="k8s-pod-api-sre">K8s Pod 生命週期：為什麼 API 狀態總是在「欺騙」SRE？</h1>
+<p>對於大多數開發者來說，檢查 Pod 狀態的習慣是 <code>kubectl get pods</code> $
+ightarrow$ 看到 <code>Running</code> $
+ightarrow$ 認為服務正常。</p>
+<p>但對於 SRE 來說，這是一種危險的錯覺。Kubernetes 的狀態更新是一個<strong>非同步的宣告式狀態機</strong>。API Server 記錄的是「期望狀態」，而 Kubelet 負責將其轉化為「實際狀態」。在這兩者之間，存在著一個巨大的 <strong>SRE 資訊差 (SRE Gap)</strong>。</p>
+<h2 id="1-pod">1. 從「意圖」到「過程」：Pod 的垂直路徑</h2>
+<p>一個 Pod 從被定義到真正運行，經歷了三個層級的交接。如果你只看 API，你只能看到結果，而看不到過程中的崩潰。</p>
+<h3 id="orchestration-layer">第一階段：控制平面 (Orchestration Layer)</h3>
 <ul>
-<li><a href="../posts/homelab/private-cloud-logic/">從「玩具」到「私人雲」：構建企業級 HomeLab 的底層邏輯</a> - 深度解析 ZFS, Proxmox 與自託管生態的協同效應。</li>
+<li><strong>API Server</strong>：接收 YAML $
+ightarrow$ 寫入 etcd $
+ightarrow$ 狀態：<code>Pending</code>。</li>
+<li><strong>Scheduler</strong>：發現未分配的 Pod $
+ightarrow$ 根據資源權重選擇節點 $
+ightarrow$ 寫回 <code>Binding</code> 對象。</li>
+<li><strong>真相</strong>：此時 Pod 依然是 <code>Pending</code>，它僅僅是一個「被安排好位置的願望」。</li>
 </ul>
-<h2 id="core-components">🛠️ Core Components</h2>
+<h3 id="runtime-layer">第二階段：節點實現 (Runtime Layer)</h3>
+<p>當 Kubelet 發現 Pod 被分配到自己節點後，真正的「肉搏戰」開始了：
+1. <strong>建立 Sandbox</strong>：呼叫 CRI (如 containerd) 啟動 <code>pause</code> 容器。這決定了 Pod 的網路命名空間與 Cgroup 父級。
+2. <strong>拉取鏡像</strong>：呼叫 <code>PullImage</code>。如果鏡像太大或 Registry 慢，Pod 會卡在 <code>ContainerCreating</code>。
+3. <strong>CNI 佈線</strong>：呼叫 CNI 插件 (如 Calico/Cilium) 分配 IP 並創建 <code>veth pair</code>。如果 IPAM 耗盡，這裡會直接超時。
+4. <strong>執行容器</strong>：呼叫 <code>CreateContainer</code> $
+ightarrow$ <code>StartContainer</code> $
+ightarrow$ <code>runc</code> 執行 <code>clone()</code>。</p>
 <ul>
-<li><strong>Compute</strong>: Proxmox VE (KVM/LXC)</li>
-<li><strong>Storage</strong>: ZFS / TrueNAS</li>
-<li><strong>Backup</strong>: Proxmox Backup Server (PBS)</li>
-<li><strong>Automation</strong>: Home Assistant / Docker</li>
+<li><strong>真相</strong>：當你看到 <code>ContainerCreating</code> 時，故障可能發生在任何一個子步驟。API Server 只會告訴你「還在創建中」，但具體是鏡像拉不下來、還是 IP 分配失敗，你必須下到節點去看 <code>journalctl -u kubelet</code>。</li>
 </ul>
+<h3 id="observability">第三階段：反饋迴路 (Observability)</h3>
+<p>CRI 報告容器已啟動 $
+ightarrow$ Kubelet 更新 API 狀態為 <code>Running</code>。</p>
+<ul>
+<li><strong>真相</strong>：<code>Running</code> 僅僅意味著進程已被核心啟動，並不代表應用程式已經準備好接收流量 (除非你有正確的 <code>Readiness Probe</code>)。</li>
+</ul>
+<hr />
+<h2 id="2-sre-api">2. SRE 除錯矩陣：不要被 API 蒙蔽</h2>
+<p>當 Pod 狀態異常時，請停止詢問 API，直接向下探索「地形」：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">API 狀態</th>
+<th style="text-align: left;">可能的故障點</th>
+<th style="text-align: left;">垂直層級</th>
+<th style="text-align: left;">診斷指令</th>
+<th style="text-align: left;">核心真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>Pending</code></strong></td>
+<td style="text-align: left;">調度器 / 資源不足</td>
+<td style="text-align: left;">編排層</td>
+<td style="text-align: left;"><code>kubectl describe pod</code></td>
+<td style="text-align: left;">節點沒空間了</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>ContainerCreating</code></strong></td>
+<td style="text-align: left;">CRI (鏡像) / CNI (網路)</td>
+<td style="text-align: left;">運行時層</td>
+<td style="text-align: left;"><code>journalctl -u kubelet</code></td>
+<td style="text-align: left;">鏡像拉取超時或 CNI 插件崩潰</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>CrashLoopBackOff</code></strong></td>
+<td style="text-align: left;">入口點故障 / 核心 OOM</td>
+<td style="text-align: left;">核心層</td>
+<td style="text-align: left;"><code>kubectl logs --previous</code></td>
+<td style="text-align: left;">應用程式崩潰或觸發 Cgroup 記憶體限制</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>ErrImagePull</code></strong></td>
+<td style="text-align: left;">認證失敗 / 網路不通</td>
+<td style="text-align: left;">運行時層</td>
+<td style="text-align: left;"><code>crictl pull &lt;image&gt;</code></td>
+<td style="text-align: left;">Registry 憑據過期</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-sre">3. SRE 避坑指南：那些隱形的生命週期陷阱</h2>
+<ul>
+<li><strong><code>pause</code> 容器的崩潰</strong>：如果 <code>pause</code> 容器被殺掉，整個 Pod 的網路命名空間會立即毀滅，導致所有 Sidecar 和主容器瞬間斷網。</li>
+<li><strong>CNI 延遲</strong>：在超大規模叢集中，CNI 分配 IP 的時間可能超過 Kubelet 的超時閾值，導致 Pod 陷入 <code>ContainerCreating</code> $
+ightarrow$ <code>Terminating</code> 的無限循環。</li>
+<li><strong>殭屍 Pod (Zombie Pods)</strong>：有時 Pod 在 API 中已刪除，但核心進程依然在運行，因為 <code>TearDownPodSandbox</code> 呼叫失敗。這會導致資源洩漏且無法重新調度。</li>
+</ul>
+<h2 id="_1">結語：地圖 $</h2>
+<p>eq$ 地形</p>
+<p>API Server 提供的狀態是「地圖 (The Map)」，而節點上的進程狀態才是「地形 (The Terrain)」。</p>
+<p>作為 SRE，當你發現地圖與現實不符時，唯一正確的做法就是<strong>向下鑽取 (Drill-down)</strong>：從 <code>kubectl</code> $
+ightarrow$ <code>journalctl</code> $
+ightarrow$ <code>crictl</code> $
+ightarrow$ <code>dmesg</code>。只有觸碰到核心的 <code>task_struct</code>，你才能掌握真正的真相。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- Pod Sandbox (Pod 沙箱)
+- Kubelet SyncLoop (同步迴路)
+- CRI (Container Runtime Interface)
+- CNI (Container Network Interface)
+- a liveness/readiness probe (探針)
+- Pod Lifecycle (Pod 生命週期)</p>
 
 
 
@@ -645,10 +804,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
