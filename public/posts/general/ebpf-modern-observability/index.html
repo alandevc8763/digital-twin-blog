@@ -1,5 +1,13 @@
-<!doctype html><html lang=en dir=auto data-theme=dark><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Ebpf Modern Observability | Alans Digital Twin Blog</title>
-<meta name=keywords content="General,Ebpf-Modern-Observability.Md"><meta name=description content="超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Ebpf Modern Observability | Alans Digital Twin Blog</title>
+<meta name="keywords" content="General, Ebpf-Modern-Observability.Md">
+<meta name="description" content="超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎
 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $
 ightarrow$ curl $
 ightarrow$ tcpdump $
@@ -16,29 +24,357 @@ ightarrow$ bpf() 系統呼叫 $
 ightarrow$ Verifier (驗證器) $
 ightarrow$ JIT 編譯 $
 ightarrow$ 核心掛鉤點 (Hook Point) $
-ightarrow$ 事件觸發。"><meta name=author content="Alan"><link rel=canonical href=https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/><link crossorigin=anonymous href=/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://alandevc8763.github.io/digital-twin-blog/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png><link rel=apple-touch-icon href=https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png><link rel=mask-icon href=https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><script>localStorage.getItem("pref-theme")==="light"&&(document.querySelector("html").dataset.theme="light")</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/"><meta property="og:site_name" content="Alans Digital Twin Blog"><meta property="og:title" content="Ebpf Modern Observability"><meta property="og:description" content="超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。
+ightarrow$ 事件觸發。">
+<meta name="author" content="Alan">
+<link rel="canonical" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/">
+<link crossorigin="anonymous" href="/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alandevc8763.github.io/digital-twin-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/">
+  <meta property="og:site_name" content="Alans Digital Twin Blog">
+  <meta property="og:title" content="Ebpf Modern Observability">
+  <meta property="og:description" content="超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。
 tcpdump 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；strace 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。
 這正是 eBPF (Extended Berkeley Packet Filter) 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個可編程的平台。
 eBPF 的本質：在核心內部植入「探針」 簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。
-1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。"><meta property="og:locale" content="zh_tw"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-04-24T00:00:00+00:00"><meta property="article:modified_time" content="2026-04-24T00:00:00+00:00"><meta property="article:tag" content="General"><meta property="article:tag" content="Ebpf-Modern-Observability.Md"><meta name=twitter:card content="summary"><meta name=twitter:title content="Ebpf Modern Observability"><meta name=twitter:description content="超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。
+1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。">
+  <meta property="og:locale" content="zh_tw">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:tag" content="General">
+    <meta property="article:tag" content="Ebpf-Modern-Observability.Md">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Ebpf Modern Observability">
+  <meta name="twitter:description" content="超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。
 tcpdump 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；strace 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。
 這正是 eBPF (Extended Berkeley Packet Filter) 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個可編程的平台。
 eBPF 的本質：在核心內部植入「探針」 簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。
-1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://alandevc8763.github.io/digital-twin-blog/posts/"},{"@type":"ListItem","position":2,"name":"Ebpf Modern Observability","item":"https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ebpf Modern Observability","name":"Ebpf Modern Observability","description":"超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。\ntcpdump 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；strace 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。\n這正是 eBPF (Extended Berkeley Packet Filter) 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個可編程的平台。\neBPF 的本質：在核心內部植入「探針」 簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。\n1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。\n","keywords":["General","Ebpf-Modern-Observability.Md"],"articleBody":"超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。\ntcpdump 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；strace 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。\n這正是 eBPF (Extended Berkeley Packet Filter) 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個可編程的平台。\neBPF 的本質：在核心內部植入「探針」 簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。\n1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。\n其中最關鍵的是 Verifier (驗證器)。它會對字節碼進行靜態分析，確保程序沒有無限循環、沒有越界訪問內存。這就是為什麼 eBPF 能在核心中運行而不會導致系統崩潰的原因。\n2. 選擇你的「掛鉤點」 (Hook Points) 根據你要解決的問題，你可以選擇不同的掛鉤點：\n掛鉤類型 層級 SRE 訊號 / 應用場景 推薦工具 kprobes 核心函數 追蹤核心內部函數的延遲、狀態偏移 bpftrace, bcc uprobes 用戶空間 追蹤應用層延遲 (例如：SSL 握手耗時) bpftrace, bcc tracepoints 靜態標記 觀察穩定的系統事件 (例如：調度器切換) perf, ftrace XDP 網卡驅動 處理入站封包丟棄、DDoS 防護、L3/L4 過濾 Cilium, Hubble LSM 安全模組 攔截未授權的系統呼叫、特權提升嘗試 Tetragon 實戰案例：追蹤「消失的封包」 這是 SRE 最頭痛的場景：封包到了，但應用程式沒收到。\n現象：服務出現間歇性連線超時。tcpdump 顯示封包確實到達了物理網卡 $\text{eth0}$，但應用程式日誌裡一片空白，完全沒有收到請求。\n診斷路徑：\n確認網卡接收：tcpdump 確認封包已到達。 檢查棧丟包：netstat -s 看到 TCPBacklogDrop 在增加，但它沒告訴我們封包在哪裡被丟掉的。 部署 eBPF 探針：使用 bpftrace 直接掛鉤到核心的 tcp_drop 函數： kprobe:tcp_drop { printf(\"發現丟包! SKB: %p, 原因: %s\\n\", args-\u003eskb, kstack); } 分析結果：Trace 顯示 tcp_drop 在 tcp_v4_rcv 中被觸發，原因是 Socket 的接收隊列已滿 (sk_max_buff 超限)。 根因：應用程式處理封包的速度慢於到達速度，導致核心在封包進入 Socket 緩衝區之前就將其靜默丟棄。 解決方案：調優 net.core.rmem_max 並優化應用程式的 Event Loop 併發能力。\n結語：從「猜測」到「確定」 當標準工具失效時，eBPF 提供了那塊缺失的拼圖。它讓你能夠觀察硬件與應用程式之間的過渡地帶。\n如果你發現某個資源在核心內部「消失」了，或者某個系統呼叫莫名其妙地變慢，不要再嘗試用 strace 這種會干擾性能的工具。直接在相關的 kprobe 或 tracepoint 上部署 eBPF 探針，將「猜測」轉化為「確定的數據」。\n技術關鍵字：\neBPF (Extended Berkeley Packet Filter) Verifier (驗證器) JIT (Just-In-Time Compilation) kprobes / uprobes (核心/用戶探針) XDP (eXpress Data Path) Cilium / Tetragon (基於 eBPF 的雲原生工具) ","wordCount":"207","inLanguage":"en","datePublished":"2026-04-24T00:00:00Z","dateModified":"2026-04-24T00:00:00Z","author":{"@type":"Person","name":"Alan"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/"},"publisher":{"@type":"Organization","name":"Alans Digital Twin Blog","logo":{"@type":"ImageObject","url":"https://alandevc8763.github.io/digital-twin-blog/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://alandevc8763.github.io/digital-twin-blog/ accesskey=h title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://alandevc8763.github.io/digital-twin-blog/sre-hub/ title="SRE Hub"><span>SRE Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/ai-hub/ title="AI Hub"><span>AI Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/homelab-hub/ title="HomeLab Hub"><span>HomeLab Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/journey/ title=Journey><span>Journey</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Ebpf Modern Observability</h1><div class=post-meta><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span></div></header><div class="post-content md-content"><h1 id=超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎>超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎<a hidden class=anchor aria-hidden=true href=#超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎>#</a></h1><p>對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：<code>ping</code> $
+1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Ebpf Modern Observability",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Ebpf Modern Observability",
+  "name": "Ebpf Modern Observability",
+  "description": "超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。\ntcpdump 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；strace 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。\n這正是 eBPF (Extended Berkeley Packet Filter) 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個可編程的平台。\neBPF 的本質：在核心內部植入「探針」 簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。\n1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。\n",
+  "keywords": [
+    "General", "Ebpf-Modern-Observability.Md"
+  ],
+  "articleBody": "超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎 對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：ping $ ightarrow$ curl $ ightarrow$ tcpdump $ ightarrow$ strace。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。\ntcpdump 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；strace 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。\n這正是 eBPF (Extended Berkeley Packet Filter) 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個可編程的平台。\neBPF 的本質：在核心內部植入「探針」 簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。\n1. 從代碼到執行的「垂直路徑」 一個 eBPF 程序的旅程如下： SRE 腳本 (bpftrace/Cilium) $ ightarrow$ LLVM 編譯 $ ightarrow$ bpf() 系統呼叫 $ ightarrow$ Verifier (驗證器) $ ightarrow$ JIT 編譯 $ ightarrow$ 核心掛鉤點 (Hook Point) $ ightarrow$ 事件觸發。\n其中最關鍵的是 Verifier (驗證器)。它會對字節碼進行靜態分析，確保程序沒有無限循環、沒有越界訪問內存。這就是為什麼 eBPF 能在核心中運行而不會導致系統崩潰的原因。\n2. 選擇你的「掛鉤點」 (Hook Points) 根據你要解決的問題，你可以選擇不同的掛鉤點：\n掛鉤類型 層級 SRE 訊號 / 應用場景 推薦工具 kprobes 核心函數 追蹤核心內部函數的延遲、狀態偏移 bpftrace, bcc uprobes 用戶空間 追蹤應用層延遲 (例如：SSL 握手耗時) bpftrace, bcc tracepoints 靜態標記 觀察穩定的系統事件 (例如：調度器切換) perf, ftrace XDP 網卡驅動 處理入站封包丟棄、DDoS 防護、L3/L4 過濾 Cilium, Hubble LSM 安全模組 攔截未授權的系統呼叫、特權提升嘗試 Tetragon 實戰案例：追蹤「消失的封包」 這是 SRE 最頭痛的場景：封包到了，但應用程式沒收到。\n現象：服務出現間歇性連線超時。tcpdump 顯示封包確實到達了物理網卡 $\text{eth0}$，但應用程式日誌裡一片空白，完全沒有收到請求。\n診斷路徑：\n確認網卡接收：tcpdump 確認封包已到達。 檢查棧丟包：netstat -s 看到 TCPBacklogDrop 在增加，但它沒告訴我們封包在哪裡被丟掉的。 部署 eBPF 探針：使用 bpftrace 直接掛鉤到核心的 tcp_drop 函數： kprobe:tcp_drop { printf(\"發現丟包! SKB: %p, 原因: %s\\n\", args-\u003eskb, kstack); } 分析結果：Trace 顯示 tcp_drop 在 tcp_v4_rcv 中被觸發，原因是 Socket 的接收隊列已滿 (sk_max_buff 超限)。 根因：應用程式處理封包的速度慢於到達速度，導致核心在封包進入 Socket 緩衝區之前就將其靜默丟棄。 解決方案：調優 net.core.rmem_max 並優化應用程式的 Event Loop 併發能力。\n結語：從「猜測」到「確定」 當標準工具失效時，eBPF 提供了那塊缺失的拼圖。它讓你能夠觀察硬件與應用程式之間的過渡地帶。\n如果你發現某個資源在核心內部「消失」了，或者某個系統呼叫莫名其妙地變慢，不要再嘗試用 strace 這種會干擾性能的工具。直接在相關的 kprobe 或 tracepoint 上部署 eBPF 探針，將「猜測」轉化為「確定的數據」。\n技術關鍵字：\neBPF (Extended Berkeley Packet Filter) Verifier (驗證器) JIT (Just-In-Time Compilation) kprobes / uprobes (核心/用戶探針) XDP (eXpress Data Path) Cilium / Tetragon (基於 eBPF 的雲原生工具) ",
+  "wordCount" : "207",
+  "inLanguage": "en",
+  "datePublished": "2026-04-24T00:00:00Z",
+  "dateModified": "2026-04-24T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Alan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Alans Digital Twin Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://alandevc8763.github.io/digital-twin-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://alandevc8763.github.io/digital-twin-blog/" accesskey="h" title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/sre-hub/" title="SRE Hub">
+                    <span>SRE Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/ai-hub/" title="AI Hub">
+                    <span>AI Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/homelab-hub/" title="HomeLab Hub">
+                    <span>HomeLab Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/journey/" title="Journey">
+                    <span>Journey</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Ebpf Modern Observability
+    </h1>
+    <div class="post-meta"><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h1 id="超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎">超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎<a hidden class="anchor" aria-hidden="true" href="#超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎">#</a></h1>
+<p>對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：<code>ping</code> $
 ightarrow$ <code>curl</code> $
 ightarrow$ <code>tcpdump</code> $
-ightarrow$ <code>strace</code>。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。</p><p><code>tcpdump</code> 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；<code>strace</code> 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。</p><p>這正是 <strong>eBPF (Extended Berkeley Packet Filter)</strong> 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個<strong>可編程的平台</strong>。</p><h2 id=ebpf-的本質在核心內部植入探針>eBPF 的本質：在核心內部植入「探針」<a hidden class=anchor aria-hidden=true href=#ebpf-的本質在核心內部植入探針>#</a></h2><p>簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。</p><h3 id=1-從代碼到執行的垂直路徑>1. 從代碼到執行的「垂直路徑」<a hidden class=anchor aria-hidden=true href=#1-從代碼到執行的垂直路徑>#</a></h3><p>一個 eBPF 程序的旅程如下：
+ightarrow$ <code>strace</code>。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。</p>
+<p><code>tcpdump</code> 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；<code>strace</code> 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。</p>
+<p>這正是 <strong>eBPF (Extended Berkeley Packet Filter)</strong> 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個<strong>可編程的平台</strong>。</p>
+<h2 id="ebpf-的本質在核心內部植入探針">eBPF 的本質：在核心內部植入「探針」<a hidden class="anchor" aria-hidden="true" href="#ebpf-的本質在核心內部植入探針">#</a></h2>
+<p>簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。</p>
+<h3 id="1-從代碼到執行的垂直路徑">1. 從代碼到執行的「垂直路徑」<a hidden class="anchor" aria-hidden="true" href="#1-從代碼到執行的垂直路徑">#</a></h3>
+<p>一個 eBPF 程序的旅程如下：
 <strong>SRE 腳本 (<code>bpftrace</code>/<code>Cilium</code>)</strong> $
 ightarrow$ <strong>LLVM 編譯</strong> $
 ightarrow$ <strong><code>bpf()</code> 系統呼叫</strong> $
 ightarrow$ <strong>Verifier (驗證器)</strong> $
 ightarrow$ <strong>JIT 編譯</strong> $
 ightarrow$ <strong>核心掛鉤點 (Hook Point)</strong> $
-ightarrow$ <strong>事件觸發</strong>。</p><p>其中最關鍵的是 <strong>Verifier (驗證器)</strong>。它會對字節碼進行靜態分析，確保程序沒有無限循環、沒有越界訪問內存。這就是為什麼 eBPF 能在核心中運行而不會導致系統崩潰的原因。</p><h3 id=2-選擇你的掛鉤點-hook-points>2. 選擇你的「掛鉤點」 (Hook Points)<a hidden class=anchor aria-hidden=true href=#2-選擇你的掛鉤點-hook-points>#</a></h3><p>根據你要解決的問題，你可以選擇不同的掛鉤點：</p><table><thead><tr><th style=text-align:left>掛鉤類型</th><th style=text-align:left>層級</th><th style=text-align:left>SRE 訊號 / 應用場景</th><th style=text-align:left>推薦工具</th></tr></thead><tbody><tr><td style=text-align:left><strong>kprobes</strong></td><td style=text-align:left>核心函數</td><td style=text-align:left>追蹤核心內部函數的延遲、狀態偏移</td><td style=text-align:left><code>bpftrace</code>, <code>bcc</code></td></tr><tr><td style=text-align:left><strong>uprobes</strong></td><td style=text-align:left>用戶空間</td><td style=text-align:left>追蹤應用層延遲 (例如：SSL 握手耗時)</td><td style=text-align:left><code>bpftrace</code>, <code>bcc</code></td></tr><tr><td style=text-align:left><strong>tracepoints</strong></td><td style=text-align:left>靜態標記</td><td style=text-align:left>觀察穩定的系統事件 (例如：調度器切換)</td><td style=text-align:left><code>perf</code>, <code>ftrace</code></td></tr><tr><td style=text-align:left><strong>XDP</strong></td><td style=text-align:left>網卡驅動</td><td style=text-align:left>處理入站封包丟棄、DDoS 防護、L3/L4 過濾</td><td style=text-align:left><code>Cilium</code>, <code>Hubble</code></td></tr><tr><td style=text-align:left><strong>LSM</strong></td><td style=text-align:left>安全模組</td><td style=text-align:left>攔截未授權的系統呼叫、特權提升嘗試</td><td style=text-align:left><code>Tetragon</code></td></tr></tbody></table><hr><h2 id=實戰案例追蹤消失的封包>實戰案例：追蹤「消失的封包」<a hidden class=anchor aria-hidden=true href=#實戰案例追蹤消失的封包>#</a></h2><p>這是 SRE 最頭痛的場景：<strong>封包到了，但應用程式沒收到。</strong></p><p><strong>現象</strong>：服務出現間歇性連線超時。<code>tcpdump</code> 顯示封包確實到達了物理網卡 $ ext{eth0}$，但應用程式日誌裡一片空白，完全沒有收到請求。</p><p><strong>診斷路徑</strong>：</p><ol><li><strong>確認網卡接收</strong>：<code>tcpdump</code> 確認封包已到達。</li><li><strong>檢查棧丟包</strong>：<code>netstat -s</code> 看到 <code>TCPBacklogDrop</code> 在增加，但它沒告訴我們封包在哪裡被丟掉的。</li><li><strong>部署 eBPF 探針</strong>：使用 <code>bpftrace</code> 直接掛鉤到核心的 <code>tcp_drop</code> 函數：<pre tabindex=0><code class=language-bpftrace data-lang=bpftrace>kprobe:tcp_drop {
+ightarrow$ <strong>事件觸發</strong>。</p>
+<p>其中最關鍵的是 <strong>Verifier (驗證器)</strong>。它會對字節碼進行靜態分析，確保程序沒有無限循環、沒有越界訪問內存。這就是為什麼 eBPF 能在核心中運行而不會導致系統崩潰的原因。</p>
+<h3 id="2-選擇你的掛鉤點-hook-points">2. 選擇你的「掛鉤點」 (Hook Points)<a hidden class="anchor" aria-hidden="true" href="#2-選擇你的掛鉤點-hook-points">#</a></h3>
+<p>根據你要解決的問題，你可以選擇不同的掛鉤點：</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">掛鉤類型</th>
+          <th style="text-align: left">層級</th>
+          <th style="text-align: left">SRE 訊號 / 應用場景</th>
+          <th style="text-align: left">推薦工具</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>kprobes</strong></td>
+          <td style="text-align: left">核心函數</td>
+          <td style="text-align: left">追蹤核心內部函數的延遲、狀態偏移</td>
+          <td style="text-align: left"><code>bpftrace</code>, <code>bcc</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>uprobes</strong></td>
+          <td style="text-align: left">用戶空間</td>
+          <td style="text-align: left">追蹤應用層延遲 (例如：SSL 握手耗時)</td>
+          <td style="text-align: left"><code>bpftrace</code>, <code>bcc</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>tracepoints</strong></td>
+          <td style="text-align: left">靜態標記</td>
+          <td style="text-align: left">觀察穩定的系統事件 (例如：調度器切換)</td>
+          <td style="text-align: left"><code>perf</code>, <code>ftrace</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>XDP</strong></td>
+          <td style="text-align: left">網卡驅動</td>
+          <td style="text-align: left">處理入站封包丟棄、DDoS 防護、L3/L4 過濾</td>
+          <td style="text-align: left"><code>Cilium</code>, <code>Hubble</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>LSM</strong></td>
+          <td style="text-align: left">安全模組</td>
+          <td style="text-align: left">攔截未授權的系統呼叫、特權提升嘗試</td>
+          <td style="text-align: left"><code>Tetragon</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="實戰案例追蹤消失的封包">實戰案例：追蹤「消失的封包」<a hidden class="anchor" aria-hidden="true" href="#實戰案例追蹤消失的封包">#</a></h2>
+<p>這是 SRE 最頭痛的場景：<strong>封包到了，但應用程式沒收到。</strong></p>
+<p><strong>現象</strong>：服務出現間歇性連線超時。<code>tcpdump</code> 顯示封包確實到達了物理網卡 $	ext{eth0}$，但應用程式日誌裡一片空白，完全沒有收到請求。</p>
+<p><strong>診斷路徑</strong>：</p>
+<ol>
+<li><strong>確認網卡接收</strong>：<code>tcpdump</code> 確認封包已到達。</li>
+<li><strong>檢查棧丟包</strong>：<code>netstat -s</code> 看到 <code>TCPBacklogDrop</code> 在增加，但它沒告訴我們封包在哪裡被丟掉的。</li>
+<li><strong>部署 eBPF 探針</strong>：使用 <code>bpftrace</code> 直接掛鉤到核心的 <code>tcp_drop</code> 函數：
+<pre tabindex="0"><code class="language-bpftrace" data-lang="bpftrace">kprobe:tcp_drop {
   printf(&#34;發現丟包! SKB: %p, 原因: %s\n&#34;, args-&gt;skb, kstack);
 }
-</code></pre></li><li><strong>分析結果</strong>：Trace 顯示 <code>tcp_drop</code> 在 <code>tcp_v4_rcv</code> 中被觸發，原因是 Socket 的接收隊列已滿 (<code>sk_max_buff</code> 超限)。</li><li><strong>根因</strong>：應用程式處理封包的速度慢於到達速度，導致核心在封包進入 Socket 緩衝區之前就將其靜默丟棄。</li></ol><p><strong>解決方案</strong>：調優 <code>net.core.rmem_max</code> 並優化應用程式的 Event Loop 併發能力。</p><h2 id=結語從猜測到確定>結語：從「猜測」到「確定」<a hidden class=anchor aria-hidden=true href=#結語從猜測到確定>#</a></h2><p>當標準工具失效時，eBPF 提供了那塊缺失的拼圖。它讓你能夠觀察<strong>硬件與應用程式之間的過渡地帶</strong>。</p><p>如果你發現某個資源在核心內部「消失」了，或者某個系統呼叫莫名其妙地變慢，不要再嘗試用 <code>strace</code> 這種會干擾性能的工具。直接在相關的 <code>kprobe</code> 或 <code>tracepoint</code> 上部署 eBPF 探針，將「猜測」轉化為「確定的數據」。</p><hr><p><strong>技術關鍵字：</strong></p><ul><li>eBPF (Extended Berkeley Packet Filter)</li><li>Verifier (驗證器)</li><li>JIT (Just-In-Time Compilation)</li><li>kprobes / uprobes (核心/用戶探針)</li><li>XDP (eXpress Data Path)</li><li>Cilium / Tetragon (基於 eBPF 的雲原生工具)</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://alandevc8763.github.io/digital-twin-blog/tags/general/>General</a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/>Ebpf-Modern-Observability.Md</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://alandevc8763.github.io/digital-twin-blog/>Alans Digital Twin Blog</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+</code></pre></li>
+<li><strong>分析結果</strong>：Trace 顯示 <code>tcp_drop</code> 在 <code>tcp_v4_rcv</code> 中被觸發，原因是 Socket 的接收隊列已滿 (<code>sk_max_buff</code> 超限)。</li>
+<li><strong>根因</strong>：應用程式處理封包的速度慢於到達速度，導致核心在封包進入 Socket 緩衝區之前就將其靜默丟棄。</li>
+</ol>
+<p><strong>解決方案</strong>：調優 <code>net.core.rmem_max</code> 並優化應用程式的 Event Loop 併發能力。</p>
+<h2 id="結語從猜測到確定">結語：從「猜測」到「確定」<a hidden class="anchor" aria-hidden="true" href="#結語從猜測到確定">#</a></h2>
+<p>當標準工具失效時，eBPF 提供了那塊缺失的拼圖。它讓你能夠觀察<strong>硬件與應用程式之間的過渡地帶</strong>。</p>
+<p>如果你發現某個資源在核心內部「消失」了，或者某個系統呼叫莫名其妙地變慢，不要再嘗試用 <code>strace</code> 這種會干擾性能的工具。直接在相關的 <code>kprobe</code> 或 <code>tracepoint</code> 上部署 eBPF 探針，將「猜測」轉化為「確定的數據」。</p>
+<hr>
+<p><strong>技術關鍵字：</strong></p>
+<ul>
+<li>eBPF (Extended Berkeley Packet Filter)</li>
+<li>Verifier (驗證器)</li>
+<li>JIT (Just-In-Time Compilation)</li>
+<li>kprobes / uprobes (核心/用戶探針)</li>
+<li>XDP (eXpress Data Path)</li>
+<li>Cilium / Tetragon (基於 eBPF 的雲原生工具)</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/general/">General</a></li>
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/">Ebpf-Modern-Observability.Md</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://alandevc8763.github.io/digital-twin-blog/">Alans Digital Twin Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

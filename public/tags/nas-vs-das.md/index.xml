@@ -1,14 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Nas-vs-Das.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/</link><description>Recent content in Nas-vs-Das.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Nas Vs Das</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</guid><description>&lt;h1 id="nas-vs-das如何為你的-homelab-選擇正確的儲儲架構">NAS vs DAS：如何為你的 HomeLab 選擇正確的儲儲架構？&lt;/h1>
-&lt;p>在構建 HomeLab 時，最讓人糾結的決定之一就是：我是該買一台成品 NAS，還是買個 DAS 擴展櫃直接掛在伺服器上？
-很多人會把這兩者混為一談，認為只要是「很多硬碟在一起」就差不多。但從系統架構來看，NAS 與 DAS 之間隔著一道巨大的鴻溝：&lt;strong>網路棧 (Network Stack)&lt;/strong>。這道鴻溝決定了你的數據是追求「流動性」還是「極限速度」。&lt;/p>
-&lt;h2 id="das追求-raw-io-的極端主義">DAS：追求 Raw I/O 的極端主義&lt;/h2>
-&lt;p>DAS (Direct Attached Storage) 的邏輯非常簡單：&lt;strong>去掉所有中間商，讓 CPU 直接看到硬碟。&lt;/strong>
-無論是透過 Thunderbolt 4、SAS HBA 還是簡單的 USB-C，DAS 的數據路徑極短。它不需要經過 TCP/IP 封裝，不需要處理網路碰撞，也不需要經過另一台伺服器的 CPU 轉發。&lt;/p>
-&lt;h3 id="為什麼選擇-das">為什麼選擇 DAS？&lt;/h3>
-&lt;p>當你的工作流對 &lt;strong>延遲 (Latency)&lt;/strong> 極其敏感時，DAS 是唯一選擇。例如 4K 原始素材的剪輯、本地高 IOPS 的資料庫分析，或是需要極速快取層的應用。在 DAS 面前，任何網路協議（即使是 10GbE）都會顯得臃腫。&lt;/p>
-&lt;h3 id="das-的致命傷宿主機鎖定-host-lockout">DAS 的致命傷：宿主機鎖定 (Host Lockout)&lt;/h3>
-&lt;p>DAS 的性能是以 &lt;strong>「可用性」&lt;/strong> 為代價的。
-在 DAS 架構中，儲存設備沒有自己的「大腦」，它完全依賴宿主機的 OS 來管理文件系統。這意味著如果你的伺服器主機板燒了，或者 OS 崩潰導致無法啟動，即使你的硬碟全部健康，你的數據也被「鎖死」在那個故障的宿主機後面。你必須物理性地將整個擴展櫃搬到另一台兼容的機器上才能讀取數據。&lt;/p>
-&lt;h2 id="nas以網路稅換取數據流動性">NAS：以網路稅換取數據流動性&lt;/h2>
-&lt;p>NAS (Network Attached Storage) 實際上是一台 &lt;strong>專用的儲存伺服器&lt;/strong>。它有自己的 CPU、記憶體和 OS。
-當你請求一個檔案時，路徑變成了：&lt;code>Client $\rightarrow$ Network $\rightarrow$ NAS OS $\rightarrow$ Disk&lt;/code>。這裡產生了所謂的 &lt;strong>「網路稅」 (Network Tax)&lt;/strong> —— 數據需要被封裝成 SMB/NFS 協議，經過網路交換機，再由 NAS 的 CPU 解包並讀取。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Nas-vs-Das.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/</link>
+    <description>Recent content in Nas-vs-Das.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nas Vs Das</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</guid>
+      <description>&lt;h1 id=&#34;nas-vs-das如何為你的-homelab-選擇正確的儲儲架構&#34;&gt;NAS vs DAS：如何為你的 HomeLab 選擇正確的儲儲架構？&lt;/h1&gt;
+&lt;p&gt;在構建 HomeLab 時，最讓人糾結的決定之一就是：我是該買一台成品 NAS，還是買個 DAS 擴展櫃直接掛在伺服器上？
+很多人會把這兩者混為一談，認為只要是「很多硬碟在一起」就差不多。但從系統架構來看，NAS 與 DAS 之間隔著一道巨大的鴻溝：&lt;strong&gt;網路棧 (Network Stack)&lt;/strong&gt;。這道鴻溝決定了你的數據是追求「流動性」還是「極限速度」。&lt;/p&gt;
+&lt;h2 id=&#34;das追求-raw-io-的極端主義&#34;&gt;DAS：追求 Raw I/O 的極端主義&lt;/h2&gt;
+&lt;p&gt;DAS (Direct Attached Storage) 的邏輯非常簡單：&lt;strong&gt;去掉所有中間商，讓 CPU 直接看到硬碟。&lt;/strong&gt;
+無論是透過 Thunderbolt 4、SAS HBA 還是簡單的 USB-C，DAS 的數據路徑極短。它不需要經過 TCP/IP 封裝，不需要處理網路碰撞，也不需要經過另一台伺服器的 CPU 轉發。&lt;/p&gt;
+&lt;h3 id=&#34;為什麼選擇-das&#34;&gt;為什麼選擇 DAS？&lt;/h3&gt;
+&lt;p&gt;當你的工作流對 &lt;strong&gt;延遲 (Latency)&lt;/strong&gt; 極其敏感時，DAS 是唯一選擇。例如 4K 原始素材的剪輯、本地高 IOPS 的資料庫分析，或是需要極速快取層的應用。在 DAS 面前，任何網路協議（即使是 10GbE）都會顯得臃腫。&lt;/p&gt;
+&lt;h3 id=&#34;das-的致命傷宿主機鎖定-host-lockout&#34;&gt;DAS 的致命傷：宿主機鎖定 (Host Lockout)&lt;/h3&gt;
+&lt;p&gt;DAS 的性能是以 &lt;strong&gt;「可用性」&lt;/strong&gt; 為代價的。
+在 DAS 架構中，儲存設備沒有自己的「大腦」，它完全依賴宿主機的 OS 來管理文件系統。這意味著如果你的伺服器主機板燒了，或者 OS 崩潰導致無法啟動，即使你的硬碟全部健康，你的數據也被「鎖死」在那個故障的宿主機後面。你必須物理性地將整個擴展櫃搬到另一台兼容的機器上才能讀取數據。&lt;/p&gt;
+&lt;h2 id=&#34;nas以網路稅換取數據流動性&#34;&gt;NAS：以網路稅換取數據流動性&lt;/h2&gt;
+&lt;p&gt;NAS (Network Attached Storage) 實際上是一台 &lt;strong&gt;專用的儲存伺服器&lt;/strong&gt;。它有自己的 CPU、記憶體和 OS。
+當你請求一個檔案時，路徑變成了：&lt;code&gt;Client $\rightarrow$ Network $\rightarrow$ NAS OS $\rightarrow$ Disk&lt;/code&gt;。這裡產生了所謂的 &lt;strong&gt;「網路稅」 (Network Tax)&lt;/strong&gt; —— 數據需要被封裝成 SMB/NFS 協議，經過網路交換機，再由 NAS 的 CPU 解包並讀取。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

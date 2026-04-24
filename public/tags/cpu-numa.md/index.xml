@@ -1,15 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cpu-Numa.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/</link><description>Recent content in Cpu-Numa.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Cpu Numa</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</guid><description>&lt;h1 id="記憶體的物理學cpu-拓撲與-numa-懲罰">記憶體的物理學：CPU 拓撲與 NUMA 懲罰&lt;/h1>
-&lt;p>很多人在調優高性能應用時，習慣於監控 CPU 使用率。當看到 CPU 只有 50% 但吞吐量卻上不去時，第一反應通常是「程式有鎖」或「網路慢」。
-但對於跑在多路伺服器上的應用，真正的兇手往往是 &lt;strong>NUMA (Non-Uniform Memory Access)&lt;/strong>。&lt;/p>
-&lt;h2 id="記憶體訪問不再是均一的">記憶體訪問不再是「均一」的&lt;/h2>
-&lt;p>在單路 CPU 時代，CPU 訪問記憶體就像在同一個房間拿東西。但在現代多路伺服器中，每個 CPU 都有自己的本地記憶體控制器。
-如果你在 Socket 0 上運行一個線程，但它訪問的數據卻落在 Socket 1 的記憶體中，這個請求必須經過 &lt;strong>UPI (Intel)&lt;/strong> 或 &lt;strong>Infinity Fabric (AMD)&lt;/strong> 總線。這就是所謂的 &lt;strong>Remote Memory Access&lt;/strong>。
-&lt;strong>這導致了一個殘酷的事實：訪問遠端記憶體的延遲，比本地記憶體高出 30% 到 50%。&lt;/strong>&lt;/p>
-&lt;h2 id="sre-的實戰對策追求極致的局部性-locality">SRE 的實戰對策：追求極致的局部性 (Locality)&lt;/h2>
-&lt;p>如果你在處理高頻交易、實時音頻或大規模資料庫，你不能把記憶體訪問交給內核隨機分配。&lt;/p>
-&lt;h3 id="1-cpu-pinning-與記憶體親和性">1. CPU Pinning 與記憶體親和性&lt;/h3>
-&lt;p>不要讓內核在不同的核心之間隨機搬移你的線程（Context Switch）。使用 &lt;code>numactl&lt;/code> 強制將進程綁定在特定的 NUMA 節點上：
-&lt;code>numactl --cpunodebind=0 --membind=0 ./my_app&lt;/code>
-這確保了 &lt;strong>「計算」與「數據」在物理空間上是最近的&lt;/strong>。&lt;/p>
-&lt;h3 id="2-禁用-smt-超線程">2. 禁用 SMT (超線程)&lt;/h3>
-&lt;p>對於極致低延遲的場景，超線程 (Hyper-Threading) 其實是一種干擾。兩個邏輯核心共享同一個物理算術邏輯單元 (ALU)，這會引入不可預測的抖動 (Jitter)。在追求 P99.99 穩定性的系統中，直接在 BIOS 裡關掉 SMT。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Cpu-Numa.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/</link>
+    <description>Recent content in Cpu-Numa.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cpu Numa</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</guid>
+      <description>&lt;h1 id=&#34;記憶體的物理學cpu-拓撲與-numa-懲罰&#34;&gt;記憶體的物理學：CPU 拓撲與 NUMA 懲罰&lt;/h1&gt;
+&lt;p&gt;很多人在調優高性能應用時，習慣於監控 CPU 使用率。當看到 CPU 只有 50% 但吞吐量卻上不去時，第一反應通常是「程式有鎖」或「網路慢」。
+但對於跑在多路伺服器上的應用，真正的兇手往往是 &lt;strong&gt;NUMA (Non-Uniform Memory Access)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;記憶體訪問不再是均一的&#34;&gt;記憶體訪問不再是「均一」的&lt;/h2&gt;
+&lt;p&gt;在單路 CPU 時代，CPU 訪問記憶體就像在同一個房間拿東西。但在現代多路伺服器中，每個 CPU 都有自己的本地記憶體控制器。
+如果你在 Socket 0 上運行一個線程，但它訪問的數據卻落在 Socket 1 的記憶體中，這個請求必須經過 &lt;strong&gt;UPI (Intel)&lt;/strong&gt; 或 &lt;strong&gt;Infinity Fabric (AMD)&lt;/strong&gt; 總線。這就是所謂的 &lt;strong&gt;Remote Memory Access&lt;/strong&gt;。
+&lt;strong&gt;這導致了一個殘酷的事實：訪問遠端記憶體的延遲，比本地記憶體高出 30% 到 50%。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;sre-的實戰對策追求極致的局部性-locality&#34;&gt;SRE 的實戰對策：追求極致的局部性 (Locality)&lt;/h2&gt;
+&lt;p&gt;如果你在處理高頻交易、實時音頻或大規模資料庫，你不能把記憶體訪問交給內核隨機分配。&lt;/p&gt;
+&lt;h3 id=&#34;1-cpu-pinning-與記憶體親和性&#34;&gt;1. CPU Pinning 與記憶體親和性&lt;/h3&gt;
+&lt;p&gt;不要讓內核在不同的核心之間隨機搬移你的線程（Context Switch）。使用 &lt;code&gt;numactl&lt;/code&gt; 強制將進程綁定在特定的 NUMA 節點上：
+&lt;code&gt;numactl --cpunodebind=0 --membind=0 ./my_app&lt;/code&gt;
+這確保了 &lt;strong&gt;「計算」與「數據」在物理空間上是最近的&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;2-禁用-smt-超線程&#34;&gt;2. 禁用 SMT (超線程)&lt;/h3&gt;
+&lt;p&gt;對於極致低延遲的場景，超線程 (Hyper-Threading) 其實是一種干擾。兩個邏輯核心共享同一個物理算術邏輯單元 (ALU)，這會引入不可預測的抖動 (Jitter)。在追求 P99.99 穩定性的系統中，直接在 BIOS 裡關掉 SMT。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

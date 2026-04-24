@@ -1,19 +1,37 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Copilotkit-Agent-Ui.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/</link><description>Recent content in Copilotkit-Agent-Ui.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Copilotkit Agent Ui</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</guid><description>&lt;h1 id="擺脫對話框的束縛為什麼-agent-native-ui-是-ai-應用的下一站">擺脫對話框的束縛：為什麼 Agent-Native UI 是 AI 應用的下一站&lt;/h1>
-&lt;p>很多人在開發 AI Agent 時，最直覺的思考方式就是「做一個對話框」。用戶輸入 $
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Copilotkit-Agent-Ui.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/</link>
+    <description>Recent content in Copilotkit-Agent-Ui.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Copilotkit Agent Ui</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</guid>
+      <description>&lt;h1 id=&#34;擺脫對話框的束縛為什麼-agent-native-ui-是-ai-應用的下一站&#34;&gt;擺脫對話框的束縛：為什麼 Agent-Native UI 是 AI 應用的下一站&lt;/h1&gt;
+&lt;p&gt;很多人在開發 AI Agent 時，最直覺的思考方式就是「做一個對話框」。用戶輸入 $
 ightarrow$ Agent 思考 $
-ightarrow$ 回傳文字。&lt;/p>
-&lt;p>但如果你真的試著在生產環境運行 Agent，你會發現對話框其實是個巨大的瓶頸。當 Agent 需要處理複雜的狀態、更新數據或請求用戶確認時，純文字的互動會變得異常低效。這就是為什麼我最近在關注 &lt;strong>CopilotKit&lt;/strong>，以及它背後推動的 &lt;strong>AG-UI Protocol&lt;/strong>。&lt;/p>
-&lt;h2 id="對話框之後的思考什麼是-agent-native-ui">對話框之後的思考：什麼是 Agent-Native UI？&lt;/h2>
-&lt;p>簡單來說，Agent-Native UI 意味著介面不再是靜態的，而是&lt;strong>隨 Agent 的計畫而動態演化&lt;/strong>。&lt;/p>
-&lt;p>想像一下，當你要求 Agent 「幫我分析上季度的銷售數據並調整預算」時，它不應該只是回覆你「我正在分析中&amp;hellip;」，而應該直接在介面上渲染出一個實時更新的分析圖表，並在需要你確認預算金額時，自動彈出一個輸入表單。&lt;/p>
-&lt;p>這就是 CopilotKit 核心解決的問題。它不再把 UI 當成單純的輸出端，而是將其視為 Agent 執行路徑的一部分。&lt;/p>
-&lt;h2 id="copilotkit-的技術核心">CopilotKit 的技術核心&lt;/h2>
-&lt;p>CopilotKit 其實是為前端開發者提供了一套工具鏈，讓 AI Agent 能夠直接「操縱」前端介面：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>Generative UI (生成式 UI)&lt;/strong>：Agent 可以根據當前的狀態，在運行時決定要渲染哪個組件。這讓 UI 從「預定義」變成了「動態生成」。&lt;/li>
-&lt;li>&lt;strong>共享狀態層 (Shared State Layer)&lt;/strong>：這是最關鍵的部分。後端 Agent 的狀態與前端 UI 實時同步。不用再寫複雜的 Polling 或 WebSocket 邏輯，Agent 修改狀態，UI 直接反應。&lt;/li>
-&lt;li>&lt;strong>內建的 HITL (Human-in-the-Loop)&lt;/strong>：在生產級 Agent 中，完全自動化是危險的。CopilotKit 提供了一套標準流程，讓 Agent 能在關鍵節點「暫停」，請求用戶確認或修改，然後再繼續執行。&lt;/li>
-&lt;li>&lt;strong>&lt;code>useAgent&lt;/code> Hook&lt;/strong>：對於 React 開發者來說，這就像是一個控制開關，讓前端能以程式化方式讀取 Agent 的狀態或觸發動作。&lt;/li>
-&lt;/ol>
-&lt;h2 id="從工具調用到介面同步">從「工具調用」到「介面同步」&lt;/h2>
-&lt;p>目前的 Agent 框架（如 LangGraph 或 CrewAI）大多專注於後端的邏輯編排（Orchestration）。但後端跑得再快，如果前端還在等文字流 (Streaming) 輸出，用戶體驗依然是破碎的。&lt;/p></description></item></channel></rss>
+ightarrow$ 回傳文字。&lt;/p&gt;
+&lt;p&gt;但如果你真的試著在生產環境運行 Agent，你會發現對話框其實是個巨大的瓶頸。當 Agent 需要處理複雜的狀態、更新數據或請求用戶確認時，純文字的互動會變得異常低效。這就是為什麼我最近在關注 &lt;strong&gt;CopilotKit&lt;/strong&gt;，以及它背後推動的 &lt;strong&gt;AG-UI Protocol&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;對話框之後的思考什麼是-agent-native-ui&#34;&gt;對話框之後的思考：什麼是 Agent-Native UI？&lt;/h2&gt;
+&lt;p&gt;簡單來說，Agent-Native UI 意味著介面不再是靜態的，而是&lt;strong&gt;隨 Agent 的計畫而動態演化&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;想像一下，當你要求 Agent 「幫我分析上季度的銷售數據並調整預算」時，它不應該只是回覆你「我正在分析中&amp;hellip;」，而應該直接在介面上渲染出一個實時更新的分析圖表，並在需要你確認預算金額時，自動彈出一個輸入表單。&lt;/p&gt;
+&lt;p&gt;這就是 CopilotKit 核心解決的問題。它不再把 UI 當成單純的輸出端，而是將其視為 Agent 執行路徑的一部分。&lt;/p&gt;
+&lt;h2 id=&#34;copilotkit-的技術核心&#34;&gt;CopilotKit 的技術核心&lt;/h2&gt;
+&lt;p&gt;CopilotKit 其實是為前端開發者提供了一套工具鏈，讓 AI Agent 能夠直接「操縱」前端介面：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Generative UI (生成式 UI)&lt;/strong&gt;：Agent 可以根據當前的狀態，在運行時決定要渲染哪個組件。這讓 UI 從「預定義」變成了「動態生成」。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;共享狀態層 (Shared State Layer)&lt;/strong&gt;：這是最關鍵的部分。後端 Agent 的狀態與前端 UI 實時同步。不用再寫複雜的 Polling 或 WebSocket 邏輯，Agent 修改狀態，UI 直接反應。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;內建的 HITL (Human-in-the-Loop)&lt;/strong&gt;：在生產級 Agent 中，完全自動化是危險的。CopilotKit 提供了一套標準流程，讓 Agent 能在關鍵節點「暫停」，請求用戶確認或修改，然後再繼續執行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;useAgent&lt;/code&gt; Hook&lt;/strong&gt;：對於 React 開發者來說，這就像是一個控制開關，讓前端能以程式化方式讀取 Agent 的狀態或觸發動作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;從工具調用到介面同步&#34;&gt;從「工具調用」到「介面同步」&lt;/h2&gt;
+&lt;p&gt;目前的 Agent 框架（如 LangGraph 或 CrewAI）大多專注於後端的邏輯編排（Orchestration）。但後端跑得再快，如果前端還在等文字流 (Streaming) 輸出，用戶體驗依然是破碎的。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

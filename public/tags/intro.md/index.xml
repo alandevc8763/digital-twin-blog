@@ -1,19 +1,37 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Intro.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/</link><description>Recent content in Intro.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Intro</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</guid><description>&lt;h1 id="-數位分身從-devops-到-ai-agentic-經營者">🌐 數位分身：從 DevOps 到 AI Agentic 經營者&lt;/h1>
-&lt;p>歡迎來到 Alan 的數位分身 (Digital Twin) 知識庫。這裡不僅僅是一個技術部落格，而是一個 &lt;strong>「活的知識體系」&lt;/strong>。&lt;/p>
-&lt;h2 id="關於本站">關於本站&lt;/h2>
-&lt;p>本站是由 Alan 與他的 AI Agent (Hermes) 共同維護的數位分身。其核心目標是將 DevOps/SRE 的工程嚴謹性與 AI 的指數級生產力相結合，探索如何透過 &lt;strong>Vibe Coding&lt;/strong> 與 &lt;strong>Agentic Workflow&lt;/strong> 構建高效的數位資產。&lt;/p>
-&lt;h2 id="核心哲學">核心哲學&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Depth-First&lt;/strong>：在技術深處建立護城河。&lt;/li>
-&lt;li>&lt;strong>Breadth-First&lt;/strong>：在市場感知中快速探索。&lt;/li>
-&lt;li>&lt;strong>Closed-Loop Evolution&lt;/strong>：執行 $\rightarrow$ 評估 $\rightarrow$ 修正 $\rightarrow$ 進化。&lt;/li>
-&lt;/ul>
-&lt;h2 id="導航指引">導航指引&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Cloud Infrastructure&lt;/strong>: 紀錄在 AWS 等雲端環境中的架構實踐與坑洞。&lt;/li>
-&lt;li>&lt;strong>Database Engineering&lt;/strong>: 探討資料庫優化與維運的藝術。&lt;/li>
-&lt;li>&lt;strong>Automation&lt;/strong>: 分享將重複性工作轉化為自動化工具的過程。&lt;/li>
-&lt;li>&lt;strong>Journey&lt;/strong>: 記錄從傳統工程師轉型為 AI-Native Builder 的心路歷程。&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;p>&lt;em>本站內容由 Alan 策劃，Hermes Agent 協同編寫並維護。&lt;/em>&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Intro.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/</link>
+    <description>Recent content in Intro.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intro</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</guid>
+      <description>&lt;h1 id=&#34;-數位分身從-devops-到-ai-agentic-經營者&#34;&gt;🌐 數位分身：從 DevOps 到 AI Agentic 經營者&lt;/h1&gt;
+&lt;p&gt;歡迎來到 Alan 的數位分身 (Digital Twin) 知識庫。這裡不僅僅是一個技術部落格，而是一個 &lt;strong&gt;「活的知識體系」&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;關於本站&#34;&gt;關於本站&lt;/h2&gt;
+&lt;p&gt;本站是由 Alan 與他的 AI Agent (Hermes) 共同維護的數位分身。其核心目標是將 DevOps/SRE 的工程嚴謹性與 AI 的指數級生產力相結合，探索如何透過 &lt;strong&gt;Vibe Coding&lt;/strong&gt; 與 &lt;strong&gt;Agentic Workflow&lt;/strong&gt; 構建高效的數位資產。&lt;/p&gt;
+&lt;h2 id=&#34;核心哲學&#34;&gt;核心哲學&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Depth-First&lt;/strong&gt;：在技術深處建立護城河。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Breadth-First&lt;/strong&gt;：在市場感知中快速探索。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Closed-Loop Evolution&lt;/strong&gt;：執行 $\rightarrow$ 評估 $\rightarrow$ 修正 $\rightarrow$ 進化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;導航指引&#34;&gt;導航指引&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud Infrastructure&lt;/strong&gt;: 紀錄在 AWS 等雲端環境中的架構實踐與坑洞。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Database Engineering&lt;/strong&gt;: 探討資料庫優化與維運的藝術。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automation&lt;/strong&gt;: 分享將重複性工作轉化為自動化工具的過程。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Journey&lt;/strong&gt;: 記錄從傳統工程師轉型為 AI-Native Builder 的心路歷程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本站內容由 Alan 策劃，Hermes Agent 協同編寫並維護。&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

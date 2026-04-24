@@ -1,1 +1,446 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tags on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/</link><description>Recent content in Tags on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>2026-04-17-Blog-Creation.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/2026-04-17-blog-creation.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/2026-04-17-blog-creation.md/</guid><description/></item><item><title>Agent-Engineering-Rigor.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/agent-engineering-rigor.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/agent-engineering-rigor.md/</guid><description/></item><item><title>Agent-Verification.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/agent-verification.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/agent-verification.md/</guid><description/></item><item><title>Agents-2-0.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/agents-2-0.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/agents-2-0.md/</guid><description/></item><item><title>AI</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ai/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai/</guid><description/></item><item><title>Ai Eng.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/</guid><description/></item><item><title>Ai-Engineering</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-engineering/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai-engineering/</guid><description/></item><item><title>Ai-Implementation-Specialist-Roadmap.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-implementation-specialist-roadmap.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai-implementation-specialist-roadmap.md/</guid><description/></item><item><title>Automation</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/automation/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/automation/</guid><description/></item><item><title>Autonomous-Coding-Agents.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/</guid><description/></item><item><title>Aws-Msk.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/aws-msk.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/aws-msk.md/</guid><description/></item><item><title>Browser-Use.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/browser-use.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/browser-use.md/</guid><description/></item><item><title>Cfs-Scheduler.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/cfs-scheduler.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/cfs-scheduler.md/</guid><description/></item><item><title>Claude-Context.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/claude-context.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/claude-context.md/</guid><description/></item><item><title>Cloud Infra</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/cloud-infra/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/cloud-infra/</guid><description/></item><item><title>Container-Isolation-Internals.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/container-isolation-internals.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/container-isolation-internals.md/</guid><description/></item><item><title>Container-Runtime-Deep-Dive.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/container-runtime-deep-dive.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/container-runtime-deep-dive.md/</guid><description/></item><item><title>Copilotkit-Agent-Ui.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/</guid><description/></item><item><title>Core-Concepts.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/core-concepts.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/core-concepts.md/</guid><description/></item><item><title>Cpu-Numa.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/</guid><description/></item><item><title>Data-Integrity</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/data-integrity/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/data-integrity/</guid><description/></item><item><title>Db Eng</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/db-eng/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/db-eng/</guid><description/></item><item><title>Design-Philosophy.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/</guid><description/></item><item><title>Ebpf-Modern-Observability.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/</guid><description/></item><item><title>General</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/general/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/general/</guid><description/></item><item><title>Gpu-Llm-K8S-Scheduling.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/gpu-llm-k8s-scheduling.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/gpu-llm-k8s-scheduling.md/</guid><description/></item><item><title>Graphrag-Deep-Dive.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/graphrag-deep-dive.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/graphrag-deep-dive.md/</guid><description/></item><item><title>HCI</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/hci/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/hci/</guid><description/></item><item><title>Homelab</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/homelab/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/homelab/</guid><description/></item><item><title>Homelab.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/homelab.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/homelab.md/</guid><description/></item><item><title>Hubs</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/hubs/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/hubs/</guid><description/></item><item><title>Iam-Cli.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/</guid><description/></item><item><title>Intro.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/</guid><description/></item><item><title>Io-Uring-Performance.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/io-uring-performance.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/io-uring-performance.md/</guid><description/></item><item><title>Journey</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/journey/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/journey/</guid><description/></item><item><title>K8S-Gateway-Api-Evolution.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-gateway-api-evolution.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-gateway-api-evolution.md/</guid><description/></item><item><title>K8S-Networking-Plumbing.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-networking-plumbing.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-networking-plumbing.md/</guid><description/></item><item><title>K8S-Pod-Lifecycle.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-pod-lifecycle.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-pod-lifecycle.md/</guid><description/></item><item><title>K8S-Resource-Limits.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-resource-limits.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-resource-limits.md/</guid><description/></item><item><title>K8S-Storage-Plumbing.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/</guid><description/></item><item><title>Kafka</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/kafka/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/kafka/</guid><description/></item><item><title>Local-Ai-Infra.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/local-ai-infra.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/local-ai-infra.md/</guid><description/></item><item><title>Mongodb.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/mongodb.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/mongodb.md/</guid><description/></item><item><title>Multi-Agent-Evolution.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/multi-agent-evolution.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/multi-agent-evolution.md/</guid><description/></item><item><title>Nas-vs-Das.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/</guid><description/></item><item><title>Network-Tuning-Deep-Dive.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/network-tuning-deep-dive.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/network-tuning-deep-dive.md/</guid><description/></item><item><title>Ops-Guide.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/</guid><description/></item><item><title>Performance</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/performance/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/performance/</guid><description/></item><item><title>Plans</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/plans/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/plans/</guid><description/></item><item><title>Prompt-Patterns.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/</guid><description/></item><item><title>Proxmox</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/proxmox/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/proxmox/</guid><description/></item><item><title>Psi-Metrics.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/</guid><description/></item><item><title>Rag-Truth.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/rag-truth.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/rag-truth.md/</guid><description/></item><item><title>SRE</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/sre/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/sre/</guid><description/></item><item><title>Sre Infra.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/sre-infra.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/sre-infra.md/</guid><description/></item><item><title>Sre-Stability-Myth.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/sre-stability-myth.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/sre-stability-myth.md/</guid><description/></item><item><title>Tcp-Stack-Deep-Dive.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/</guid><description/></item><item><title>Tg-Bots.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/tg-bots.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/tg-bots.md/</guid><description/></item><item><title>Vfs-Tracing.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/vfs-tracing.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/vfs-tracing.md/</guid><description/></item><item><title>Virtualization</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/virtualization/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/virtualization/</guid><description/></item><item><title>Vllm.Md</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/vllm.md/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/vllm.md/</guid><description/></item><item><title>ZFS</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/zfs/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/tags/zfs/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/</link>
+    <description>Recent content in Tags on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026-04-17-Blog-Creation.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/2026-04-17-blog-creation.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/2026-04-17-blog-creation.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agent-Engineering-Rigor.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/agent-engineering-rigor.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/agent-engineering-rigor.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agent-Verification.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/agent-verification.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/agent-verification.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agents-2-0.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/agents-2-0.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/agents-2-0.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AI</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/ai/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai Eng.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai-Engineering</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-engineering/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai-engineering/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai-Implementation-Specialist-Roadmap.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-implementation-specialist-roadmap.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/ai-implementation-specialist-roadmap.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Automation</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/automation/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/automation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Autonomous-Coding-Agents.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Aws-Msk.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/aws-msk.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/aws-msk.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Browser-Use.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/browser-use.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/browser-use.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cfs-Scheduler.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/cfs-scheduler.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/cfs-scheduler.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Claude-Context.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/claude-context.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/claude-context.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloud Infra</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/cloud-infra/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/cloud-infra/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Container-Isolation-Internals.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/container-isolation-internals.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/container-isolation-internals.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Container-Runtime-Deep-Dive.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/container-runtime-deep-dive.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/container-runtime-deep-dive.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Copilotkit-Agent-Ui.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/copilotkit-agent-ui.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Core-Concepts.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/core-concepts.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/core-concepts.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cpu-Numa.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/cpu-numa.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Data-Integrity</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/data-integrity/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/data-integrity/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Db Eng</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/db-eng/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/db-eng/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Design-Philosophy.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ebpf-Modern-Observability.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>General</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/general/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/general/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gpu-Llm-K8S-Scheduling.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/gpu-llm-k8s-scheduling.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/gpu-llm-k8s-scheduling.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Graphrag-Deep-Dive.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/graphrag-deep-dive.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/graphrag-deep-dive.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>HCI</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/hci/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/hci/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Homelab</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/homelab/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/homelab/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Homelab.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/homelab.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/homelab.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hubs</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/hubs/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/hubs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Iam-Cli.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Intro.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/intro.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Io-Uring-Performance.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/io-uring-performance.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/io-uring-performance.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Journey</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/journey/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/journey/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8S-Gateway-Api-Evolution.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-gateway-api-evolution.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-gateway-api-evolution.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8S-Networking-Plumbing.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-networking-plumbing.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-networking-plumbing.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8S-Pod-Lifecycle.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-pod-lifecycle.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-pod-lifecycle.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8S-Resource-Limits.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-resource-limits.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-resource-limits.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8S-Storage-Plumbing.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kafka</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/kafka/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/kafka/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Local-Ai-Infra.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/local-ai-infra.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/local-ai-infra.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mongodb.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/mongodb.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/mongodb.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multi-Agent-Evolution.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/multi-agent-evolution.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/multi-agent-evolution.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nas-vs-Das.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/nas-vs-das.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Network-Tuning-Deep-Dive.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/network-tuning-deep-dive.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/network-tuning-deep-dive.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ops-Guide.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Performance</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/performance/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/performance/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Plans</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/plans/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/plans/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Prompt-Patterns.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Proxmox</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/proxmox/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/proxmox/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Psi-Metrics.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rag-Truth.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/rag-truth.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/rag-truth.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SRE</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/sre/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/sre/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sre Infra.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/sre-infra.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/sre-infra.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sre-Stability-Myth.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/sre-stability-myth.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/sre-stability-myth.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tcp-Stack-Deep-Dive.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tg-Bots.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/tg-bots.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/tg-bots.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vfs-Tracing.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/vfs-tracing.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/vfs-tracing.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Virtualization</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/virtualization/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/virtualization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vllm.Md</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/vllm.md/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/vllm.md/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ZFS</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/tags/zfs/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/tags/zfs/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

@@ -1,5 +1,13 @@
-<!doctype html><html lang=en dir=auto data-theme=dark><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Tcp Stack Deep Dive | Alans Digital Twin Blog</title>
-<meta name=keywords content="General,Tcp-Stack-Deep-Dive.Md"><meta name=description content="當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Tcp Stack Deep Dive | Alans Digital Twin Blog</title>
+<meta name="keywords" content="General, Tcp-Stack-Deep-Dive.Md">
+<meta name="description" content="當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤
 對於大多數開發者來說，發送一個網路請求就像是按下開關 $
 ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。
 如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。
@@ -13,20 +21,313 @@ ightarrow$ Socket Buffer (sk_buff) $
 ightarrow$ eth0。
 
 2. 命名空間跳躍 (The Jump)
-封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。"><meta name=author content="Alan"><link rel=canonical href=https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/><link crossorigin=anonymous href=/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://alandevc8763.github.io/digital-twin-blog/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png><link rel=apple-touch-icon href=https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png><link rel=mask-icon href=https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><script>localStorage.getItem("pref-theme")==="light"&&(document.querySelector("html").dataset.theme="light")</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/"><meta property="og:site_name" content="Alans Digital Twin Blog"><meta property="og:title" content="Tcp Stack Deep Dive"><meta property="og:description" content="當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。
+封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。">
+<meta name="author" content="Alan">
+<link rel="canonical" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/">
+<link crossorigin="anonymous" href="/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alandevc8763.github.io/digital-twin-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/">
+  <meta property="og:site_name" content="Alans Digital Twin Blog">
+  <meta property="og:title" content="Tcp Stack Deep Dive">
+  <meta property="og:description" content="當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。
 如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。
 封包的「垂直旅程」：從 Pod 到物理網卡 在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 Context Handoffs (上下文交接)。這正是潛在延遲和丟包的來源。
 1. Pod 命名空間 (The Source) 應用程式呼叫 connect()，核心在 Pod 的網路命名空間 (netns) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。
-追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。"><meta property="og:locale" content="zh_tw"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-04-24T00:00:00+00:00"><meta property="article:modified_time" content="2026-04-24T00:00:00+00:00"><meta property="article:tag" content="General"><meta property="article:tag" content="Tcp-Stack-Deep-Dive.Md"><meta name=twitter:card content="summary"><meta name=twitter:title content="Tcp Stack Deep Dive"><meta name=twitter:description content="當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。
+追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。">
+  <meta property="og:locale" content="zh_tw">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:tag" content="General">
+    <meta property="article:tag" content="Tcp-Stack-Deep-Dive.Md">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Tcp Stack Deep Dive">
+  <meta name="twitter:description" content="當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。
 如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。
 封包的「垂直旅程」：從 Pod 到物理網卡 在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 Context Handoffs (上下文交接)。這正是潛在延遲和丟包的來源。
 1. Pod 命名空間 (The Source) 應用程式呼叫 connect()，核心在 Pod 的網路命名空間 (netns) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。
-追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://alandevc8763.github.io/digital-twin-blog/posts/"},{"@type":"ListItem","position":2,"name":"Tcp Stack Deep Dive","item":"https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Tcp Stack Deep Dive","name":"Tcp Stack Deep Dive","description":"當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。\n如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。\n封包的「垂直旅程」：從 Pod 到物理網卡 在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 Context Handoffs (上下文交接)。這正是潛在延遲和丟包的來源。\n1. Pod 命名空間 (The Source) 應用程式呼叫 connect()，核心在 Pod 的網路命名空間 (netns) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。\n追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。\n","keywords":["General","Tcp-Stack-Deep-Dive.Md"],"articleBody":"當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。\n如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。\n封包的「垂直旅程」：從 Pod 到物理網卡 在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 Context Handoffs (上下文交接)。這正是潛在延遲和丟包的來源。\n1. Pod 命名空間 (The Source) 應用程式呼叫 connect()，核心在 Pod 的網路命名空間 (netns) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。\n追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。\nSRE 訊號：如果這裡丟包，通常意味著 CNI 插件崩潰或介面被意外刪除。 3. 主機導向邏輯 (Netfilter \u0026 Kube-Proxy) 進入 root 命名空間後，封包會撞上 Netfilter 的鉤子。如果目標是 ClusterIP，iptables 或 IPVS 會執行 DNAT (目的地址轉換)，將虛擬 IP 改為真實的 Pod IP。\n致命瓶頸：Conntrack (連接追蹤) 核心必須記錄每一次轉換的狀態。如果 nf_conntrack_max 達到上限，核心會靜默丟棄 (Silent Drop) 封包。這就是為什麼在高併發環境下，你會看到隨機的連線失敗，而日誌裡卻找不到任何錯誤。 4. TCP 狀態機 (The Engine) 最後，核心處理 TCP 協議邏輯：管理三次握手、計算擁塞窗口 (cwnd) 以及處理重傳定時器 (RTO)。\n實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞) 這是 SRE 面試中最經典的場景：小請求秒回，大請求超時。\n現象：API 呼叫 GET /health 正常，但 GET /large-report 導致連線永久掛起。\n底層 Trace 過程：\n抓包分析：在 Pod 和 Host 同時 tcpdump。發現伺服器發出了 1500 bytes 的大封包，但客戶端永遠沒有回傳 ACK。 MTU 驗證：檢查發現 Pod 的 MTU 是 1500，但 CNI 的 Overlay 網路 (如 VXLAN) 因為封裝開銷，實際 MTU 只有 1450。 根因：這是一個 「MTU 黑洞」。封包太大，中間路由器丟棄了它並發出 Fragmentation Needed 訊號，但該訊號被防火牆攔截了。發送端在傻傻地等待一個永遠不會到來的 ACK。 解決方案：統一對齊 MTU，或開啟 TCP MSS Clamping，強制在握手階段協商較小的最大段大小。\n結語：從「看日誌」到「看軌跡」 真正的 SRE 不應該依賴 kubectl logs，而應該依賴於對 軌跡 (Trace) 的理解。\n當你能從 ss -ntie 查看 cwnd，用 conntrack -L 檢查狀態表，用 tcpdump 對比 veth 與 eth0 的時間戳時，網路就不再是一個黑盒，而是一條清晰的數據流。\n技術關鍵字：\nNetfilter / Conntrack (連線追蹤) veth Pair (虛擬乙太網) MTU Mismatch (最大傳輸單元不匹配) TCP State Machine (TCP 狀態機) DNAT / ClusterIP (目的地址轉換) ","wordCount":"222","inLanguage":"en","datePublished":"2026-04-24T00:00:00Z","dateModified":"2026-04-24T00:00:00Z","author":{"@type":"Person","name":"Alan"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/"},"publisher":{"@type":"Organization","name":"Alans Digital Twin Blog","logo":{"@type":"ImageObject","url":"https://alandevc8763.github.io/digital-twin-blog/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://alandevc8763.github.io/digital-twin-blog/ accesskey=h title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://alandevc8763.github.io/digital-twin-blog/sre-hub/ title="SRE Hub"><span>SRE Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/ai-hub/ title="AI Hub"><span>AI Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/homelab-hub/ title="HomeLab Hub"><span>HomeLab Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/journey/ title=Journey><span>Journey</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Tcp Stack Deep Dive</h1><div class=post-meta><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span></div></header><div class="post-content md-content"><h1 id=當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤>當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤<a hidden class=anchor aria-hidden=true href=#當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤>#</a></h1><p>對於大多數開發者來說，發送一個網路請求就像是按下開關 $
-ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的<strong>路徑導向 (Steering)</strong>。</p><p>如果你曾經遇到過這種情況：<code>ping</code> 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 <code>Connection Timeout</code> —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。</p><h2 id=封包的垂直旅程從-pod-到物理網卡>封包的「垂直旅程」：從 Pod 到物理網卡<a hidden class=anchor aria-hidden=true href=#封包的垂直旅程從-pod-到物理網卡>#</a></h2><p>在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 <strong>Context Handoffs (上下文交接)</strong>。這正是潛在延遲和丟包的來源。</p><h3 id=1-pod-命名空間-the-source>1. Pod 命名空間 (The Source)<a hidden class=anchor aria-hidden=true href=#1-pod-命名空間-the-source>#</a></h3><p>應用程式呼叫 <code>connect()</code>，核心在 Pod 的網路命名空間 (<code>netns</code>) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。</p><ul><li><strong>追蹤點</strong>：<code>Pod App</code> $
+追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Tcp Stack Deep Dive",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Tcp Stack Deep Dive",
+  "name": "Tcp Stack Deep Dive",
+  "description": "當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。\n如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。\n封包的「垂直旅程」：從 Pod 到物理網卡 在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 Context Handoffs (上下文交接)。這正是潛在延遲和丟包的來源。\n1. Pod 命名空間 (The Source) 應用程式呼叫 connect()，核心在 Pod 的網路命名空間 (netns) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。\n追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。\n",
+  "keywords": [
+    "General", "Tcp-Stack-Deep-Dive.Md"
+  ],
+  "articleBody": "當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 對於大多數開發者來說，發送一個網路請求就像是按下開關 $ ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的路徑導向 (Steering)。\n如果你曾經遇到過這種情況：ping 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 Connection Timeout —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。\n封包的「垂直旅程」：從 Pod 到物理網卡 在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 Context Handoffs (上下文交接)。這正是潛在延遲和丟包的來源。\n1. Pod 命名空間 (The Source) 應用程式呼叫 connect()，核心在 Pod 的網路命名空間 (netns) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。\n追蹤點：Pod App $ ightarrow$ Socket Buffer (sk_buff) $ ightarrow$ eth0。 2. 命名空間跳躍 (The Jump) 封包離開 Pod 的 eth0，通過一個 Virtual Ethernet (veth) pair。veth 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。\nSRE 訊號：如果這裡丟包，通常意味著 CNI 插件崩潰或介面被意外刪除。 3. 主機導向邏輯 (Netfilter \u0026 Kube-Proxy) 進入 root 命名空間後，封包會撞上 Netfilter 的鉤子。如果目標是 ClusterIP，iptables 或 IPVS 會執行 DNAT (目的地址轉換)，將虛擬 IP 改為真實的 Pod IP。\n致命瓶頸：Conntrack (連接追蹤) 核心必須記錄每一次轉換的狀態。如果 nf_conntrack_max 達到上限，核心會靜默丟棄 (Silent Drop) 封包。這就是為什麼在高併發環境下，你會看到隨機的連線失敗，而日誌裡卻找不到任何錯誤。 4. TCP 狀態機 (The Engine) 最後，核心處理 TCP 協議邏輯：管理三次握手、計算擁塞窗口 (cwnd) 以及處理重傳定時器 (RTO)。\n實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞) 這是 SRE 面試中最經典的場景：小請求秒回，大請求超時。\n現象：API 呼叫 GET /health 正常，但 GET /large-report 導致連線永久掛起。\n底層 Trace 過程：\n抓包分析：在 Pod 和 Host 同時 tcpdump。發現伺服器發出了 1500 bytes 的大封包，但客戶端永遠沒有回傳 ACK。 MTU 驗證：檢查發現 Pod 的 MTU 是 1500，但 CNI 的 Overlay 網路 (如 VXLAN) 因為封裝開銷，實際 MTU 只有 1450。 根因：這是一個 「MTU 黑洞」。封包太大，中間路由器丟棄了它並發出 Fragmentation Needed 訊號，但該訊號被防火牆攔截了。發送端在傻傻地等待一個永遠不會到來的 ACK。 解決方案：統一對齊 MTU，或開啟 TCP MSS Clamping，強制在握手階段協商較小的最大段大小。\n結語：從「看日誌」到「看軌跡」 真正的 SRE 不應該依賴 kubectl logs，而應該依賴於對 軌跡 (Trace) 的理解。\n當你能從 ss -ntie 查看 cwnd，用 conntrack -L 檢查狀態表，用 tcpdump 對比 veth 與 eth0 的時間戳時，網路就不再是一個黑盒，而是一條清晰的數據流。\n技術關鍵字：\nNetfilter / Conntrack (連線追蹤) veth Pair (虛擬乙太網) MTU Mismatch (最大傳輸單元不匹配) TCP State Machine (TCP 狀態機) DNAT / ClusterIP (目的地址轉換) ",
+  "wordCount" : "222",
+  "inLanguage": "en",
+  "datePublished": "2026-04-24T00:00:00Z",
+  "dateModified": "2026-04-24T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Alan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Alans Digital Twin Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://alandevc8763.github.io/digital-twin-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://alandevc8763.github.io/digital-twin-blog/" accesskey="h" title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/sre-hub/" title="SRE Hub">
+                    <span>SRE Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/ai-hub/" title="AI Hub">
+                    <span>AI Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/homelab-hub/" title="HomeLab Hub">
+                    <span>HomeLab Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/journey/" title="Journey">
+                    <span>Journey</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Tcp Stack Deep Dive
+    </h1>
+    <div class="post-meta"><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h1 id="當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤">當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤<a hidden class="anchor" aria-hidden="true" href="#當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤">#</a></h1>
+<p>對於大多數開發者來說，發送一個網路請求就像是按下開關 $
+ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的<strong>路徑導向 (Steering)</strong>。</p>
+<p>如果你曾經遇到過這種情況：<code>ping</code> 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 <code>Connection Timeout</code> —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。</p>
+<h2 id="封包的垂直旅程從-pod-到物理網卡">封包的「垂直旅程」：從 Pod 到物理網卡<a hidden class="anchor" aria-hidden="true" href="#封包的垂直旅程從-pod-到物理網卡">#</a></h2>
+<p>在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 <strong>Context Handoffs (上下文交接)</strong>。這正是潛在延遲和丟包的來源。</p>
+<h3 id="1-pod-命名空間-the-source">1. Pod 命名空間 (The Source)<a hidden class="anchor" aria-hidden="true" href="#1-pod-命名空間-the-source">#</a></h3>
+<p>應用程式呼叫 <code>connect()</code>，核心在 Pod 的網路命名空間 (<code>netns</code>) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。</p>
+<ul>
+<li><strong>追蹤點</strong>：<code>Pod App</code> $
 ightarrow$ <code>Socket Buffer (sk_buff)</code> $
-ightarrow$ <code>eth0</code>。</li></ul><h3 id=2-命名空間跳躍-the-jump>2. 命名空間跳躍 (The Jump)<a hidden class=anchor aria-hidden=true href=#2-命名空間跳躍-the-jump>#</a></h3><p>封包離開 Pod 的 <code>eth0</code>，通過一個 <strong>Virtual Ethernet (<code>veth</code>) pair</strong>。<code>veth</code> 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。</p><ul><li><strong>SRE 訊號</strong>：如果這裡丟包，通常意味著 CNI 插件崩潰或介面被意外刪除。</li></ul><h3 id=3-主機導向邏輯-netfilter--kube-proxy>3. 主機導向邏輯 (Netfilter & Kube-Proxy)<a hidden class=anchor aria-hidden=true href=#3-主機導向邏輯-netfilter--kube-proxy>#</a></h3><p>進入 root 命名空間後，封包會撞上 <strong>Netfilter</strong> 的鉤子。如果目標是 <code>ClusterIP</code>，<code>iptables</code> 或 <code>IPVS</code> 會執行 <strong>DNAT (目的地址轉換)</strong>，將虛擬 IP 改為真實的 Pod IP。</p><ul><li><strong>致命瓶頸：Conntrack (連接追蹤)</strong>
-核心必須記錄每一次轉換的狀態。如果 <code>nf_conntrack_max</code> 達到上限，核心會<strong>靜默丟棄 (Silent Drop)</strong> 封包。這就是為什麼在高併發環境下，你會看到隨機的連線失敗，而日誌裡卻找不到任何錯誤。</li></ul><h3 id=4-tcp-狀態機-the-engine>4. TCP 狀態機 (The Engine)<a hidden class=anchor aria-hidden=true href=#4-tcp-狀態機-the-engine>#</a></h3><p>最後，核心處理 TCP 協議邏輯：管理三次握手、計算擁塞窗口 (<code>cwnd</code>) 以及處理重傳定時器 (RTO)。</p><hr><h2 id=實戰案例為什麼大請求會掛掉-mtu-黑洞>實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞)<a hidden class=anchor aria-hidden=true href=#實戰案例為什麼大請求會掛掉-mtu-黑洞>#</a></h2><p>這是 SRE 面試中最經典的場景：<strong>小請求秒回，大請求超時。</strong></p><p><strong>現象</strong>：API 呼叫 <code>GET /health</code> 正常，但 <code>GET /large-report</code> 導致連線永久掛起。</p><p><strong>底層 Trace 過程</strong>：</p><ol><li><strong>抓包分析</strong>：在 Pod 和 Host 同時 <code>tcpdump</code>。發現伺服器發出了 1500 bytes 的大封包，但客戶端永遠沒有回傳 <code>ACK</code>。</li><li><strong>MTU 驗證</strong>：檢查發現 Pod 的 MTU 是 1500，但 CNI 的 Overlay 網路 (如 VXLAN) 因為封裝開銷，實際 MTU 只有 1450。</li><li><strong>根因</strong>：這是一個 <strong>「MTU 黑洞」</strong>。封包太大，中間路由器丟棄了它並發出 <code>Fragmentation Needed</code> 訊號，但該訊號被防火牆攔截了。發送端在傻傻地等待一個永遠不會到來的 <code>ACK</code>。</li></ol><p><strong>解決方案</strong>：統一對齊 MTU，或開啟 <strong>TCP MSS Clamping</strong>，強制在握手階段協商較小的最大段大小。</p><h2 id=結語從看日誌到看軌跡>結語：從「看日誌」到「看軌跡」<a hidden class=anchor aria-hidden=true href=#結語從看日誌到看軌跡>#</a></h2><p>真正的 SRE 不應該依賴 <code>kubectl logs</code>，而應該依賴於對 <strong>軌跡 (Trace)</strong> 的理解。</p><p>當你能從 <code>ss -ntie</code> 查看 <code>cwnd</code>，用 <code>conntrack -L</code> 檢查狀態表，用 <code>tcpdump</code> 對比 <code>veth</code> 與 <code>eth0</code> 的時間戳時，網路就不再是一個黑盒，而是一條清晰的數據流。</p><hr><p><strong>技術關鍵字：</strong></p><ul><li>Netfilter / Conntrack (連線追蹤)</li><li>veth Pair (虛擬乙太網)</li><li>MTU Mismatch (最大傳輸單元不匹配)</li><li>TCP State Machine (TCP 狀態機)</li><li>DNAT / ClusterIP (目的地址轉換)</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://alandevc8763.github.io/digital-twin-blog/tags/general/>General</a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/>Tcp-Stack-Deep-Dive.Md</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://alandevc8763.github.io/digital-twin-blog/>Alans Digital Twin Blog</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+ightarrow$ <code>eth0</code>。</li>
+</ul>
+<h3 id="2-命名空間跳躍-the-jump">2. 命名空間跳躍 (The Jump)<a hidden class="anchor" aria-hidden="true" href="#2-命名空間跳躍-the-jump">#</a></h3>
+<p>封包離開 Pod 的 <code>eth0</code>，通過一個 <strong>Virtual Ethernet (<code>veth</code>) pair</strong>。<code>veth</code> 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。</p>
+<ul>
+<li><strong>SRE 訊號</strong>：如果這裡丟包，通常意味著 CNI 插件崩潰或介面被意外刪除。</li>
+</ul>
+<h3 id="3-主機導向邏輯-netfilter--kube-proxy">3. 主機導向邏輯 (Netfilter &amp; Kube-Proxy)<a hidden class="anchor" aria-hidden="true" href="#3-主機導向邏輯-netfilter--kube-proxy">#</a></h3>
+<p>進入 root 命名空間後，封包會撞上 <strong>Netfilter</strong> 的鉤子。如果目標是 <code>ClusterIP</code>，<code>iptables</code> 或 <code>IPVS</code> 會執行 <strong>DNAT (目的地址轉換)</strong>，將虛擬 IP 改為真實的 Pod IP。</p>
+<ul>
+<li><strong>致命瓶頸：Conntrack (連接追蹤)</strong>
+核心必須記錄每一次轉換的狀態。如果 <code>nf_conntrack_max</code> 達到上限，核心會<strong>靜默丟棄 (Silent Drop)</strong> 封包。這就是為什麼在高併發環境下，你會看到隨機的連線失敗，而日誌裡卻找不到任何錯誤。</li>
+</ul>
+<h3 id="4-tcp-狀態機-the-engine">4. TCP 狀態機 (The Engine)<a hidden class="anchor" aria-hidden="true" href="#4-tcp-狀態機-the-engine">#</a></h3>
+<p>最後，核心處理 TCP 協議邏輯：管理三次握手、計算擁塞窗口 (<code>cwnd</code>) 以及處理重傳定時器 (RTO)。</p>
+<hr>
+<h2 id="實戰案例為什麼大請求會掛掉-mtu-黑洞">實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞)<a hidden class="anchor" aria-hidden="true" href="#實戰案例為什麼大請求會掛掉-mtu-黑洞">#</a></h2>
+<p>這是 SRE 面試中最經典的場景：<strong>小請求秒回，大請求超時。</strong></p>
+<p><strong>現象</strong>：API 呼叫 <code>GET /health</code> 正常，但 <code>GET /large-report</code> 導致連線永久掛起。</p>
+<p><strong>底層 Trace 過程</strong>：</p>
+<ol>
+<li><strong>抓包分析</strong>：在 Pod 和 Host 同時 <code>tcpdump</code>。發現伺服器發出了 1500 bytes 的大封包，但客戶端永遠沒有回傳 <code>ACK</code>。</li>
+<li><strong>MTU 驗證</strong>：檢查發現 Pod 的 MTU 是 1500，但 CNI 的 Overlay 網路 (如 VXLAN) 因為封裝開銷，實際 MTU 只有 1450。</li>
+<li><strong>根因</strong>：這是一個 <strong>「MTU 黑洞」</strong>。封包太大，中間路由器丟棄了它並發出 <code>Fragmentation Needed</code> 訊號，但該訊號被防火牆攔截了。發送端在傻傻地等待一個永遠不會到來的 <code>ACK</code>。</li>
+</ol>
+<p><strong>解決方案</strong>：統一對齊 MTU，或開啟 <strong>TCP MSS Clamping</strong>，強制在握手階段協商較小的最大段大小。</p>
+<h2 id="結語從看日誌到看軌跡">結語：從「看日誌」到「看軌跡」<a hidden class="anchor" aria-hidden="true" href="#結語從看日誌到看軌跡">#</a></h2>
+<p>真正的 SRE 不應該依賴 <code>kubectl logs</code>，而應該依賴於對 <strong>軌跡 (Trace)</strong> 的理解。</p>
+<p>當你能從 <code>ss -ntie</code> 查看 <code>cwnd</code>，用 <code>conntrack -L</code> 檢查狀態表，用 <code>tcpdump</code> 對比 <code>veth</code> 與 <code>eth0</code> 的時間戳時，網路就不再是一個黑盒，而是一條清晰的數據流。</p>
+<hr>
+<p><strong>技術關鍵字：</strong></p>
+<ul>
+<li>Netfilter / Conntrack (連線追蹤)</li>
+<li>veth Pair (虛擬乙太網)</li>
+<li>MTU Mismatch (最大傳輸單元不匹配)</li>
+<li>TCP State Machine (TCP 狀態機)</li>
+<li>DNAT / ClusterIP (目的地址轉換)</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/general/">General</a></li>
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/">Tcp-Stack-Deep-Dive.Md</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://alandevc8763.github.io/digital-twin-blog/">Alans Digital Twin Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

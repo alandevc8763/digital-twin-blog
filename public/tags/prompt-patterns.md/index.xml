@@ -1,26 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Prompt-Patterns.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/</link><description>Recent content in Prompt-Patterns.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Prompt Patterns</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</guid><description>&lt;h1 id="突破-prompt-的迷思從咒語轉向工程模式">突破 Prompt 的迷思：從「咒語」轉向「工程模式」&lt;/h1>
-&lt;p>在 AI 圈子裡，很多人把 Prompt Engineering 描述成一種「煉金術」或「寫咒語」。他們會分享一些神奇的短語，比如「這對我的職業生涯至關重要」或者「深呼吸，一步步思考」，並宣稱這能神奇地提升模型表現。
-但如果你試過將這些「咒語」部署到生產環境，你很快會發現：&lt;strong>咒語是不可靠的。&lt;/strong>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Prompt-Patterns.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/</link>
+    <description>Recent content in Prompt-Patterns.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/prompt-patterns.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Prompt Patterns</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</guid>
+      <description>&lt;h1 id=&#34;突破-prompt-的迷思從咒語轉向工程模式&#34;&gt;突破 Prompt 的迷思：從「咒語」轉向「工程模式」&lt;/h1&gt;
+&lt;p&gt;在 AI 圈子裡，很多人把 Prompt Engineering 描述成一種「煉金術」或「寫咒語」。他們會分享一些神奇的短語，比如「這對我的職業生涯至關重要」或者「深呼吸，一步步思考」，並宣稱這能神奇地提升模型表現。
+但如果你試過將這些「咒語」部署到生產環境，你很快會發現：&lt;strong&gt;咒語是不可靠的。&lt;/strong&gt;
 同樣的 Prompt 在不同版本的模型上表現迥異，甚至在相同的模型上，只要輸入數據稍微變動，輸出結果就會從「完美」跌落到「胡言亂語」。
-對於工程師來說，我們不能依賴隨機性。Prompt Engineering 的本質不應該是「尋找正確的詞彙」，而應該是 &lt;strong>「透過結構化約束，縮小模型的搜索空間」&lt;/strong>。&lt;/p>
-&lt;h2 id="prompt-的本質縮小搜索空間">Prompt 的本質：縮小搜索空間&lt;/h2>
-&lt;p>LLM 的運作邏輯是預測下一個 token。如果你給的指令太模糊，模型在生成答案時，其可能的路徑（搜索空間）會非常巨大，這就導致了不穩定性。
-&lt;strong>「咒語」之所以有效，是因為它們在潛意識中誘導模型進入某個特定的概率分佈。&lt;/strong> 但更專業的做法是提供&lt;strong>結構化約束&lt;/strong>。&lt;/p>
-&lt;h3 id="1-從指令轉向工作記憶-cot">1. 從「指令」轉向「工作記憶」 (CoT)&lt;/h3>
-&lt;p>很多人知道 &lt;code>Think step-by-step&lt;/code> 有用，但不知道為什麼。
-從底層來看，這是在強迫模型將「推理過程」顯式化地寫在輸出中。這些生成的推理 token 實際上變成了模型的 &lt;strong>「外部工作記憶」&lt;/strong>。模型在生成最終答案前，先在上下文（Context）中建立了一條邏輯鏈條，這大大降低了邏輯跳躍導致的錯誤。
-&lt;strong>工程實踐&lt;/strong>：不要只要求模型「思考」，而要給它 &lt;strong>Few-Shot CoT&lt;/strong>。提供 3-5 個 &lt;code>問題 $\rightarrow$ 推理過程 $\rightarrow$ 答案&lt;/code> 的範例，直接定義它的思考路徑。&lt;/p>
-&lt;h3 id="2-拒絕上帝-prompt模組化分解">2. 拒絕「上帝 Prompt」：模組化分解&lt;/h3>
-&lt;p>很多開發者的習慣是寫一個幾千字的「上帝 Prompt」，把所有規則、背景、格式要求全部塞進去。
-這會導致兩個問題：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Lost-in-the-Middle&lt;/strong>：模型會忽略掉 Prompt 中間部分的指令。&lt;/li>
-&lt;li>&lt;strong>指令衝突&lt;/strong>：當規則太多時，模型在權衡不同指令的優先級時會產生混亂。
-&lt;strong>工程實踐&lt;/strong>：採取 &lt;strong>Prompt Decomposition (分解)&lt;/strong>。
+對於工程師來說，我們不能依賴隨機性。Prompt Engineering 的本質不應該是「尋找正確的詞彙」，而應該是 &lt;strong&gt;「透過結構化約束，縮小模型的搜索空間」&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;prompt-的本質縮小搜索空間&#34;&gt;Prompt 的本質：縮小搜索空間&lt;/h2&gt;
+&lt;p&gt;LLM 的運作邏輯是預測下一個 token。如果你給的指令太模糊，模型在生成答案時，其可能的路徑（搜索空間）會非常巨大，這就導致了不穩定性。
+&lt;strong&gt;「咒語」之所以有效，是因為它們在潛意識中誘導模型進入某個特定的概率分佈。&lt;/strong&gt; 但更專業的做法是提供&lt;strong&gt;結構化約束&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;1-從指令轉向工作記憶-cot&#34;&gt;1. 從「指令」轉向「工作記憶」 (CoT)&lt;/h3&gt;
+&lt;p&gt;很多人知道 &lt;code&gt;Think step-by-step&lt;/code&gt; 有用，但不知道為什麼。
+從底層來看，這是在強迫模型將「推理過程」顯式化地寫在輸出中。這些生成的推理 token 實際上變成了模型的 &lt;strong&gt;「外部工作記憶」&lt;/strong&gt;。模型在生成最終答案前，先在上下文（Context）中建立了一條邏輯鏈條，這大大降低了邏輯跳躍導致的錯誤。
+&lt;strong&gt;工程實踐&lt;/strong&gt;：不要只要求模型「思考」，而要給它 &lt;strong&gt;Few-Shot CoT&lt;/strong&gt;。提供 3-5 個 &lt;code&gt;問題 $\rightarrow$ 推理過程 $\rightarrow$ 答案&lt;/code&gt; 的範例，直接定義它的思考路徑。&lt;/p&gt;
+&lt;h3 id=&#34;2-拒絕上帝-prompt模組化分解&#34;&gt;2. 拒絕「上帝 Prompt」：模組化分解&lt;/h3&gt;
+&lt;p&gt;很多開發者的習慣是寫一個幾千字的「上帝 Prompt」，把所有規則、背景、格式要求全部塞進去。
+這會導致兩個問題：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Lost-in-the-Middle&lt;/strong&gt;：模型會忽略掉 Prompt 中間部分的指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指令衝突&lt;/strong&gt;：當規則太多時，模型在權衡不同指令的優先級時會產生混亂。
+&lt;strong&gt;工程實踐&lt;/strong&gt;：採取 &lt;strong&gt;Prompt Decomposition (分解)&lt;/strong&gt;。
 將一個複雜任務拆成流水線：
-&lt;code>提取實體 (Prompt A)&lt;/code> $\rightarrow$ &lt;code>分析關係 (Prompt B)&lt;/code> $\rightarrow$ &lt;code>合成報告 (Prompt C)&lt;/code>。
-這樣你面對的是三個簡單、確定且易於評測的模組，而不是一個不可控的黑盒子。&lt;/li>
-&lt;/ul>
-&lt;h3 id="3-建立結構化錨點-structural-anchors">3. 建立結構化錨點 (Structural Anchors)&lt;/h3>
-&lt;p>不要用 &lt;code>請總結以下文本：[文本]&lt;/code> 這種模糊的寫法。在處理大規模數據時，模型很容易分不清哪裡是「指令」，哪裡是「待處理數據」。
-&lt;strong>工程實踐&lt;/strong>：使用明確的分隔符。&lt;/p></description></item></channel></rss>
+&lt;code&gt;提取實體 (Prompt A)&lt;/code&gt; $\rightarrow$ &lt;code&gt;分析關係 (Prompt B)&lt;/code&gt; $\rightarrow$ &lt;code&gt;合成報告 (Prompt C)&lt;/code&gt;。
+這樣你面對的是三個簡單、確定且易於評測的模組，而不是一個不可控的黑盒子。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-建立結構化錨點-structural-anchors&#34;&gt;3. 建立結構化錨點 (Structural Anchors)&lt;/h3&gt;
+&lt;p&gt;不要用 &lt;code&gt;請總結以下文本：[文本]&lt;/code&gt; 這種模糊的寫法。在處理大規模數據時，模型很容易分不清哪裡是「指令」，哪裡是「待處理數據」。
+&lt;strong&gt;工程實踐&lt;/strong&gt;：使用明確的分隔符。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

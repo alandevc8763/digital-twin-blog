@@ -1,5 +1,13 @@
-<!doctype html><html lang=en dir=auto data-theme=dark><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>K8S Storage Plumbing | Alans Digital Twin Blog</title>
-<meta name=keywords content="General,K8S-Storage-Plumbing.Md"><meta name=description content="為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>K8S Storage Plumbing | Alans Digital Twin Blog</title>
+<meta name="keywords" content="General, K8S-Storage-Plumbing.Md">
+<meta name="description" content="為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」
 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。
 大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。
 從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
@@ -12,25 +20,360 @@ ightarrow$ Linux 核心 VFS 的長途跋涉。
 
 SRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。
 
-2. 編排層 (Kubelet & CSI)
-當 Pod 被調度到節點後，真正的「搬運」開始了："><meta name=author content="Alan"><link rel=canonical href=https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/><link crossorigin=anonymous href=/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://alandevc8763.github.io/digital-twin-blog/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png><link rel=apple-touch-icon href=https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png><link rel=mask-icon href=https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><script>localStorage.getItem("pref-theme")==="light"&&(document.querySelector("html").dataset.theme="light")</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/"><meta property="og:site_name" content="Alans Digital Twin Blog"><meta property="og:title" content="K8S Storage Plumbing"><meta property="og:description" content="為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。
+2. 編排層 (Kubelet &amp; CSI)
+當 Pod 被調度到節點後，真正的「搬運」開始了：">
+<meta name="author" content="Alan">
+<link rel="canonical" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/">
+<link crossorigin="anonymous" href="/digital-twin-blog/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alandevc8763.github.io/digital-twin-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alandevc8763.github.io/digital-twin-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alandevc8763.github.io/digital-twin-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alandevc8763.github.io/digital-twin-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alandevc8763.github.io/digital-twin-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/">
+  <meta property="og:site_name" content="Alans Digital Twin Blog">
+  <meta property="og:title" content="K8S Storage Plumbing">
+  <meta property="og:description" content="為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。
 大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。
 從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $ ightarrow$ CSI 驅動 $ ightarrow$ Kubelet $ ightarrow$ Linux 核心 VFS 的長途跋涉。
 儲存請求的「垂直路徑」：從 API 到 Block 1. 宣告層 (K8s API) 一切始於 PersistentVolumeClaim (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (ReadWriteOnce 等)。
-SRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet & CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了："><meta property="og:locale" content="zh_tw"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-04-24T00:00:00+00:00"><meta property="article:modified_time" content="2026-04-24T00:00:00+00:00"><meta property="article:tag" content="General"><meta property="article:tag" content="K8S-Storage-Plumbing.Md"><meta name=twitter:card content="summary"><meta name=twitter:title content="K8S Storage Plumbing"><meta name=twitter:description content="為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。
+SRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet &amp; CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了：">
+  <meta property="og:locale" content="zh_tw">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-04-24T00:00:00+00:00">
+    <meta property="article:tag" content="General">
+    <meta property="article:tag" content="K8S-Storage-Plumbing.Md">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="K8S Storage Plumbing">
+  <meta name="twitter:description" content="為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。
 大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。
 從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $ ightarrow$ CSI 驅動 $ ightarrow$ Kubelet $ ightarrow$ Linux 核心 VFS 的長途跋涉。
 儲存請求的「垂直路徑」：從 API 到 Block 1. 宣告層 (K8s API) 一切始於 PersistentVolumeClaim (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (ReadWriteOnce 等)。
-SRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet & CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了："><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://alandevc8763.github.io/digital-twin-blog/posts/"},{"@type":"ListItem","position":2,"name":"K8S Storage Plumbing","item":"https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"K8S Storage Plumbing","name":"K8S Storage Plumbing","description":"為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。\n大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。\n從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $ ightarrow$ CSI 驅動 $ ightarrow$ Kubelet $ ightarrow$ Linux 核心 VFS 的長途跋涉。\n儲存請求的「垂直路徑」：從 API 到 Block 1. 宣告層 (K8s API) 一切始於 PersistentVolumeClaim (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (ReadWriteOnce 等)。\nSRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet \u0026amp; CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了：\n","keywords":["General","K8S-Storage-Plumbing.Md"],"articleBody":"為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。\n大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。\n從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $ ightarrow$ CSI 驅動 $ ightarrow$ Kubelet $ ightarrow$ Linux 核心 VFS 的長途跋涉。\n儲存請求的「垂直路徑」：從 API 到 Block 1. 宣告層 (K8s API) 一切始於 PersistentVolumeClaim (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (ReadWriteOnce 等)。\nSRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet \u0026 CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了：\nAttach (附加)：控制平面通知 CSI 驅動，將雲端磁碟（如 AWS EBS）附加到該 VM 實例。 Mount (掛載)：主機上的 Kubelet 呼叫 CSI Node Plugin，將遠端磁碟掛載到主機的一個全域目錄（例如 /var/lib/kubelet/plugins/...）。 Bind Mount (綁定掛載)：這是最關鍵的一步。Kubelet 將上述全域目錄再次綁定掛載到 Pod 的特定路徑中。 SRE 訊號：MountVolume.SetUp failed 通常意味著 CSI 驅動無法連接後端儲存，或者磁碟被之前的節點「佔住」了（典型的 Multi-Attach 錯誤）。 3. 核心層 (VFS \u0026 Kernel) 最後，Linux 核心接管 I/O。無論底層是 XFS, ext4 還是 NFS，對應用程式來說都經過 VFS (Virtual File System)。\nSRE 訊號：如果你在日誌中看到 EIO (Input/Output error)，這通常是驅動層級的災難（例如 NFS 網路超時或硬體損毀），與 K8s 配置無關。 SRE 除錯矩陣：從現象到原點 現象 K8s 訊號 核心/主機原語 推薦工具 Pod 永久掛起 ContainerCreating dmesg (Timeout) kubectl describe $ ightarrow$ dmesg 檔案系統唯讀 Read-only file system mount -o remount,rw mount | grep NFS 句柄失效 Stale NFS file handle nfsstat / rpcdebug df -h (會直接卡死) I/O 極慢 高 iowait bio 請求隊列 iostat -xz 1 / biotop 避坑指南：那些隱形的儲存陷阱 儲存「殭屍」 (Orphaned Mounts)： 有時候 Pod 刪除了，但核心的掛載點沒被清理掉。這會導致新 Pod 嘗試掛載同一個 Volume 時發生衝突。 掛載傳播 (Mount Propagation)： 如果 CSI 驅動的 mountPropagation 沒有設定為 Bidirectional，驅動容器內建立的掛載對主機或 Pod 來說是不可見的。 根分區壓力： 如果主機根分區滿了，Kubelet 可能無法建立 bind-mount 所需的目錄結構，導致 Volume 掛載失敗。 結語：不要只看 kubectl 面對儲存故障，最強大的工具不是 kubectl get pvc，而是直接登入節點。\n檢查 dmesg 看核心錯誤 $ ightarrow$ 檢查 mount 確認綁定鏈 $ ightarrow$ 檢查 iostat 確認後端響應。當你能跳出 K8s 的抽象層，直接面對 Linux 核心的 VFS 時，儲存問題才真正變得可控。\n技術關鍵字：\nCSI (Container Storage Interface) Bind Mount (綁定掛載) VFS (Virtual File System) Multi-Attach Error (多重附加錯誤) Mount Propagation (掛載傳播) ","wordCount":"259","inLanguage":"en","datePublished":"2026-04-24T00:00:00Z","dateModified":"2026-04-24T00:00:00Z","author":{"@type":"Person","name":"Alan"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/"},"publisher":{"@type":"Organization","name":"Alans Digital Twin Blog","logo":{"@type":"ImageObject","url":"https://alandevc8763.github.io/digital-twin-blog/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://alandevc8763.github.io/digital-twin-blog/ accesskey=h title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://alandevc8763.github.io/digital-twin-blog/sre-hub/ title="SRE Hub"><span>SRE Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/ai-hub/ title="AI Hub"><span>AI Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/homelab-hub/ title="HomeLab Hub"><span>HomeLab Hub</span></a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/journey/ title=Journey><span>Journey</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">K8S Storage Plumbing</h1><div class=post-meta><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span></div></header><div class="post-content md-content"><h1 id=為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄>為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」<a hidden class=anchor aria-hidden=true href=#為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄>#</a></h1><p>在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 <code>ContainerCreating</code>。</p><p>大多數人習慣執行 <code>kubectl describe pod</code> 看到 <code>MountVolume.SetUp failed</code> 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：<strong>K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。</strong></p><p>從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
+SRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet &amp; CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了：">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "K8S Storage Plumbing",
+      "item": "https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "K8S Storage Plumbing",
+  "name": "K8S Storage Plumbing",
+  "description": "為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。\n大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。\n從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $ ightarrow$ CSI 驅動 $ ightarrow$ Kubelet $ ightarrow$ Linux 核心 VFS 的長途跋涉。\n儲存請求的「垂直路徑」：從 API 到 Block 1. 宣告層 (K8s API) 一切始於 PersistentVolumeClaim (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (ReadWriteOnce 等)。\nSRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet \u0026amp; CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了：\n",
+  "keywords": [
+    "General", "K8S-Storage-Plumbing.Md"
+  ],
+  "articleBody": "為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」 在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 ContainerCreating。\n大多數人習慣執行 kubectl describe pod 看到 MountVolume.SetUp failed 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。\n從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $ ightarrow$ CSI 驅動 $ ightarrow$ Kubelet $ ightarrow$ Linux 核心 VFS 的長途跋涉。\n儲存請求的「垂直路徑」：從 API 到 Block 1. 宣告層 (K8s API) 一切始於 PersistentVolumeClaim (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (ReadWriteOnce 等)。\nSRE 訊號：如果 PVC 狀態一直是 Pending，請直接檢查 StorageClass 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。 2. 編排層 (Kubelet \u0026 CSI) 當 Pod 被調度到節點後，真正的「搬運」開始了：\nAttach (附加)：控制平面通知 CSI 驅動，將雲端磁碟（如 AWS EBS）附加到該 VM 實例。 Mount (掛載)：主機上的 Kubelet 呼叫 CSI Node Plugin，將遠端磁碟掛載到主機的一個全域目錄（例如 /var/lib/kubelet/plugins/...）。 Bind Mount (綁定掛載)：這是最關鍵的一步。Kubelet 將上述全域目錄再次綁定掛載到 Pod 的特定路徑中。 SRE 訊號：MountVolume.SetUp failed 通常意味著 CSI 驅動無法連接後端儲存，或者磁碟被之前的節點「佔住」了（典型的 Multi-Attach 錯誤）。 3. 核心層 (VFS \u0026 Kernel) 最後，Linux 核心接管 I/O。無論底層是 XFS, ext4 還是 NFS，對應用程式來說都經過 VFS (Virtual File System)。\nSRE 訊號：如果你在日誌中看到 EIO (Input/Output error)，這通常是驅動層級的災難（例如 NFS 網路超時或硬體損毀），與 K8s 配置無關。 SRE 除錯矩陣：從現象到原點 現象 K8s 訊號 核心/主機原語 推薦工具 Pod 永久掛起 ContainerCreating dmesg (Timeout) kubectl describe $ ightarrow$ dmesg 檔案系統唯讀 Read-only file system mount -o remount,rw mount | grep NFS 句柄失效 Stale NFS file handle nfsstat / rpcdebug df -h (會直接卡死) I/O 極慢 高 iowait bio 請求隊列 iostat -xz 1 / biotop 避坑指南：那些隱形的儲存陷阱 儲存「殭屍」 (Orphaned Mounts)： 有時候 Pod 刪除了，但核心的掛載點沒被清理掉。這會導致新 Pod 嘗試掛載同一個 Volume 時發生衝突。 掛載傳播 (Mount Propagation)： 如果 CSI 驅動的 mountPropagation 沒有設定為 Bidirectional，驅動容器內建立的掛載對主機或 Pod 來說是不可見的。 根分區壓力： 如果主機根分區滿了，Kubelet 可能無法建立 bind-mount 所需的目錄結構，導致 Volume 掛載失敗。 結語：不要只看 kubectl 面對儲存故障，最強大的工具不是 kubectl get pvc，而是直接登入節點。\n檢查 dmesg 看核心錯誤 $ ightarrow$ 檢查 mount 確認綁定鏈 $ ightarrow$ 檢查 iostat 確認後端響應。當你能跳出 K8s 的抽象層，直接面對 Linux 核心的 VFS 時，儲存問題才真正變得可控。\n技術關鍵字：\nCSI (Container Storage Interface) Bind Mount (綁定掛載) VFS (Virtual File System) Multi-Attach Error (多重附加錯誤) Mount Propagation (掛載傳播) ",
+  "wordCount" : "259",
+  "inLanguage": "en",
+  "datePublished": "2026-04-24T00:00:00Z",
+  "dateModified": "2026-04-24T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Alan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Alans Digital Twin Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://alandevc8763.github.io/digital-twin-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://alandevc8763.github.io/digital-twin-blog/" accesskey="h" title="Alans Digital Twin Blog (Alt + H)">Alans Digital Twin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/sre-hub/" title="SRE Hub">
+                    <span>SRE Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/ai-hub/" title="AI Hub">
+                    <span>AI Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/homelab-hub/" title="HomeLab Hub">
+                    <span>HomeLab Hub</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://alandevc8763.github.io/digital-twin-blog/journey/" title="Journey">
+                    <span>Journey</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      K8S Storage Plumbing
+    </h1>
+    <div class="post-meta"><span title='2026-04-24 00:00:00 +0000 UTC'>April 24, 2026</span>&nbsp;·&nbsp;<span>Alan</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h1 id="為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄">為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」<a hidden class="anchor" aria-hidden="true" href="#為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄">#</a></h1>
+<p>在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 <code>ContainerCreating</code>。</p>
+<p>大多數人習慣執行 <code>kubectl describe pod</code> 看到 <code>MountVolume.SetUp failed</code> 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：<strong>K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。</strong></p>
+<p>從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
 ightarrow$ CSI 驅動 $
 ightarrow$ Kubelet $
-ightarrow$ Linux 核心 VFS 的長途跋涉。</p><h2 id=儲存請求的垂直路徑從-api-到-block>儲存請求的「垂直路徑」：從 API 到 Block<a hidden class=anchor aria-hidden=true href=#儲存請求的垂直路徑從-api-到-block>#</a></h2><h3 id=1-宣告層-k8s-api>1. 宣告層 (K8s API)<a hidden class=anchor aria-hidden=true href=#1-宣告層-k8s-api>#</a></h3><p>一切始於 <code>PersistentVolumeClaim</code> (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (<code>ReadWriteOnce</code> 等)。</p><ul><li><strong>SRE 訊號</strong>：如果 PVC 狀態一直是 <code>Pending</code>，請直接檢查 <code>StorageClass</code> 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。</li></ul><h3 id=2-編排層-kubelet--csi>2. 編排層 (Kubelet & CSI)<a hidden class=anchor aria-hidden=true href=#2-編排層-kubelet--csi>#</a></h3><p>當 Pod 被調度到節點後，真正的「搬運」開始了：</p><ol><li><strong>Attach (附加)</strong>：控制平面通知 CSI 驅動，將雲端磁碟（如 AWS EBS）附加到該 VM 實例。</li><li><strong>Mount (掛載)</strong>：主機上的 <code>Kubelet</code> 呼叫 CSI Node Plugin，將遠端磁碟掛載到主機的一個全域目錄（例如 <code>/var/lib/kubelet/plugins/...</code>）。</li><li><strong>Bind Mount (綁定掛載)</strong>：這是最關鍵的一步。Kubelet 將上述全域目錄<strong>再次綁定掛載</strong>到 Pod 的特定路徑中。</li></ol><ul><li><strong>SRE 訊號</strong>：<code>MountVolume.SetUp failed</code> 通常意味著 CSI 驅動無法連接後端儲存，或者磁碟被之前的節點「佔住」了（典型的 Multi-Attach 錯誤）。</li></ul><h3 id=3-核心層-vfs--kernel>3. 核心層 (VFS & Kernel)<a hidden class=anchor aria-hidden=true href=#3-核心層-vfs--kernel>#</a></h3><p>最後，Linux 核心接管 I/O。無論底層是 XFS, ext4 還是 NFS，對應用程式來說都經過 <strong>VFS (Virtual File System)</strong>。</p><ul><li><strong>SRE 訊號</strong>：如果你在日誌中看到 <code>EIO (Input/Output error)</code>，這通常是驅動層級的災難（例如 NFS 網路超時或硬體損毀），與 K8s 配置無關。</li></ul><hr><h2 id=sre-除錯矩陣從現象到原點>SRE 除錯矩陣：從現象到原點<a hidden class=anchor aria-hidden=true href=#sre-除錯矩陣從現象到原點>#</a></h2><table><thead><tr><th style=text-align:left>現象</th><th style=text-align:left>K8s 訊號</th><th style=text-align:left>核心/主機原語</th><th style=text-align:left>推薦工具</th></tr></thead><tbody><tr><td style=text-align:left><strong>Pod 永久掛起</strong></td><td style=text-align:left><code>ContainerCreating</code></td><td style=text-align:left><code>dmesg</code> (Timeout)</td><td style=text-align:left><code>kubectl describe</code> $</td></tr><tr><td style=text-align:left>ightarrow$ <code>dmesg</code></td><td></td><td></td><td></td></tr><tr><td style=text-align:left><strong>檔案系統唯讀</strong></td><td style=text-align:left><code>Read-only file system</code></td><td style=text-align:left><code>mount -o remount,rw</code></td><td style=text-align:left><code>mount | grep &lt;path></code></td></tr><tr><td style=text-align:left><strong>NFS 句柄失效</strong></td><td style=text-align:left><code>Stale NFS file handle</code></td><td style=text-align:left><code>nfsstat</code> / <code>rpcdebug</code></td><td style=text-align:left><code>df -h</code> (會直接卡死)</td></tr><tr><td style=text-align:left><strong>I/O 極慢</strong></td><td style=text-align:left>高 <code>iowait</code></td><td style=text-align:left><code>bio</code> 請求隊列</td><td style=text-align:left><code>iostat -xz 1</code> / <code>biotop</code></td></tr></tbody></table><h2 id=避坑指南那些隱形的儲存陷阱>避坑指南：那些隱形的儲存陷阱<a hidden class=anchor aria-hidden=true href=#避坑指南那些隱形的儲存陷阱>#</a></h2><ol><li><strong>儲存「殭屍」 (Orphaned Mounts)</strong>：
-有時候 Pod 刪除了，但核心的掛載點沒被清理掉。這會導致新 Pod 嘗試掛載同一個 Volume 時發生衝突。</li><li><strong>掛載傳播 (Mount Propagation)</strong>：
-如果 CSI 驅動的 <code>mountPropagation</code> 沒有設定為 <code>Bidirectional</code>，驅動容器內建立的掛載對主機或 Pod 來說是不可見的。</li><li><strong>根分區壓力</strong>：
-如果主機根分區滿了，Kubelet 可能無法建立 bind-mount 所需的目錄結構，導致 Volume 掛載失敗。</li></ol><h2 id=結語不要只看-kubectl>結語：不要只看 <code>kubectl</code><a hidden class=anchor aria-hidden=true href=#結語不要只看-kubectl>#</a></h2><p>面對儲存故障，最強大的工具不是 <code>kubectl get pvc</code>，而是<strong>直接登入節點</strong>。</p><p>檢查 <code>dmesg</code> 看核心錯誤 $
+ightarrow$ Linux 核心 VFS 的長途跋涉。</p>
+<h2 id="儲存請求的垂直路徑從-api-到-block">儲存請求的「垂直路徑」：從 API 到 Block<a hidden class="anchor" aria-hidden="true" href="#儲存請求的垂直路徑從-api-到-block">#</a></h2>
+<h3 id="1-宣告層-k8s-api">1. 宣告層 (K8s API)<a hidden class="anchor" aria-hidden="true" href="#1-宣告層-k8s-api">#</a></h3>
+<p>一切始於 <code>PersistentVolumeClaim</code> (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (<code>ReadWriteOnce</code> 等)。</p>
+<ul>
+<li><strong>SRE 訊號</strong>：如果 PVC 狀態一直是 <code>Pending</code>，請直接檢查 <code>StorageClass</code> 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。</li>
+</ul>
+<h3 id="2-編排層-kubelet--csi">2. 編排層 (Kubelet &amp; CSI)<a hidden class="anchor" aria-hidden="true" href="#2-編排層-kubelet--csi">#</a></h3>
+<p>當 Pod 被調度到節點後，真正的「搬運」開始了：</p>
+<ol>
+<li><strong>Attach (附加)</strong>：控制平面通知 CSI 驅動，將雲端磁碟（如 AWS EBS）附加到該 VM 實例。</li>
+<li><strong>Mount (掛載)</strong>：主機上的 <code>Kubelet</code> 呼叫 CSI Node Plugin，將遠端磁碟掛載到主機的一個全域目錄（例如 <code>/var/lib/kubelet/plugins/...</code>）。</li>
+<li><strong>Bind Mount (綁定掛載)</strong>：這是最關鍵的一步。Kubelet 將上述全域目錄<strong>再次綁定掛載</strong>到 Pod 的特定路徑中。</li>
+</ol>
+<ul>
+<li><strong>SRE 訊號</strong>：<code>MountVolume.SetUp failed</code> 通常意味著 CSI 驅動無法連接後端儲存，或者磁碟被之前的節點「佔住」了（典型的 Multi-Attach 錯誤）。</li>
+</ul>
+<h3 id="3-核心層-vfs--kernel">3. 核心層 (VFS &amp; Kernel)<a hidden class="anchor" aria-hidden="true" href="#3-核心層-vfs--kernel">#</a></h3>
+<p>最後，Linux 核心接管 I/O。無論底層是 XFS, ext4 還是 NFS，對應用程式來說都經過 <strong>VFS (Virtual File System)</strong>。</p>
+<ul>
+<li><strong>SRE 訊號</strong>：如果你在日誌中看到 <code>EIO (Input/Output error)</code>，這通常是驅動層級的災難（例如 NFS 網路超時或硬體損毀），與 K8s 配置無關。</li>
+</ul>
+<hr>
+<h2 id="sre-除錯矩陣從現象到原點">SRE 除錯矩陣：從現象到原點<a hidden class="anchor" aria-hidden="true" href="#sre-除錯矩陣從現象到原點">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">現象</th>
+          <th style="text-align: left">K8s 訊號</th>
+          <th style="text-align: left">核心/主機原語</th>
+          <th style="text-align: left">推薦工具</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Pod 永久掛起</strong></td>
+          <td style="text-align: left"><code>ContainerCreating</code></td>
+          <td style="text-align: left"><code>dmesg</code> (Timeout)</td>
+          <td style="text-align: left"><code>kubectl describe</code> $</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">ightarrow$ <code>dmesg</code></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>檔案系統唯讀</strong></td>
+          <td style="text-align: left"><code>Read-only file system</code></td>
+          <td style="text-align: left"><code>mount -o remount,rw</code></td>
+          <td style="text-align: left"><code>mount | grep &lt;path&gt;</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>NFS 句柄失效</strong></td>
+          <td style="text-align: left"><code>Stale NFS file handle</code></td>
+          <td style="text-align: left"><code>nfsstat</code> / <code>rpcdebug</code></td>
+          <td style="text-align: left"><code>df -h</code> (會直接卡死)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>I/O 極慢</strong></td>
+          <td style="text-align: left">高 <code>iowait</code></td>
+          <td style="text-align: left"><code>bio</code> 請求隊列</td>
+          <td style="text-align: left"><code>iostat -xz 1</code> / <code>biotop</code></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="避坑指南那些隱形的儲存陷阱">避坑指南：那些隱形的儲存陷阱<a hidden class="anchor" aria-hidden="true" href="#避坑指南那些隱形的儲存陷阱">#</a></h2>
+<ol>
+<li><strong>儲存「殭屍」 (Orphaned Mounts)</strong>：
+有時候 Pod 刪除了，但核心的掛載點沒被清理掉。這會導致新 Pod 嘗試掛載同一個 Volume 時發生衝突。</li>
+<li><strong>掛載傳播 (Mount Propagation)</strong>：
+如果 CSI 驅動的 <code>mountPropagation</code> 沒有設定為 <code>Bidirectional</code>，驅動容器內建立的掛載對主機或 Pod 來說是不可見的。</li>
+<li><strong>根分區壓力</strong>：
+如果主機根分區滿了，Kubelet 可能無法建立 bind-mount 所需的目錄結構，導致 Volume 掛載失敗。</li>
+</ol>
+<h2 id="結語不要只看-kubectl">結語：不要只看 <code>kubectl</code><a hidden class="anchor" aria-hidden="true" href="#結語不要只看-kubectl">#</a></h2>
+<p>面對儲存故障，最強大的工具不是 <code>kubectl get pvc</code>，而是<strong>直接登入節點</strong>。</p>
+<p>檢查 <code>dmesg</code> 看核心錯誤 $
 ightarrow$ 檢查 <code>mount</code> 確認綁定鏈 $
-ightarrow$ 檢查 <code>iostat</code> 確認後端響應。當你能跳出 K8s 的抽象層，直接面對 Linux 核心的 VFS 時，儲存問題才真正變得可控。</p><hr><p><strong>技術關鍵字：</strong></p><ul><li>CSI (Container Storage Interface)</li><li>Bind Mount (綁定掛載)</li><li>VFS (Virtual File System)</li><li>Multi-Attach Error (多重附加錯誤)</li><li>Mount Propagation (掛載傳播)</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://alandevc8763.github.io/digital-twin-blog/tags/general/>General</a></li><li><a href=https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/>K8S-Storage-Plumbing.Md</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://alandevc8763.github.io/digital-twin-blog/>Alans Digital Twin Blog</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+ightarrow$ 檢查 <code>iostat</code> 確認後端響應。當你能跳出 K8s 的抽象層，直接面對 Linux 核心的 VFS 時，儲存問題才真正變得可控。</p>
+<hr>
+<p><strong>技術關鍵字：</strong></p>
+<ul>
+<li>CSI (Container Storage Interface)</li>
+<li>Bind Mount (綁定掛載)</li>
+<li>VFS (Virtual File System)</li>
+<li>Multi-Attach Error (多重附加錯誤)</li>
+<li>Mount Propagation (掛載傳播)</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/general/">General</a></li>
+      <li><a href="https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/">K8S-Storage-Plumbing.Md</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://alandevc8763.github.io/digital-twin-blog/">Alans Digital Twin Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

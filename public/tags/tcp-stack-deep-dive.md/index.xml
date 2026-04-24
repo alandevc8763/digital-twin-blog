@@ -1,15 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tcp-Stack-Deep-Dive.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/</link><description>Recent content in Tcp-Stack-Deep-Dive.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Tcp Stack Deep Dive</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</guid><description>&lt;h1 id="當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤">當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤&lt;/h1>
-&lt;p>對於大多數開發者來說，發送一個網路請求就像是按下開關 $
-ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的&lt;strong>路徑導向 (Steering)&lt;/strong>。&lt;/p>
-&lt;p>如果你曾經遇到過這種情況：&lt;code>ping&lt;/code> 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 &lt;code>Connection Timeout&lt;/code> —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。&lt;/p>
-&lt;h2 id="封包的垂直旅程從-pod-到物理網卡">封包的「垂直旅程」：從 Pod 到物理網卡&lt;/h2>
-&lt;p>在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 &lt;strong>Context Handoffs (上下文交接)&lt;/strong>。這正是潛在延遲和丟包的來源。&lt;/p>
-&lt;h3 id="1-pod-命名空間-the-source">1. Pod 命名空間 (The Source)&lt;/h3>
-&lt;p>應用程式呼叫 &lt;code>connect()&lt;/code>，核心在 Pod 的網路命名空間 (&lt;code>netns&lt;/code>) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>追蹤點&lt;/strong>：&lt;code>Pod App&lt;/code> $
-ightarrow$ &lt;code>Socket Buffer (sk_buff)&lt;/code> $
-ightarrow$ &lt;code>eth0&lt;/code>。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-命名空間跳躍-the-jump">2. 命名空間跳躍 (The Jump)&lt;/h3>
-&lt;p>封包離開 Pod 的 &lt;code>eth0&lt;/code>，通過一個 &lt;strong>Virtual Ethernet (&lt;code>veth&lt;/code>) pair&lt;/strong>。&lt;code>veth&lt;/code> 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tcp-Stack-Deep-Dive.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/</link>
+    <description>Recent content in Tcp-Stack-Deep-Dive.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/tcp-stack-deep-dive.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tcp Stack Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤&#34;&gt;當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤&lt;/h1&gt;
+&lt;p&gt;對於大多數開發者來說，發送一個網路請求就像是按下開關 $
+ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的&lt;strong&gt;路徑導向 (Steering)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;如果你曾經遇到過這種情況：&lt;code&gt;ping&lt;/code&gt; 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 &lt;code&gt;Connection Timeout&lt;/code&gt; —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。&lt;/p&gt;
+&lt;h2 id=&#34;封包的垂直旅程從-pod-到物理網卡&#34;&gt;封包的「垂直旅程」：從 Pod 到物理網卡&lt;/h2&gt;
+&lt;p&gt;在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 &lt;strong&gt;Context Handoffs (上下文交接)&lt;/strong&gt;。這正是潛在延遲和丟包的來源。&lt;/p&gt;
+&lt;h3 id=&#34;1-pod-命名空間-the-source&#34;&gt;1. Pod 命名空間 (The Source)&lt;/h3&gt;
+&lt;p&gt;應用程式呼叫 &lt;code&gt;connect()&lt;/code&gt;，核心在 Pod 的網路命名空間 (&lt;code&gt;netns&lt;/code&gt;) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;追蹤點&lt;/strong&gt;：&lt;code&gt;Pod App&lt;/code&gt; $
+ightarrow$ &lt;code&gt;Socket Buffer (sk_buff)&lt;/code&gt; $
+ightarrow$ &lt;code&gt;eth0&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-命名空間跳躍-the-jump&#34;&gt;2. 命名空間跳躍 (The Jump)&lt;/h3&gt;
+&lt;p&gt;封包離開 Pod 的 &lt;code&gt;eth0&lt;/code&gt;，通過一個 &lt;strong&gt;Virtual Ethernet (&lt;code&gt;veth&lt;/code&gt;) pair&lt;/strong&gt;。&lt;code&gt;veth&lt;/code&gt; 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,915 +1,1248 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/</link><description>Recent content in Posts on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>2026 04 17 Blog Creation</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/2026-04-17-blog-creation/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/2026-04-17-blog-creation/</guid><description>&lt;h1 id="digital-twin-blog-implementation-plan">Digital Twin Blog Implementation Plan&lt;/h1>
-&lt;blockquote>
-&lt;p>&lt;strong>For Hermes:&lt;/strong> Use subagent-driven-development skill to implement this plan task-by-task.&lt;/p>&lt;/blockquote>
-&lt;p>&lt;strong>Goal:&lt;/strong> Build a professional, structured knowledge base (MkDocs Material) that acts as a digital twin for Alan, hosted on GitHub Pages, featuring an &amp;ldquo;Elite&amp;rdquo; visual style and rewritten high-value content.&lt;/p>
-&lt;p>&lt;strong>Architecture:&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>Static Site Generator: MkDocs with Material theme.&lt;/li>
-&lt;li>Visuals: Custom CSS for &amp;ldquo;Gold-on-Slate&amp;rdquo; aesthetic (Dark slate backgrounds, gold accents).&lt;/li>
-&lt;li>Content Pipeline: Extraction from &lt;code>sz9751210.github.io&lt;/code> $\rightarrow$ Rewrite into &amp;ldquo;Elite&amp;rdquo; format $\rightarrow$ Markdown files.&lt;/li>
-&lt;li>Deployment: GitHub Pages via GitHub Actions.&lt;/li>
-&lt;/ul>
-&lt;p>&lt;strong>Tech Stack:&lt;/strong>&lt;/p></description></item><item><title>Agent Engineering Rigor</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-engineering-rigor/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-engineering-rigor/</guid><description>&lt;h1 id="對抗不確定性生產級-ai-agent-的外科手術與量化評估">對抗不確定性：生產級 AI Agent 的「外科手術」與「量化評估」&lt;/h1>
-&lt;p>&lt;strong>發佈日期&lt;/strong>: 2026-04-22
-&lt;strong>分類&lt;/strong>: LLMOps / SRE / Agent-Engineering
-&lt;strong>關鍵字&lt;/strong>: Agent穩定性, Eval-Framework, Karpathy-Guidelines, 閉環演化&lt;/p>
-&lt;hr>
-&lt;h2 id="01-demo-與產品之間的死亡之谷">01. Demo 與產品之間的「死亡之谷」&lt;/h2>
-&lt;p>在 AI 開發中，最危險的時刻就是當你對老闆或客戶展示一個「看起來很神奇」的 Demo 之後。&lt;/p>
-&lt;p>大多數 AI Agent 在 Demo 階段表現完美，是因為開發者在特定的路徑上進行了- &lt;strong>Prompt 過度擬合 (Over-fitting)&lt;/strong>。但一旦進入生產環境，面對不可預測的用戶輸入，系統會迅速崩潰 $\rightarrow$ 出現無限循環、格式錯誤或邏輯幻覺。&lt;/p>
-&lt;p>&lt;strong>將 AI Agent 從 Demo 推向產品，需要的是 SRE (Site Reliability Engineering) 的嚴謹度，而非更多 Prompt 的疊加。&lt;/strong>&lt;/p>
-&lt;hr>
-&lt;h2 id="02-外科手術式修改-surgical-changes">02. 外科手術式修改 (Surgical Changes)&lt;/h2>
-&lt;p>當 Agent 出現錯誤時，初學者傾向於「重新寫一遍 Prompt」或「增加更多指令」。這通常會導致 &lt;strong>「回歸失效 (Regression)」&lt;/strong>：修好了 A Bug，卻引入了 B Bug。&lt;/p>
-&lt;p>我推崇 &lt;strong>「外科手術式修改」&lt;/strong> 的原則：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>最小擾動&lt;/strong>：僅觸碰必須修改的那一行代碼或 Prompt 片段。&lt;/li>
-&lt;li>&lt;strong>風格對齊&lt;/strong>：嚴格匹配現有風格，不進行無關的重構。&lt;/li>
-&lt;li>&lt;strong>可追溯性&lt;/strong>：每一處修改都必須直接對應到一個具體的失敗案例。&lt;/li>
-&lt;/ol>
-&lt;p>這就是為什麼在協作中，我們必須要求 LLM 停止「好心的重構」，專注於精確的修復。&lt;/p></description></item><item><title>Agent Verification</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/</guid><description>&lt;h1 id="解決-ai-的一本正經胡說八道從預測轉向驗證的-agentv-rl-範式">解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式&lt;/h1>
-&lt;p>在目前的 LLM 應用中，我們面臨一個巨大的信任危機：&lt;strong>幻覺 (Hallucinations)&lt;/strong>。&lt;/p>
-&lt;p>大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/posts/</link>
+    <description>Recent content in Posts on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026 04 17 Blog Creation</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/2026-04-17-blog-creation/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/2026-04-17-blog-creation/</guid>
+      <description>&lt;h1 id=&#34;digital-twin-blog-implementation-plan&#34;&gt;Digital Twin Blog Implementation Plan&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;For Hermes:&lt;/strong&gt; Use subagent-driven-development skill to implement this plan task-by-task.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Goal:&lt;/strong&gt; Build a professional, structured knowledge base (MkDocs Material) that acts as a digital twin for Alan, hosted on GitHub Pages, featuring an &amp;ldquo;Elite&amp;rdquo; visual style and rewritten high-value content.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Architecture:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Static Site Generator: MkDocs with Material theme.&lt;/li&gt;
+&lt;li&gt;Visuals: Custom CSS for &amp;ldquo;Gold-on-Slate&amp;rdquo; aesthetic (Dark slate backgrounds, gold accents).&lt;/li&gt;
+&lt;li&gt;Content Pipeline: Extraction from &lt;code&gt;sz9751210.github.io&lt;/code&gt; $\rightarrow$ Rewrite into &amp;ldquo;Elite&amp;rdquo; format $\rightarrow$ Markdown files.&lt;/li&gt;
+&lt;li&gt;Deployment: GitHub Pages via GitHub Actions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Tech Stack:&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Agent Engineering Rigor</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-engineering-rigor/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-engineering-rigor/</guid>
+      <description>&lt;h1 id=&#34;對抗不確定性生產級-ai-agent-的外科手術與量化評估&#34;&gt;對抗不確定性：生產級 AI Agent 的「外科手術」與「量化評估」&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;發佈日期&lt;/strong&gt;: 2026-04-22
+&lt;strong&gt;分類&lt;/strong&gt;: LLMOps / SRE / Agent-Engineering
+&lt;strong&gt;關鍵字&lt;/strong&gt;: Agent穩定性, Eval-Framework, Karpathy-Guidelines, 閉環演化&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;01-demo-與產品之間的死亡之谷&#34;&gt;01. Demo 與產品之間的「死亡之谷」&lt;/h2&gt;
+&lt;p&gt;在 AI 開發中，最危險的時刻就是當你對老闆或客戶展示一個「看起來很神奇」的 Demo 之後。&lt;/p&gt;
+&lt;p&gt;大多數 AI Agent 在 Demo 階段表現完美，是因為開發者在特定的路徑上進行了- &lt;strong&gt;Prompt 過度擬合 (Over-fitting)&lt;/strong&gt;。但一旦進入生產環境，面對不可預測的用戶輸入，系統會迅速崩潰 $\rightarrow$ 出現無限循環、格式錯誤或邏輯幻覺。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;將 AI Agent 從 Demo 推向產品，需要的是 SRE (Site Reliability Engineering) 的嚴謹度，而非更多 Prompt 的疊加。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;02-外科手術式修改-surgical-changes&#34;&gt;02. 外科手術式修改 (Surgical Changes)&lt;/h2&gt;
+&lt;p&gt;當 Agent 出現錯誤時，初學者傾向於「重新寫一遍 Prompt」或「增加更多指令」。這通常會導致 &lt;strong&gt;「回歸失效 (Regression)」&lt;/strong&gt;：修好了 A Bug，卻引入了 B Bug。&lt;/p&gt;
+&lt;p&gt;我推崇 &lt;strong&gt;「外科手術式修改」&lt;/strong&gt; 的原則：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;最小擾動&lt;/strong&gt;：僅觸碰必須修改的那一行代碼或 Prompt 片段。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;風格對齊&lt;/strong&gt;：嚴格匹配現有風格，不進行無關的重構。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可追溯性&lt;/strong&gt;：每一處修改都必須直接對應到一個具體的失敗案例。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;這就是為什麼在協作中，我們必須要求 LLM 停止「好心的重構」，專注於精確的修復。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Agent Verification</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agent-verification/</guid>
+      <description>&lt;h1 id=&#34;解決-ai-的一本正經胡說八道從預測轉向驗證的-agentv-rl-範式&#34;&gt;解決 AI 的「一本正經胡說八道」：從預測轉向驗證的 AgentV-RL 範式&lt;/h1&gt;
+&lt;p&gt;在目前的 LLM 應用中，我們面臨一個巨大的信任危機：&lt;strong&gt;幻覺 (Hallucinations)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;大多數的獎勵模型 (Reward Models) 採取的是「單次預測」模式 $
 ightarrow$ 給出一個答案 $
-ightarrow$ 評分。這種模式最大的問題在於&lt;strong>錯誤傳播&lt;/strong>：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。&lt;/p>
-&lt;p>這就是為什麼我認為 &lt;strong>AgentV-RL&lt;/strong> 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。&lt;/p>
-&lt;h2 id="從直覺預測到審計驗證">從「直覺預測」到「審計驗證」&lt;/h2>
-&lt;p>AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個&lt;strong>多回合的審議過程&lt;/strong>。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。&lt;/p>
-&lt;p>其核心在於 &lt;strong>雙向驗證 (Bidirectional Verification)&lt;/strong> 策略：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>前向追蹤 (Forward Trace)&lt;/strong>：從前提條件出發，逐步推演到結論。&lt;/li>
-&lt;li>&lt;strong>後向驗證 (Backward Verify)&lt;/strong>：從結論反向追溯到前提，確保每一步邏輯都成立。&lt;/li>
-&lt;/ol>
-&lt;p>如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。&lt;/p>
-&lt;h2 id="用工具打破內部閉環的幻覺">用工具打破「內部閉環」的幻覺&lt;/h2>
-&lt;p>純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 &lt;strong>工具調用 (Tool-use)&lt;/strong> 整合進驗證環節。&lt;/p>
-&lt;p>當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 &lt;strong>Grounding (對齊事實)&lt;/strong>。&lt;/p>
-&lt;p>這種「推理 $
+ightarrow$ 評分。這種模式最大的問題在於&lt;strong&gt;錯誤傳播&lt;/strong&gt;：只要中間某一步驟看起來很合理（儘管是錯的），模型就很容易給出一個錯誤的正向評分 (False Positive)。&lt;/p&gt;
+&lt;p&gt;這就是為什麼我認為 &lt;strong&gt;AgentV-RL&lt;/strong&gt; 提出的「Agentic Verifier (Agent 化驗證器)」是通往可靠 AI 的關鍵。&lt;/p&gt;
+&lt;h2 id=&#34;從直覺預測到審計驗證&#34;&gt;從「直覺預測」到「審計驗證」&lt;/h2&gt;
+&lt;p&gt;AgentV-RL 將驗證過程從一個簡單的函數調用，轉化為一個&lt;strong&gt;多回合的審議過程&lt;/strong&gt;。它不再僅僅是「預測」答案是否正確，而是像一名審計師一樣去「驗證」邏輯。&lt;/p&gt;
+&lt;p&gt;其核心在於 &lt;strong&gt;雙向驗證 (Bidirectional Verification)&lt;/strong&gt; 策略：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;前向追蹤 (Forward Trace)&lt;/strong&gt;：從前提條件出發，逐步推演到結論。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;後向驗證 (Backward Verify)&lt;/strong&gt;：從結論反向追溯到前提，確保每一步邏輯都成立。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果前向與後向的路徑不能完全對齊，系統就會判定該答案存在風險。這種做法極大地降低了偽正例的發生率。&lt;/p&gt;
+&lt;h2 id=&#34;用工具打破內部閉環的幻覺&#34;&gt;用工具打破「內部閉環」的幻覺&lt;/h2&gt;
+&lt;p&gt;純粹的內部推理永遠無法完全擺脫幻覺，因為 LLM 始終是在預測下一個 token。AgentV-RL 的另一個突破在於將 &lt;strong&gt;工具調用 (Tool-use)&lt;/strong&gt; 整合進驗證環節。&lt;/p&gt;
+&lt;p&gt;當遇到知識密集型或高精度計算任務時，驗證器不再僅僅依賴自身的權重，而是會主動調用外部工具（如計算機、API、文檔）來進行 &lt;strong&gt;Grounding (對齊事實)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這種「推理 $
 ightarrow$ 工具驗證 $
-ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。&lt;/p></description></item><item><title>Agents 2 0</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agents-2-0/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agents-2-0/</guid><description>&lt;h1 id="停止對-prompt-的盲目猜測agents-20-與符號學習的演進">停止對 Prompt 的盲目猜測：Agents 2.0 與「符號學習」的演進&lt;/h1>
-&lt;p>如果你曾經花過數小時在調整 Prompt，試圖透過增加「請一步步思考」或「你是一個專業的專家」來提升 Agent 的表現，那麼你應該意識到：&lt;strong>Prompt Engineering 本質上是在用手工方式「修改神經網絡的權重」。&lt;/strong>&lt;/p>
-&lt;p>這種做法極其低效且不可擴展。真正的 Agent 進化，不應該依賴於人類的靈感，而應該依賴於系統性的&lt;strong>反饋循環&lt;/strong>。這就是為什麼我最近在研究 &lt;strong>Agents 2.0 (aiwaves-cn)&lt;/strong> 提出的「符號學習 (Symbolic Learning)」範式。&lt;/p>
-&lt;h2 id="從魔法轉向工程將-agent-視為計算圖">從「魔法」轉向「工程」：將 Agent 視為計算圖&lt;/h2>
-&lt;p>Agents 2.0 最核心的洞察在於：&lt;strong>它把整個 Agent 的管線 (Pipeline) 視為一個計算圖 (Computational Graph)，而將 Prompt 和工具 (Tools) 視為圖中的「權重」。&lt;/strong>&lt;/p>
-&lt;p>在傳統的 LLM 應用中，我們把模型當成黑盒。但在 Agents 2.0 的邏輯裡，Agent 的執行路徑就是一次 &lt;strong>Forward Pass (前向傳播)&lt;/strong>。&lt;/p>
-&lt;p>當 Agent 執行失敗或結果不理想時，它會產生一種「語言損失 (Language Loss)」。接著，系統會啟動 &lt;strong>Language-Based Backpropagation (基於語言的反向傳播)&lt;/strong>：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>反思 (Reflection)&lt;/strong>：分析執行軌跡，找出導致失敗的關鍵節點。&lt;/li>
-&lt;li>&lt;strong>梯度更新 (Gradient Update)&lt;/strong>：將反思結果轉化為對 Prompt 或工具選擇邏輯的修改。&lt;/li>
-&lt;li>&lt;strong>結構演化 (Self-Evolution)&lt;/strong>：自動更新計算圖的拓撲結構，優化工具調用的順序。&lt;/li>
-&lt;/ol>
-&lt;p>這意味著 Agent 不再僅僅是「執行指令」，而是在不斷地&lt;strong>自我優化&lt;/strong>。&lt;/p>
-&lt;h2 id="為什麼這很重要">為什麼這很重要？&lt;/h2>
-&lt;p>目前的 Agent 框架大多專注於「編排 (Orchestration)」，即告訴 Agent 怎麼走。但 Agents 2.0 關注的是「演化 (Evolution)」，即讓 Agent 自己發現怎麼走最快。&lt;/p></description></item><item><title>Ai Implementation Specialist Roadmap</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-implementation-specialist-roadmap/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-implementation-specialist-roadmap/</guid><description>&lt;h1 id="從-prompt-到產品定義ai-落地師的成長軌跡">從 Prompt 到產品：定義「AI 落地師」的成長軌跡&lt;/h1>
-&lt;p>&lt;strong>發佈日期&lt;/strong>: 2026-04-20
-&lt;strong>分類&lt;/strong>: AI-Engineering / Strategy
-&lt;strong>關鍵字&lt;/strong>: AI落地, Agentic-Workflow, 工程嚴謹度, 認知重構&lt;/p>
-&lt;hr>
-&lt;h2 id="01-走出聊天機器人的幻覺">01. 走出「聊天機器人」的幻覺&lt;/h2>
-&lt;p>在過去兩年，市場上出現了大量標榜「AI 專家」的人。但如果你仔細觀察會發現，絕大多數人的技能樹僅止於 &lt;strong>「掌握了幾套 Prompt 技巧」&lt;/strong>。&lt;/p>
-&lt;p>這種認知陷阱我稱之為 &lt;strong>「聊天機器人幻覺 (Chatbot Illusion)」&lt;/strong>。&lt;/p>
-&lt;p>當你依賴於對話界面，將 AI 視為一個「博學的對話者」時，你處於的是 &lt;strong>使用者 (User)&lt;/strong> 的維度。而在這個維度下，AI 的表現是概率性的、不可預測的，且極易在複雜任務中崩潰。&lt;/p>
-&lt;p>&lt;strong>真正的 AI 落地，必須完成一次認知上的劇烈跳躍：從「對話模式」切換到「編程模式」。&lt;/strong>&lt;/p>
-&lt;p>你不再是與 AI 「聊天」，而是在構建一個以 LLM 為核心推理單元的 &lt;strong>確定性系統&lt;/strong>。這就是我所定義的 &lt;strong>「AI 落地師 (AI Implementation Specialist)」&lt;/strong>。&lt;/p>
-&lt;hr>
-&lt;h2 id="02-什麼是ai-落地師">02. 什麼是「AI 落地師」？&lt;/h2>
-&lt;p>AI 落地師不是單純的工程師，也不是純粹的 Prompt 工程師。他是一個&lt;strong>系統建築師&lt;/strong>，其核心能力在於：&lt;strong>能將 LLM 的概率能力，轉化為確定性的業務價值。&lt;/strong>&lt;/p>
-&lt;p>如果說傳統開發是寫死邏輯 $\text{(If-Then-Else)}$，那麼 AI 落地就是設計一套 &lt;strong>「認知管線 (Cognitive Pipeline)」&lt;/strong>。&lt;/p>
-&lt;p>這要求落地師具備三種核心能力：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>對概率的掌控力&lt;/strong>：知道什麼時候該追求創造力 ($\text{Temp} &amp;gt; 0.7$)，什麼時候必須強制確定性 ($\text{Temp} = 0$)。&lt;/li>
-&lt;li>&lt;strong>對工具鏈的整合力&lt;/strong>：能將 LLM 與外部數據 (RAG)、外部工具 (MCP) 與狀態機 (LangGraph) 縫合在一起。&lt;/li>
-&lt;li>&lt;strong>對結果的量化力&lt;/strong>：拒絕「感覺不錯」，堅持使用 Eval Framework 進行數據驅動的優化。&lt;/li>
-&lt;/ol>
-&lt;hr>
-&lt;h2 id="03-落地師的五階段成長軌跡-the-trajectory">03. 落地師的五階段成長軌跡 (The Trajectory)&lt;/h2>
-&lt;p>要從一名初學者演進為頂尖的落地師，我建議遵循以下五個漸進階段：&lt;/p></description></item><item><title>Ai_Eng</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</guid><description>&lt;h1 id="-ai-application-engineering-hub">🤖 AI Application Engineering Hub&lt;/h1>
-&lt;p>Moving from &amp;ldquo;Prompting&amp;rdquo; to &amp;ldquo;Systems Engineering.&amp;rdquo; This hub focuses on the architecture required to build reliable, scalable, and autonomous AI agents.&lt;/p>
-&lt;h2 id="-the-prompt--context-layer">🧠 The Prompt &amp;amp; Context Layer&lt;/h2>
-&lt;p>&lt;em>Focus: Reducing the search space and maximizing LLM reasoning.&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Patterns&lt;/strong>: [[articles/ai-engineering/prompt-patterns|Structural Prompting Patterns]]&lt;/li>
-&lt;li>&lt;strong>Memory&lt;/strong>: [[articles/ai-engineering/context-window-dynamics|Context Window Dynamics &amp;amp; Tokenomics]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-retrieval--knowledge-rag">🔍 Retrieval &amp;amp; Knowledge (RAG)&lt;/h2>
-&lt;p>&lt;em>Focus: Transforming &amp;ldquo;Semantic Search&amp;rdquo; into &amp;ldquo;Knowledge Synthesis.&amp;rdquo;&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>The Truth&lt;/strong>: [[articles/ai-engineering/rag-truth|Why Vector Search Fails]]&lt;/li>
-&lt;li>&lt;strong>Deep Dive&lt;/strong>: [[articles/ai-engineering/rag-deep-dive-chunking-embedding|Chunking &amp;amp; Embedding Strategies]]&lt;/li>
-&lt;li>&lt;strong>Advanced&lt;/strong>: [[articles/ai-engineering/graphrag-deep-dive|GraphRAG &amp;amp; Global Synthesis]] $\rightarrow$ [[articles/ai-engineering/long-context-vs-rag|Long-Context vs RAG]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-agentic-workflows--llmops">⚙️ Agentic Workflows &amp;amp; LLMOps&lt;/h2>
-&lt;p>&lt;em>Focus: Building autonomous loops and production-grade guardrails.&lt;/em>&lt;/p></description></item><item><title>Autonomous Coding Agents</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/</guid><description>&lt;h1 id="從-copilot-到-software-engineer解構-openhands-與-cline-的自主編碼路徑">從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑&lt;/h1>
-&lt;p>大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $
+ightarrow$ 再次推理」的循環，讓 Agent 的驗證能力不再受限於模型參數的大小。事實證明，一個僅 4B 參數的 AgentV-RL 變體，在驗證準確率上能超過大得多的 SOTA 模型。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Agents 2 0</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/agents-2-0/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/agents-2-0/</guid>
+      <description>&lt;h1 id=&#34;停止對-prompt-的盲目猜測agents-20-與符號學習的演進&#34;&gt;停止對 Prompt 的盲目猜測：Agents 2.0 與「符號學習」的演進&lt;/h1&gt;
+&lt;p&gt;如果你曾經花過數小時在調整 Prompt，試圖透過增加「請一步步思考」或「你是一個專業的專家」來提升 Agent 的表現，那麼你應該意識到：&lt;strong&gt;Prompt Engineering 本質上是在用手工方式「修改神經網絡的權重」。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;這種做法極其低效且不可擴展。真正的 Agent 進化，不應該依賴於人類的靈感，而應該依賴於系統性的&lt;strong&gt;反饋循環&lt;/strong&gt;。這就是為什麼我最近在研究 &lt;strong&gt;Agents 2.0 (aiwaves-cn)&lt;/strong&gt; 提出的「符號學習 (Symbolic Learning)」範式。&lt;/p&gt;
+&lt;h2 id=&#34;從魔法轉向工程將-agent-視為計算圖&#34;&gt;從「魔法」轉向「工程」：將 Agent 視為計算圖&lt;/h2&gt;
+&lt;p&gt;Agents 2.0 最核心的洞察在於：&lt;strong&gt;它把整個 Agent 的管線 (Pipeline) 視為一個計算圖 (Computational Graph)，而將 Prompt 和工具 (Tools) 視為圖中的「權重」。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在傳統的 LLM 應用中，我們把模型當成黑盒。但在 Agents 2.0 的邏輯裡，Agent 的執行路徑就是一次 &lt;strong&gt;Forward Pass (前向傳播)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;當 Agent 執行失敗或結果不理想時，它會產生一種「語言損失 (Language Loss)」。接著，系統會啟動 &lt;strong&gt;Language-Based Backpropagation (基於語言的反向傳播)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;反思 (Reflection)&lt;/strong&gt;：分析執行軌跡，找出導致失敗的關鍵節點。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;梯度更新 (Gradient Update)&lt;/strong&gt;：將反思結果轉化為對 Prompt 或工具選擇邏輯的修改。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;結構演化 (Self-Evolution)&lt;/strong&gt;：自動更新計算圖的拓撲結構，優化工具調用的順序。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;這意味著 Agent 不再僅僅是「執行指令」，而是在不斷地&lt;strong&gt;自我優化&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;為什麼這很重要&#34;&gt;為什麼這很重要？&lt;/h2&gt;
+&lt;p&gt;目前的 Agent 框架大多專注於「編排 (Orchestration)」，即告訴 Agent 怎麼走。但 Agents 2.0 關注的是「演化 (Evolution)」，即讓 Agent 自己發現怎麼走最快。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ai Implementation Specialist Roadmap</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-implementation-specialist-roadmap/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-implementation-specialist-roadmap/</guid>
+      <description>&lt;h1 id=&#34;從-prompt-到產品定義ai-落地師的成長軌跡&#34;&gt;從 Prompt 到產品：定義「AI 落地師」的成長軌跡&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;發佈日期&lt;/strong&gt;: 2026-04-20
+&lt;strong&gt;分類&lt;/strong&gt;: AI-Engineering / Strategy
+&lt;strong&gt;關鍵字&lt;/strong&gt;: AI落地, Agentic-Workflow, 工程嚴謹度, 認知重構&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;01-走出聊天機器人的幻覺&#34;&gt;01. 走出「聊天機器人」的幻覺&lt;/h2&gt;
+&lt;p&gt;在過去兩年，市場上出現了大量標榜「AI 專家」的人。但如果你仔細觀察會發現，絕大多數人的技能樹僅止於 &lt;strong&gt;「掌握了幾套 Prompt 技巧」&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這種認知陷阱我稱之為 &lt;strong&gt;「聊天機器人幻覺 (Chatbot Illusion)」&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;當你依賴於對話界面，將 AI 視為一個「博學的對話者」時，你處於的是 &lt;strong&gt;使用者 (User)&lt;/strong&gt; 的維度。而在這個維度下，AI 的表現是概率性的、不可預測的，且極易在複雜任務中崩潰。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;真正的 AI 落地，必須完成一次認知上的劇烈跳躍：從「對話模式」切換到「編程模式」。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你不再是與 AI 「聊天」，而是在構建一個以 LLM 為核心推理單元的 &lt;strong&gt;確定性系統&lt;/strong&gt;。這就是我所定義的 &lt;strong&gt;「AI 落地師 (AI Implementation Specialist)」&lt;/strong&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;02-什麼是ai-落地師&#34;&gt;02. 什麼是「AI 落地師」？&lt;/h2&gt;
+&lt;p&gt;AI 落地師不是單純的工程師，也不是純粹的 Prompt 工程師。他是一個&lt;strong&gt;系統建築師&lt;/strong&gt;，其核心能力在於：&lt;strong&gt;能將 LLM 的概率能力，轉化為確定性的業務價值。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果說傳統開發是寫死邏輯 $\text{(If-Then-Else)}$，那麼 AI 落地就是設計一套 &lt;strong&gt;「認知管線 (Cognitive Pipeline)」&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這要求落地師具備三種核心能力：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;對概率的掌控力&lt;/strong&gt;：知道什麼時候該追求創造力 ($\text{Temp} &amp;gt; 0.7$)，什麼時候必須強制確定性 ($\text{Temp} = 0$)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;對工具鏈的整合力&lt;/strong&gt;：能將 LLM 與外部數據 (RAG)、外部工具 (MCP) 與狀態機 (LangGraph) 縫合在一起。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;對結果的量化力&lt;/strong&gt;：拒絕「感覺不錯」，堅持使用 Eval Framework 進行數據驅動的優化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;03-落地師的五階段成長軌跡-the-trajectory&#34;&gt;03. 落地師的五階段成長軌跡 (The Trajectory)&lt;/h2&gt;
+&lt;p&gt;要從一名初學者演進為頂尖的落地師，我建議遵循以下五個漸進階段：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ai_Eng</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</guid>
+      <description>&lt;h1 id=&#34;-ai-application-engineering-hub&#34;&gt;🤖 AI Application Engineering Hub&lt;/h1&gt;
+&lt;p&gt;Moving from &amp;ldquo;Prompting&amp;rdquo; to &amp;ldquo;Systems Engineering.&amp;rdquo; This hub focuses on the architecture required to build reliable, scalable, and autonomous AI agents.&lt;/p&gt;
+&lt;h2 id=&#34;-the-prompt--context-layer&#34;&gt;🧠 The Prompt &amp;amp; Context Layer&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Reducing the search space and maximizing LLM reasoning.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Patterns&lt;/strong&gt;: [[articles/ai-engineering/prompt-patterns|Structural Prompting Patterns]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory&lt;/strong&gt;: [[articles/ai-engineering/context-window-dynamics|Context Window Dynamics &amp;amp; Tokenomics]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-retrieval--knowledge-rag&#34;&gt;🔍 Retrieval &amp;amp; Knowledge (RAG)&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Transforming &amp;ldquo;Semantic Search&amp;rdquo; into &amp;ldquo;Knowledge Synthesis.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;The Truth&lt;/strong&gt;: [[articles/ai-engineering/rag-truth|Why Vector Search Fails]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Deep Dive&lt;/strong&gt;: [[articles/ai-engineering/rag-deep-dive-chunking-embedding|Chunking &amp;amp; Embedding Strategies]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced&lt;/strong&gt;: [[articles/ai-engineering/graphrag-deep-dive|GraphRAG &amp;amp; Global Synthesis]] $\rightarrow$ [[articles/ai-engineering/long-context-vs-rag|Long-Context vs RAG]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-agentic-workflows--llmops&#34;&gt;⚙️ Agentic Workflows &amp;amp; LLMOps&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Building autonomous loops and production-grade guardrails.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Autonomous Coding Agents</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/</guid>
+      <description>&lt;h1 id=&#34;從-copilot-到-software-engineer解構-openhands-與-cline-的自主編碼路徑&#34;&gt;從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑&lt;/h1&gt;
+&lt;p&gt;大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $
 ightarrow$ 手動複製 $
 ightarrow$ 貼上 $
-ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。&lt;/p>
-&lt;p>但真正的範式轉移正在發生：&lt;strong>AI 正在從「建議代碼」轉向「自主執行」&lt;/strong>。&lt;/p>
-&lt;p>最近我對比了 &lt;strong>OpenHands&lt;/strong> 與 &lt;strong>Cline&lt;/strong> 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 &lt;strong>AI Software Engineer&lt;/strong> 的跨越。&lt;/p>
-&lt;h2 id="核心差異插件-vs-獨立環境">核心差異：插件 vs 獨立環境&lt;/h2>
-&lt;p>雖然兩者都追求自主化，但其工程路徑截然不同：&lt;/p>
-&lt;h3 id="1-cline極致的-ide-融合">1. Cline：極致的 IDE 融合&lt;/h3>
-&lt;p>Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>體驗&lt;/strong>：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。&lt;/li>
-&lt;li>&lt;strong>適用場景&lt;/strong>：快速功能開發、局部重構。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-openhands工業級的-agent-基礎設施">2. OpenHands：工業級的 Agent 基礎設施&lt;/h3>
-&lt;p>與 Cline 不同，OpenHands 的定位更像是一個 &lt;strong>Agent 平台&lt;/strong>。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。&lt;/p></description></item><item><title>Aws Msk</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/aws-msk/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/aws-msk/</guid><description>&lt;h1 id="aws-msk實作-iam-角色型身份驗證">AWS MSK：實作 IAM 角色型身份驗證&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Infrastructure / Message Queue&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥈 Silver (Operational Best Practice)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>在企業級環境中，捨棄 SASL/SCRAM 而採用 &lt;strong>IAM 角色型驗證&lt;/strong> 是為了實現「零密鑰管理」與「精細權限控制」。透過 AWS IAM，我們可以將權限直接綁定到執行個體的 Role，徹底消除密鑰洩漏風險，並簡化跨服務（如 MSK Connect）的集成過程。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-叢集部署要點">🎯 叢集部署要點&lt;/h3>
-&lt;ol>
-&lt;li>&lt;strong>叢集設定&lt;/strong>：選擇自訂建立 $\rightarrow$ 規格最小化（開發環境） $\rightarrow$ 3 個可用區 (AZ) 以確保高可用。&lt;/li>
-&lt;li>&lt;strong>網路配置&lt;/strong>：使用預設 VPC，確保每個 AZ 擁有獨立子網。&lt;/li>
-&lt;li>&lt;strong>安全設定&lt;/strong>：
-&lt;ul>
-&lt;li>&lt;strong>驗證方式&lt;/strong>：選定 &lt;code>IAM role-based authentication&lt;/code>。&lt;/li>
-&lt;li>&lt;strong>加密&lt;/strong>：使用 AWS 受管金鑰加密靜態資料。&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;h3 id="-iam-policy-權限拆解">🔐 IAM Policy 權限拆解&lt;/h3>
-&lt;p>為了確保最小權限原則，Policy 應分為三個維度：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Cluster Level&lt;/strong> (&lt;code>Connect&lt;/code>, &lt;code>AlterCluster&lt;/code>, &lt;code>DescribeCluster&lt;/code>)：允許 Client 端與叢集建立通信。&lt;/li>
-&lt;li>&lt;strong>Topic Level&lt;/strong> (&lt;code>*Topic*&lt;/code>, &lt;code>WriteData&lt;/code>, &lt;code>ReadData&lt;/code>)：控制訊息的讀寫權限。&lt;/li>
-&lt;li>&lt;strong>Group Level&lt;/strong>：管理消費者分組的權限。&lt;/li>
-&lt;/ul>
-&lt;h3 id="-實作坑洞">🛠️ 實作坑洞&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>連接器兼容性&lt;/strong>：部分第三方連接器不支援 SASL/SCRAM，必須切換至 IAM 驗證方可正常運作。&lt;/li>
-&lt;li>&lt;strong>建立時間&lt;/strong>：MSK 叢集建立約需 15 分鐘，建議在 CI/CD Pipeline 中設置適當的等待時間。&lt;/li>
-&lt;/ul>
-&lt;h2 id="synergy">Synergy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Infrastructure as Code (IaC)&lt;/strong>：此流程可直接轉化為 Terraform 或 CloudFormation 模組。&lt;/li>
-&lt;li>&lt;strong>Zero Trust Architecture&lt;/strong>：IAM 驗證是實現雲端零信任架構的核心步驟。&lt;/li>
-&lt;/ul></description></item><item><title>Browser Use</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/browser-use/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/browser-use/</guid><description>&lt;h1 id="告別傳統爬蟲當-ai-agent-真正擁有眼睛與手指">告別傳統爬蟲：當 AI Agent 真正擁有「眼睛」與「手指」&lt;/h1>
-&lt;p>如果你曾經為了寫一個爬蟲，花數小時分析 HTML 結構、處理惱人的反爬蟲機制 (Anti-bot)、或是被動態加載的 SPA 頁面搞得心力交瘁，那麼你應該慶幸：&lt;strong>傳統的 Web Scraping 時代正在終結，Agentic Browser Control 時代已經到來。&lt;/strong>&lt;/p>
-&lt;p>最近我深入研究了 &lt;strong>Browser Use&lt;/strong>，這是一個讓 AI Agent 能夠像人類一樣「操作」瀏覽器的框架。它不再是簡單地提取數據，而是讓 Agent 真正具備了在互聯網上完成複雜任務的能力。&lt;/p>
-&lt;h2 id="為什麼傳統爬蟲不再夠用">為什麼傳統爬蟲不再夠用？&lt;/h2>
-&lt;p>傳統爬蟲的核心是「解析 (Parsing)」。我們定義路徑 $
+ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。&lt;/p&gt;
+&lt;p&gt;但真正的範式轉移正在發生：&lt;strong&gt;AI 正在從「建議代碼」轉向「自主執行」&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;最近我對比了 &lt;strong&gt;OpenHands&lt;/strong&gt; 與 &lt;strong&gt;Cline&lt;/strong&gt; 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 &lt;strong&gt;AI Software Engineer&lt;/strong&gt; 的跨越。&lt;/p&gt;
+&lt;h2 id=&#34;核心差異插件-vs-獨立環境&#34;&gt;核心差異：插件 vs 獨立環境&lt;/h2&gt;
+&lt;p&gt;雖然兩者都追求自主化，但其工程路徑截然不同：&lt;/p&gt;
+&lt;h3 id=&#34;1-cline極致的-ide-融合&#34;&gt;1. Cline：極致的 IDE 融合&lt;/h3&gt;
+&lt;p&gt;Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;體驗&lt;/strong&gt;：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;適用場景&lt;/strong&gt;：快速功能開發、局部重構。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-openhands工業級的-agent-基礎設施&#34;&gt;2. OpenHands：工業級的 Agent 基礎設施&lt;/h3&gt;
+&lt;p&gt;與 Cline 不同，OpenHands 的定位更像是一個 &lt;strong&gt;Agent 平台&lt;/strong&gt;。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Aws Msk</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/aws-msk/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/aws-msk/</guid>
+      <description>&lt;h1 id=&#34;aws-msk實作-iam-角色型身份驗證&#34;&gt;AWS MSK：實作 IAM 角色型身份驗證&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Cloud Infrastructure / Message Queue&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥈 Silver (Operational Best Practice)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;在企業級環境中，捨棄 SASL/SCRAM 而採用 &lt;strong&gt;IAM 角色型驗證&lt;/strong&gt; 是為了實現「零密鑰管理」與「精細權限控制」。透過 AWS IAM，我們可以將權限直接綁定到執行個體的 Role，徹底消除密鑰洩漏風險，並簡化跨服務（如 MSK Connect）的集成過程。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-叢集部署要點&#34;&gt;🎯 叢集部署要點&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;叢集設定&lt;/strong&gt;：選擇自訂建立 $\rightarrow$ 規格最小化（開發環境） $\rightarrow$ 3 個可用區 (AZ) 以確保高可用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;網路配置&lt;/strong&gt;：使用預設 VPC，確保每個 AZ 擁有獨立子網。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全設定&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;驗證方式&lt;/strong&gt;：選定 &lt;code&gt;IAM role-based authentication&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;加密&lt;/strong&gt;：使用 AWS 受管金鑰加密靜態資料。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;-iam-policy-權限拆解&#34;&gt;🔐 IAM Policy 權限拆解&lt;/h3&gt;
+&lt;p&gt;為了確保最小權限原則，Policy 應分為三個維度：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cluster Level&lt;/strong&gt; (&lt;code&gt;Connect&lt;/code&gt;, &lt;code&gt;AlterCluster&lt;/code&gt;, &lt;code&gt;DescribeCluster&lt;/code&gt;)：允許 Client 端與叢集建立通信。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Topic Level&lt;/strong&gt; (&lt;code&gt;*Topic*&lt;/code&gt;, &lt;code&gt;WriteData&lt;/code&gt;, &lt;code&gt;ReadData&lt;/code&gt;)：控制訊息的讀寫權限。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Group Level&lt;/strong&gt;：管理消費者分組的權限。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-實作坑洞&#34;&gt;🛠️ 實作坑洞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;連接器兼容性&lt;/strong&gt;：部分第三方連接器不支援 SASL/SCRAM，必須切換至 IAM 驗證方可正常運作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;建立時間&lt;/strong&gt;：MSK 叢集建立約需 15 分鐘，建議在 CI/CD Pipeline 中設置適當的等待時間。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Infrastructure as Code (IaC)&lt;/strong&gt;：此流程可直接轉化為 Terraform 或 CloudFormation 模組。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Zero Trust Architecture&lt;/strong&gt;：IAM 驗證是實現雲端零信任架構的核心步驟。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Browser Use</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/browser-use/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/browser-use/</guid>
+      <description>&lt;h1 id=&#34;告別傳統爬蟲當-ai-agent-真正擁有眼睛與手指&#34;&gt;告別傳統爬蟲：當 AI Agent 真正擁有「眼睛」與「手指」&lt;/h1&gt;
+&lt;p&gt;如果你曾經為了寫一個爬蟲，花數小時分析 HTML 結構、處理惱人的反爬蟲機制 (Anti-bot)、或是被動態加載的 SPA 頁面搞得心力交瘁，那麼你應該慶幸：&lt;strong&gt;傳統的 Web Scraping 時代正在終結，Agentic Browser Control 時代已經到來。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;最近我深入研究了 &lt;strong&gt;Browser Use&lt;/strong&gt;，這是一個讓 AI Agent 能夠像人類一樣「操作」瀏覽器的框架。它不再是簡單地提取數據，而是讓 Agent 真正具備了在互聯網上完成複雜任務的能力。&lt;/p&gt;
+&lt;h2 id=&#34;為什麼傳統爬蟲不再夠用&#34;&gt;為什麼傳統爬蟲不再夠用？&lt;/h2&gt;
+&lt;p&gt;傳統爬蟲的核心是「解析 (Parsing)」。我們定義路徑 $
 ightarrow$ 提取內容 $
-ightarrow$ 處理異常。但這種方式有兩個致命缺陷：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>脆弱性 (Fragility)&lt;/strong>：網站只要改一個 CSS Class，你的爬蟲就崩潰了。&lt;/li>
-&lt;li>&lt;strong>互動能力缺失&lt;/strong>：爬蟲很擅長「讀」，但很差於「做」。面對需要登錄、點擊複雜下拉菜單、或是在多個頁面間跳轉的任務，傳統工具極其笨重。&lt;/li>
-&lt;/ol>
-&lt;h2 id="browser-use讓-ai-像人類一樣上網">Browser Use：讓 AI 像人類一樣上網&lt;/h2>
-&lt;p>Browser Use 的核心邏輯是將瀏覽器視為 Agent 的一個 &lt;strong>Tool&lt;/strong>。它不再關注 HTML 的標籤，而關注&lt;strong>視覺與結構的意圖&lt;/strong>。&lt;/p>
-&lt;p>其技術亮點在於：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>LLM 驅動的控制流&lt;/strong>：Agent 直接觀察頁面狀態，決定下一步是 &lt;code>click&lt;/code>、&lt;code>type&lt;/code> 還是 &lt;code>scroll&lt;/code>。這意味著即使頁面結構改變，只要功能還在，Agent 就能找到路徑。&lt;/li>
-&lt;li>&lt;strong>隱匿基礎設施 (Stealth Infra)&lt;/strong>：這是生產級應用的關鍵。通過代理 IP 輪轉和 CAPTCHA 自動破解，它能有效避開大多數網站的機器人檢測，讓 Agent 能在不被封禁的情況下穩定運行。&lt;/li>
-&lt;li>&lt;strong>高精度基準 (High-Accuracy Benchmarks)&lt;/strong>：它針對瀏覽器操作對模型進行了優化，使得完成任務的速度比通用模型快 3-5 倍，且成功率大幅提升。&lt;/li>
-&lt;/ul>
-&lt;h2 id="從數據提取到任務自動化">從「數據提取」到「任務自動化」&lt;/h2>
-&lt;p>有了 Browser Use，我們定義任務的方式發生了根本性的改變。&lt;/p></description></item><item><title>Cfs Scheduler</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cfs-scheduler/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cfs-scheduler/</guid><description>&lt;h1 id="公平與延遲的戰爭解構-linux-cfs-調度器">公平與延遲的戰爭：解構 Linux CFS 調度器&lt;/h1>
-&lt;p>在 Linux 世界裡，CFS (Completely Fair Scheduler) 是絕對的主角。它的名字裡有一個詞非常關鍵：&lt;strong>Fair (公平)&lt;/strong>。
-但對於高性能應用工程師來說，「公平」往往是低延遲的最大敵人。&lt;/p>
-&lt;h2 id="vruntime公平的代價">vruntime：公平的代價&lt;/h2>
-&lt;p>CFS 不使用傳統的「時間片」概念，而是使用一個紅黑樹來追蹤每個進程的 &lt;code>vruntime&lt;/code> (虛擬運行時間)。&lt;/p>
-&lt;ul>
-&lt;li>誰的 &lt;code>vruntime&lt;/code> 最小 $
+ightarrow$ 處理異常。但這種方式有兩個致命缺陷：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;脆弱性 (Fragility)&lt;/strong&gt;：網站只要改一個 CSS Class，你的爬蟲就崩潰了。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;互動能力缺失&lt;/strong&gt;：爬蟲很擅長「讀」，但很差於「做」。面對需要登錄、點擊複雜下拉菜單、或是在多個頁面間跳轉的任務，傳統工具極其笨重。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;browser-use讓-ai-像人類一樣上網&#34;&gt;Browser Use：讓 AI 像人類一樣上網&lt;/h2&gt;
+&lt;p&gt;Browser Use 的核心邏輯是將瀏覽器視為 Agent 的一個 &lt;strong&gt;Tool&lt;/strong&gt;。它不再關注 HTML 的標籤，而關注&lt;strong&gt;視覺與結構的意圖&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;其技術亮點在於：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;LLM 驅動的控制流&lt;/strong&gt;：Agent 直接觀察頁面狀態，決定下一步是 &lt;code&gt;click&lt;/code&gt;、&lt;code&gt;type&lt;/code&gt; 還是 &lt;code&gt;scroll&lt;/code&gt;。這意味著即使頁面結構改變，只要功能還在，Agent 就能找到路徑。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;隱匿基礎設施 (Stealth Infra)&lt;/strong&gt;：這是生產級應用的關鍵。通過代理 IP 輪轉和 CAPTCHA 自動破解，它能有效避開大多數網站的機器人檢測，讓 Agent 能在不被封禁的情況下穩定運行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高精度基準 (High-Accuracy Benchmarks)&lt;/strong&gt;：它針對瀏覽器操作對模型進行了優化，使得完成任務的速度比通用模型快 3-5 倍，且成功率大幅提升。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;從數據提取到任務自動化&#34;&gt;從「數據提取」到「任務自動化」&lt;/h2&gt;
+&lt;p&gt;有了 Browser Use，我們定義任務的方式發生了根本性的改變。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Cfs Scheduler</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cfs-scheduler/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cfs-scheduler/</guid>
+      <description>&lt;h1 id=&#34;公平與延遲的戰爭解構-linux-cfs-調度器&#34;&gt;公平與延遲的戰爭：解構 Linux CFS 調度器&lt;/h1&gt;
+&lt;p&gt;在 Linux 世界裡，CFS (Completely Fair Scheduler) 是絕對的主角。它的名字裡有一個詞非常關鍵：&lt;strong&gt;Fair (公平)&lt;/strong&gt;。
+但對於高性能應用工程師來說，「公平」往往是低延遲的最大敵人。&lt;/p&gt;
+&lt;h2 id=&#34;vruntime公平的代價&#34;&gt;vruntime：公平的代價&lt;/h2&gt;
+&lt;p&gt;CFS 不使用傳統的「時間片」概念，而是使用一個紅黑樹來追蹤每個進程的 &lt;code&gt;vruntime&lt;/code&gt; (虛擬運行時間)。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;誰的 &lt;code&gt;vruntime&lt;/code&gt; 最小 $
 ightarrow$ 誰最「委屈」 $
 ightarrow$ 誰優先被調度執行。
-這種機制保證了系統不會有進程被完全餓死，但它也導致了一個問題：&lt;strong>調度抖動&lt;/strong>。
-當大量短暫的任務（例如大量的小請求）同時進入系統時，CFS 會為了維持「公平」，頻繁地在不同任務之間切換。這種 &lt;strong>Context Switch Storm (上下文切換風暴)&lt;/strong> 會導致 CPU 緩存被不斷刷新，讓你的 P99 延遲劇烈飆升。&lt;/li>
-&lt;/ul>
-&lt;h2 id="繞過公平追求確定性執行">繞過「公平」：追求確定性執行&lt;/h2>
-&lt;p>如果你在構建一個實時數據處理管線，你不需要公平，你需要的是 &lt;strong>確定性 (Determinism)&lt;/strong>。&lt;/p>
-&lt;h3 id="1-cpu-隔離-isolcpus">1. CPU 隔離 (isolcpus)&lt;/h3>
-&lt;p>最極端的做法是在內核啟動參數中加入 &lt;code>isolcpus=1,2,3&lt;/code>。這告訴內核：「不要把任何普通任務調度到這幾個核心上」。然後，你使用 &lt;code>taskset&lt;/code> 將你的關鍵進程強行綁定到這些隔離核心上。
-這樣，你的進程在該核心上擁有 &lt;strong>絕對的霸權&lt;/strong>，不再受 CFS 的公平調度干擾。&lt;/p>
-&lt;h3 id="2-實時調度策略-real-time-policy">2. 實時調度策略 (Real-Time Policy)&lt;/h3>
-&lt;p>透過 &lt;code>chrt&lt;/code> 將進程設置為 &lt;code>SCHED_FIFO&lt;/code> 或 &lt;code>SCHED_RR&lt;/code>。這讓你的進程跳出了 CFS 的紅黑樹，只要它想運行，就能立即搶佔任何普通進程。&lt;/p>
-&lt;h2 id="總結公平是政策不是性能">總結：公平是政策，不是性能&lt;/h2>
-&lt;p>CFS 是為了讓通用作業系統「好用」，但它不是為了讓高性能應用「快」。&lt;strong>真正的性能優化，就是學會如何在正確的地方放棄公平。&lt;/strong>&lt;/p></description></item><item><title>Claude Context</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/claude-context/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/claude-context/</guid><description>&lt;h1 id="當-context-window-依然不夠用時用-claude-context-構建程式碼的語義地圖">當 Context Window 依然不夠用時：用 Claude Context 構建程式碼的「語義地圖」&lt;/h1>
-&lt;p>很多開發者在面對 200K 甚至 1M 的上下文窗口 (Context Window) 時，容易陷入一個誤區：認為只要把所有程式碼全部塞進去，LLM 就能理解一切。&lt;/p>
-&lt;p>但事實是，即使窗口夠大，&lt;strong>「大海撈針 (Needle In A Haystack)」&lt;/strong> 效應依然存在。過多的冗餘資訊會稀釋關鍵信號，導致模型產生幻覺或遺漏細節。對於真正的生產級 codebase 來說，我們需要的不是更大的窗口，而是一個能精確導航的 &lt;strong>「語義地圖」&lt;/strong>。&lt;/p>
-&lt;p>這就是 &lt;strong>Claude Context&lt;/strong> 試圖解決的問題。&lt;/p>
-&lt;h2 id="為什麼簡單的-rag-對於程式碼來說是失敗的">為什麼簡單的 RAG 對於程式碼來說是失敗的？&lt;/h2>
-&lt;p>大多數的 RAG (檢索增強生成) 系統在處理文本時表現良好，但在處理程式碼時往往表現糟糕。原因在於：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>塊分割 (Chunking) 太隨機&lt;/strong>：傳統 RAG 按照字符數分割，經常把一個函數切成兩半，導致語義丟失。&lt;/li>
-&lt;li>&lt;strong>缺乏結構意識&lt;/strong>：它不理解函數調用鏈、類繼承或模組依賴，只把程式碼當成普通的字符串。&lt;/li>
-&lt;/ul>
-&lt;p>Claude Context 透過以下技術打破了這個僵局：&lt;/p>
-&lt;h3 id="1-ast-aware-chunking-基於抽象語法樹的切分">1. AST-Aware Chunking (基於抽象語法樹的切分)&lt;/h3>
-&lt;p>它不再隨機切分，而是利用 &lt;strong>AST (Abstract Syntax Tree)&lt;/strong> 根據程式碼的邏輯結構（如函數邊界、類定義）進行切分。這確保了被檢索出來的每一個片段都是一個「完整的邏輯單元」。&lt;/p>
-&lt;h3 id="2-混合搜索-semantic-hybrid-search">2. 混合搜索 (Semantic Hybrid Search)&lt;/h3>
-&lt;p>單純的向量搜索 (Dense Vector Search) 有時會太過「模糊」，而關鍵字搜索 (BM25) 又太過「死板」。Claude Context 將兩者結合：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>精確匹配&lt;/strong>：快速定位特定的函數名或變量名。&lt;/li>
-&lt;li>&lt;strong>概念關聯&lt;/strong>：即使你沒有使用精確的詞彙，也能通過語義關聯找到相關邏輯。&lt;/li>
-&lt;/ul>
-&lt;h3 id="3-增量索引-incremental-indexing">3. 增量索引 (Incremental Indexing)&lt;/h3>
-&lt;p>對於大型項目，重新索引整個 codebase 是不可接受的。它引入了 &lt;strong>Merkle Tree&lt;/strong> 機制，僅對修改過的檔案進行更新，確保索引始終與最新代碼同步，且幾乎不消耗額外資源。&lt;/p></description></item><item><title>Container Isolation Internals</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-isolation-internals/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-isolation-internals/</guid><description>&lt;h1 id="容器不是虛擬機深入理解-linux-namespaces-與-cgroups-的隔離幻象">容器不是虛擬機：深入理解 Linux Namespaces 與 Cgroups 的「隔離幻象」&lt;/h1>
-&lt;p>在很多人的認知中，Docker 或 Kubernetes 的容器像是一個「輕量級的虛擬機」。但從 SRE 的底層視角來看，這是一個巨大的誤解。&lt;/p>
-&lt;p>容器根本不是一個獨立的對象，而是一個&lt;strong>被限制了視角 (Namespaces)&lt;/strong> 且 &lt;strong>被管控了資源 (Cgroups)&lt;/strong> 的普通 Linux 進程。&lt;/p>
-&lt;h2 id="第一部分namespaces--決定你能看到什麼">第一部分：Namespaces —— 決定你能「看到」什麼&lt;/h2>
-&lt;p>如果說核心是一個巨大的開放空間，那麼 &lt;strong>Namespaces (命名空間)&lt;/strong> 就是在空間中隔出的「透明隔間」。它不限制你的能力，但它改變了你的&lt;strong>視角&lt;/strong>。&lt;/p>
-&lt;h3 id="1-視角的隔離-the-illusion-of-privacy">1. 視角的隔離 (The Illusion of Privacy)&lt;/h3>
-&lt;p>當 &lt;code>runc&lt;/code> 啟動容器時，它會通過 &lt;code>clone()&lt;/code> 或 &lt;code>unshare()&lt;/code> 系統呼叫，為進程創建多個獨立的命名空間：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Network Namespace (NET)&lt;/strong>：你看到的是一套私有的網卡、路由表和防火牆規則。這就是為什麼你在容器內執行 &lt;code>ip addr&lt;/code> 看到的 IP 與主機完全不同。&lt;/li>
-&lt;li>&lt;strong>PID Namespace&lt;/strong>：你看到的進程 ID 被重新編號。容器內的啟動進程永遠是 &lt;code>PID 1&lt;/code>，但從主機視角看，它可能是一個隨機的 &lt;code>PID 12345&lt;/code>。&lt;/li>
-&lt;li>&lt;strong>Mount Namespace (MNT)&lt;/strong>：你擁有一套私有的掛載表。你在容器內 &lt;code>mount&lt;/code> 一個磁碟，主機完全感覺不到。&lt;/li>
-&lt;li>&lt;strong>User Namespace (USER)&lt;/strong>：最神奇的隔離。你可以是容器內的 &lt;code>root&lt;/code>，但在主機眼中，你只是一個毫無權限的普通用戶。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-sre-除錯場景追蹤幽靈進程">2. SRE 除錯場景：追蹤「幽靈進程」&lt;/h3>
-&lt;p>&lt;strong>現象&lt;/strong>：主機 &lt;code>top&lt;/code> 顯示某個進程 CPU 100%，但你 &lt;code>kubectl exec&lt;/code> 進去後，容器內的 &lt;code>top&lt;/code> 卻顯示一切正常。&lt;/p></description></item><item><title>Container Runtime Deep Dive</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-runtime-deep-dive/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-runtime-deep-dive/</guid><description>&lt;h1 id="解構容器運行時從-kubelet-意圖到二進制執行的完整路徑">解構容器運行時：從 Kubelet 意圖到二進制執行的完整路徑&lt;/h1>
-&lt;p>如果你問一個開發者「容器是什麼？」，他可能會回答「一個打包了環境的鏡像」。但如果你問一個 SRE「容器是如何啟動的？」，答案將會是一場複雜的系統呼叫交響曲。&lt;/p>
-&lt;p>很多工程師以為 &lt;code>docker run&lt;/code> 或 &lt;code>kubectl apply&lt;/code> 之後，容器就直接「跑起來」了。事實上，從 K8s 的宣告式意圖到核心執行二進制文件，中間經過了一套由 &lt;strong>OCI 標準&lt;/strong> 治理的模塊化鏈路。&lt;/p>
-&lt;h2 id="1-權責分離高級運行時-vs-低級運行時">1. 權責分離：高級運行時 vs 低級運行時&lt;/h2>
-&lt;p>現代容器棧不再是一個單體，而是分為兩層：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>高級運行時 (High-Level Runtime)&lt;/strong>：如 &lt;code>containerd&lt;/code> 或 &lt;code>CRI-O&lt;/code>。它們是「管理員」，負責拉取鏡像、管理存儲、設置網路以及與 Kubelet 通信。它們不直接創建容器，而是編排資源。&lt;/li>
-&lt;li>&lt;strong>低級運行時 (Low-Level Runtime)&lt;/strong>：如 &lt;code>runc&lt;/code>。它是「工人」，一個短暫的進程。它的唯一目標是：與 Linux 核心交互，創建命名空間、設置控制組 (Cgroups)、切換根目錄，然後執行目標程序。&lt;/li>
-&lt;/ul>
-&lt;p>這就是 OCI (Open Container Initiative) 的核心價值：只要符合標準，你可以隨意替換 &lt;code>runc&lt;/code> 為 &lt;code>Kata Containers&lt;/code> (輕量級 VM) 或 &lt;code>gVisor&lt;/code> (用戶態內核)，而無需修改 K8s。&lt;/p>
-&lt;h2 id="2-啟動之舞runc-的執行生命週期">2. 啟動之舞：&lt;code>runc&lt;/code> 的執行生命週期&lt;/h2>
-&lt;p>容器的啟動並非單一事件，而是一系列精確的系統呼叫順序。當 &lt;code>containerd&lt;/code> 要求啟動容器時，&lt;code>runc&lt;/code> 會執行以下「舞蹈」：&lt;/p>
-&lt;h3 id="第一步分叉與克隆-fork--clone">第一步：分叉與克隆 (Fork &amp;amp; Clone)&lt;/h3>
-&lt;p>&lt;code>runc&lt;/code> 不使用簡單的 &lt;code>fork()&lt;/code>，而是使用 &lt;code>clone()&lt;/code> 並帶上特定的標誌 (Flags)：&lt;/p></description></item><item><title>Copilotkit Agent Ui</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</guid><description>&lt;h1 id="擺脫對話框的束縛為什麼-agent-native-ui-是-ai-應用的下一站">擺脫對話框的束縛：為什麼 Agent-Native UI 是 AI 應用的下一站&lt;/h1>
-&lt;p>很多人在開發 AI Agent 時，最直覺的思考方式就是「做一個對話框」。用戶輸入 $
+這種機制保證了系統不會有進程被完全餓死，但它也導致了一個問題：&lt;strong&gt;調度抖動&lt;/strong&gt;。
+當大量短暫的任務（例如大量的小請求）同時進入系統時，CFS 會為了維持「公平」，頻繁地在不同任務之間切換。這種 &lt;strong&gt;Context Switch Storm (上下文切換風暴)&lt;/strong&gt; 會導致 CPU 緩存被不斷刷新，讓你的 P99 延遲劇烈飆升。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;繞過公平追求確定性執行&#34;&gt;繞過「公平」：追求確定性執行&lt;/h2&gt;
+&lt;p&gt;如果你在構建一個實時數據處理管線，你不需要公平，你需要的是 &lt;strong&gt;確定性 (Determinism)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;1-cpu-隔離-isolcpus&#34;&gt;1. CPU 隔離 (isolcpus)&lt;/h3&gt;
+&lt;p&gt;最極端的做法是在內核啟動參數中加入 &lt;code&gt;isolcpus=1,2,3&lt;/code&gt;。這告訴內核：「不要把任何普通任務調度到這幾個核心上」。然後，你使用 &lt;code&gt;taskset&lt;/code&gt; 將你的關鍵進程強行綁定到這些隔離核心上。
+這樣，你的進程在該核心上擁有 &lt;strong&gt;絕對的霸權&lt;/strong&gt;，不再受 CFS 的公平調度干擾。&lt;/p&gt;
+&lt;h3 id=&#34;2-實時調度策略-real-time-policy&#34;&gt;2. 實時調度策略 (Real-Time Policy)&lt;/h3&gt;
+&lt;p&gt;透過 &lt;code&gt;chrt&lt;/code&gt; 將進程設置為 &lt;code&gt;SCHED_FIFO&lt;/code&gt; 或 &lt;code&gt;SCHED_RR&lt;/code&gt;。這讓你的進程跳出了 CFS 的紅黑樹，只要它想運行，就能立即搶佔任何普通進程。&lt;/p&gt;
+&lt;h2 id=&#34;總結公平是政策不是性能&#34;&gt;總結：公平是政策，不是性能&lt;/h2&gt;
+&lt;p&gt;CFS 是為了讓通用作業系統「好用」，但它不是為了讓高性能應用「快」。&lt;strong&gt;真正的性能優化，就是學會如何在正確的地方放棄公平。&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Claude Context</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/claude-context/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/claude-context/</guid>
+      <description>&lt;h1 id=&#34;當-context-window-依然不夠用時用-claude-context-構建程式碼的語義地圖&#34;&gt;當 Context Window 依然不夠用時：用 Claude Context 構建程式碼的「語義地圖」&lt;/h1&gt;
+&lt;p&gt;很多開發者在面對 200K 甚至 1M 的上下文窗口 (Context Window) 時，容易陷入一個誤區：認為只要把所有程式碼全部塞進去，LLM 就能理解一切。&lt;/p&gt;
+&lt;p&gt;但事實是，即使窗口夠大，&lt;strong&gt;「大海撈針 (Needle In A Haystack)」&lt;/strong&gt; 效應依然存在。過多的冗餘資訊會稀釋關鍵信號，導致模型產生幻覺或遺漏細節。對於真正的生產級 codebase 來說，我們需要的不是更大的窗口，而是一個能精確導航的 &lt;strong&gt;「語義地圖」&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這就是 &lt;strong&gt;Claude Context&lt;/strong&gt; 試圖解決的問題。&lt;/p&gt;
+&lt;h2 id=&#34;為什麼簡單的-rag-對於程式碼來說是失敗的&#34;&gt;為什麼簡單的 RAG 對於程式碼來說是失敗的？&lt;/h2&gt;
+&lt;p&gt;大多數的 RAG (檢索增強生成) 系統在處理文本時表現良好，但在處理程式碼時往往表現糟糕。原因在於：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;塊分割 (Chunking) 太隨機&lt;/strong&gt;：傳統 RAG 按照字符數分割，經常把一個函數切成兩半，導致語義丟失。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缺乏結構意識&lt;/strong&gt;：它不理解函數調用鏈、類繼承或模組依賴，只把程式碼當成普通的字符串。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Claude Context 透過以下技術打破了這個僵局：&lt;/p&gt;
+&lt;h3 id=&#34;1-ast-aware-chunking-基於抽象語法樹的切分&#34;&gt;1. AST-Aware Chunking (基於抽象語法樹的切分)&lt;/h3&gt;
+&lt;p&gt;它不再隨機切分，而是利用 &lt;strong&gt;AST (Abstract Syntax Tree)&lt;/strong&gt; 根據程式碼的邏輯結構（如函數邊界、類定義）進行切分。這確保了被檢索出來的每一個片段都是一個「完整的邏輯單元」。&lt;/p&gt;
+&lt;h3 id=&#34;2-混合搜索-semantic-hybrid-search&#34;&gt;2. 混合搜索 (Semantic Hybrid Search)&lt;/h3&gt;
+&lt;p&gt;單純的向量搜索 (Dense Vector Search) 有時會太過「模糊」，而關鍵字搜索 (BM25) 又太過「死板」。Claude Context 將兩者結合：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;精確匹配&lt;/strong&gt;：快速定位特定的函數名或變量名。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;概念關聯&lt;/strong&gt;：即使你沒有使用精確的詞彙，也能通過語義關聯找到相關邏輯。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-增量索引-incremental-indexing&#34;&gt;3. 增量索引 (Incremental Indexing)&lt;/h3&gt;
+&lt;p&gt;對於大型項目，重新索引整個 codebase 是不可接受的。它引入了 &lt;strong&gt;Merkle Tree&lt;/strong&gt; 機制，僅對修改過的檔案進行更新，確保索引始終與最新代碼同步，且幾乎不消耗額外資源。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Container Isolation Internals</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-isolation-internals/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-isolation-internals/</guid>
+      <description>&lt;h1 id=&#34;容器不是虛擬機深入理解-linux-namespaces-與-cgroups-的隔離幻象&#34;&gt;容器不是虛擬機：深入理解 Linux Namespaces 與 Cgroups 的「隔離幻象」&lt;/h1&gt;
+&lt;p&gt;在很多人的認知中，Docker 或 Kubernetes 的容器像是一個「輕量級的虛擬機」。但從 SRE 的底層視角來看，這是一個巨大的誤解。&lt;/p&gt;
+&lt;p&gt;容器根本不是一個獨立的對象，而是一個&lt;strong&gt;被限制了視角 (Namespaces)&lt;/strong&gt; 且 &lt;strong&gt;被管控了資源 (Cgroups)&lt;/strong&gt; 的普通 Linux 進程。&lt;/p&gt;
+&lt;h2 id=&#34;第一部分namespaces--決定你能看到什麼&#34;&gt;第一部分：Namespaces —— 決定你能「看到」什麼&lt;/h2&gt;
+&lt;p&gt;如果說核心是一個巨大的開放空間，那麼 &lt;strong&gt;Namespaces (命名空間)&lt;/strong&gt; 就是在空間中隔出的「透明隔間」。它不限制你的能力，但它改變了你的&lt;strong&gt;視角&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;1-視角的隔離-the-illusion-of-privacy&#34;&gt;1. 視角的隔離 (The Illusion of Privacy)&lt;/h3&gt;
+&lt;p&gt;當 &lt;code&gt;runc&lt;/code&gt; 啟動容器時，它會通過 &lt;code&gt;clone()&lt;/code&gt; 或 &lt;code&gt;unshare()&lt;/code&gt; 系統呼叫，為進程創建多個獨立的命名空間：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Network Namespace (NET)&lt;/strong&gt;：你看到的是一套私有的網卡、路由表和防火牆規則。這就是為什麼你在容器內執行 &lt;code&gt;ip addr&lt;/code&gt; 看到的 IP 與主機完全不同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PID Namespace&lt;/strong&gt;：你看到的進程 ID 被重新編號。容器內的啟動進程永遠是 &lt;code&gt;PID 1&lt;/code&gt;，但從主機視角看，它可能是一個隨機的 &lt;code&gt;PID 12345&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mount Namespace (MNT)&lt;/strong&gt;：你擁有一套私有的掛載表。你在容器內 &lt;code&gt;mount&lt;/code&gt; 一個磁碟，主機完全感覺不到。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;User Namespace (USER)&lt;/strong&gt;：最神奇的隔離。你可以是容器內的 &lt;code&gt;root&lt;/code&gt;，但在主機眼中，你只是一個毫無權限的普通用戶。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-sre-除錯場景追蹤幽靈進程&#34;&gt;2. SRE 除錯場景：追蹤「幽靈進程」&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;現象&lt;/strong&gt;：主機 &lt;code&gt;top&lt;/code&gt; 顯示某個進程 CPU 100%，但你 &lt;code&gt;kubectl exec&lt;/code&gt; 進去後，容器內的 &lt;code&gt;top&lt;/code&gt; 卻顯示一切正常。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Container Runtime Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-runtime-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/container-runtime-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;解構容器運行時從-kubelet-意圖到二進制執行的完整路徑&#34;&gt;解構容器運行時：從 Kubelet 意圖到二進制執行的完整路徑&lt;/h1&gt;
+&lt;p&gt;如果你問一個開發者「容器是什麼？」，他可能會回答「一個打包了環境的鏡像」。但如果你問一個 SRE「容器是如何啟動的？」，答案將會是一場複雜的系統呼叫交響曲。&lt;/p&gt;
+&lt;p&gt;很多工程師以為 &lt;code&gt;docker run&lt;/code&gt; 或 &lt;code&gt;kubectl apply&lt;/code&gt; 之後，容器就直接「跑起來」了。事實上，從 K8s 的宣告式意圖到核心執行二進制文件，中間經過了一套由 &lt;strong&gt;OCI 標準&lt;/strong&gt; 治理的模塊化鏈路。&lt;/p&gt;
+&lt;h2 id=&#34;1-權責分離高級運行時-vs-低級運行時&#34;&gt;1. 權責分離：高級運行時 vs 低級運行時&lt;/h2&gt;
+&lt;p&gt;現代容器棧不再是一個單體，而是分為兩層：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;高級運行時 (High-Level Runtime)&lt;/strong&gt;：如 &lt;code&gt;containerd&lt;/code&gt; 或 &lt;code&gt;CRI-O&lt;/code&gt;。它們是「管理員」，負責拉取鏡像、管理存儲、設置網路以及與 Kubelet 通信。它們不直接創建容器，而是編排資源。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;低級運行時 (Low-Level Runtime)&lt;/strong&gt;：如 &lt;code&gt;runc&lt;/code&gt;。它是「工人」，一個短暫的進程。它的唯一目標是：與 Linux 核心交互，創建命名空間、設置控制組 (Cgroups)、切換根目錄，然後執行目標程序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這就是 OCI (Open Container Initiative) 的核心價值：只要符合標準，你可以隨意替換 &lt;code&gt;runc&lt;/code&gt; 為 &lt;code&gt;Kata Containers&lt;/code&gt; (輕量級 VM) 或 &lt;code&gt;gVisor&lt;/code&gt; (用戶態內核)，而無需修改 K8s。&lt;/p&gt;
+&lt;h2 id=&#34;2-啟動之舞runc-的執行生命週期&#34;&gt;2. 啟動之舞：&lt;code&gt;runc&lt;/code&gt; 的執行生命週期&lt;/h2&gt;
+&lt;p&gt;容器的啟動並非單一事件，而是一系列精確的系統呼叫順序。當 &lt;code&gt;containerd&lt;/code&gt; 要求啟動容器時，&lt;code&gt;runc&lt;/code&gt; 會執行以下「舞蹈」：&lt;/p&gt;
+&lt;h3 id=&#34;第一步分叉與克隆-fork--clone&#34;&gt;第一步：分叉與克隆 (Fork &amp;amp; Clone)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;runc&lt;/code&gt; 不使用簡單的 &lt;code&gt;fork()&lt;/code&gt;，而是使用 &lt;code&gt;clone()&lt;/code&gt; 並帶上特定的標誌 (Flags)：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Copilotkit Agent Ui</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/copilotkit-agent-ui/</guid>
+      <description>&lt;h1 id=&#34;擺脫對話框的束縛為什麼-agent-native-ui-是-ai-應用的下一站&#34;&gt;擺脫對話框的束縛：為什麼 Agent-Native UI 是 AI 應用的下一站&lt;/h1&gt;
+&lt;p&gt;很多人在開發 AI Agent 時，最直覺的思考方式就是「做一個對話框」。用戶輸入 $
 ightarrow$ Agent 思考 $
-ightarrow$ 回傳文字。&lt;/p>
-&lt;p>但如果你真的試著在生產環境運行 Agent，你會發現對話框其實是個巨大的瓶頸。當 Agent 需要處理複雜的狀態、更新數據或請求用戶確認時，純文字的互動會變得異常低效。這就是為什麼我最近在關注 &lt;strong>CopilotKit&lt;/strong>，以及它背後推動的 &lt;strong>AG-UI Protocol&lt;/strong>。&lt;/p>
-&lt;h2 id="對話框之後的思考什麼是-agent-native-ui">對話框之後的思考：什麼是 Agent-Native UI？&lt;/h2>
-&lt;p>簡單來說，Agent-Native UI 意味著介面不再是靜態的，而是&lt;strong>隨 Agent 的計畫而動態演化&lt;/strong>。&lt;/p>
-&lt;p>想像一下，當你要求 Agent 「幫我分析上季度的銷售數據並調整預算」時，它不應該只是回覆你「我正在分析中&amp;hellip;」，而應該直接在介面上渲染出一個實時更新的分析圖表，並在需要你確認預算金額時，自動彈出一個輸入表單。&lt;/p>
-&lt;p>這就是 CopilotKit 核心解決的問題。它不再把 UI 當成單純的輸出端，而是將其視為 Agent 執行路徑的一部分。&lt;/p>
-&lt;h2 id="copilotkit-的技術核心">CopilotKit 的技術核心&lt;/h2>
-&lt;p>CopilotKit 其實是為前端開發者提供了一套工具鏈，讓 AI Agent 能夠直接「操縱」前端介面：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>Generative UI (生成式 UI)&lt;/strong>：Agent 可以根據當前的狀態，在運行時決定要渲染哪個組件。這讓 UI 從「預定義」變成了「動態生成」。&lt;/li>
-&lt;li>&lt;strong>共享狀態層 (Shared State Layer)&lt;/strong>：這是最關鍵的部分。後端 Agent 的狀態與前端 UI 實時同步。不用再寫複雜的 Polling 或 WebSocket 邏輯，Agent 修改狀態，UI 直接反應。&lt;/li>
-&lt;li>&lt;strong>內建的 HITL (Human-in-the-Loop)&lt;/strong>：在生產級 Agent 中，完全自動化是危險的。CopilotKit 提供了一套標準流程，讓 Agent 能在關鍵節點「暫停」，請求用戶確認或修改，然後再繼續執行。&lt;/li>
-&lt;li>&lt;strong>&lt;code>useAgent&lt;/code> Hook&lt;/strong>：對於 React 開發者來說，這就像是一個控制開關，讓前端能以程式化方式讀取 Agent 的狀態或觸發動作。&lt;/li>
-&lt;/ol>
-&lt;h2 id="從工具調用到介面同步">從「工具調用」到「介面同步」&lt;/h2>
-&lt;p>目前的 Agent 框架（如 LangGraph 或 CrewAI）大多專注於後端的邏輯編排（Orchestration）。但後端跑得再快，如果前端還在等文字流 (Streaming) 輸出，用戶體驗依然是破碎的。&lt;/p></description></item><item><title>Core Concepts</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</guid><description>&lt;h1 id="kafka-核心概念與元件詳解">Kafka 核心概念與元件詳解&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Distributed Systems / Message Queue&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥇 Gold (Foundational Knowledge)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>Kafka 的強大在於它將訊息系統抽象為一個 &lt;strong>「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong>。透過將 Topic 拆分為 Partition，並使用 Offset 作為消費游標，Kafka 實現了極高吞吐量的順序寫入與並行消費，從而解耦了生產者與消費者的處理速度。&lt;/p>
-&lt;h2 id="核心元件詳解">核心元件詳解&lt;/h2>
-&lt;h3 id="1-topic-主題">1. Topic (主題)&lt;/h3>
-&lt;p>Topic 是 Kafka 中對訊息進行邏輯分類的單位。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>特性&lt;/strong>：一個 Topic 可以包含多個 Partition。&lt;/li>
-&lt;li>&lt;strong>設計要點&lt;/strong>：Topic 的命名應反映其數據的語義（例如 &lt;code>user_login_events&lt;/code>），且一旦創建，Partition 數量增加後通常無法減少。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-partition-分區-rightarrow-並行度的核心">2. Partition (分區) $\rightarrow$ 並行度的核心&lt;/h3>
-&lt;p>Partition 是 Topic 的物理拆分，是 Kafka 實現水平擴展的基礎。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>分發邏輯&lt;/strong>：生產者根據 Key 的 Hash 值決定訊息進入哪個 Partition。若 Key 為空，則採用輪詢 (Round-robin) 策略。&lt;/li>
-&lt;li>&lt;strong>順序保證&lt;/strong>：Kafka 僅保證 &lt;strong>單個 Partition 內&lt;/strong> 的訊息順序，不保證整個 Topic 的全局順序。&lt;/li>
-&lt;/ul>
-&lt;h3 id="3-messagerecord-訊息">3. Message/Record (訊息)&lt;/h3>
-&lt;p>訊息是 Kafka 傳輸的最小原子單位。&lt;/p></description></item><item><title>Cpu Numa</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</guid><description>&lt;h1 id="記憶體的物理學cpu-拓撲與-numa-懲罰">記憶體的物理學：CPU 拓撲與 NUMA 懲罰&lt;/h1>
-&lt;p>很多人在調優高性能應用時，習慣於監控 CPU 使用率。當看到 CPU 只有 50% 但吞吐量卻上不去時，第一反應通常是「程式有鎖」或「網路慢」。
-但對於跑在多路伺服器上的應用，真正的兇手往往是 &lt;strong>NUMA (Non-Uniform Memory Access)&lt;/strong>。&lt;/p>
-&lt;h2 id="記憶體訪問不再是均一的">記憶體訪問不再是「均一」的&lt;/h2>
-&lt;p>在單路 CPU 時代，CPU 訪問記憶體就像在同一個房間拿東西。但在現代多路伺服器中，每個 CPU 都有自己的本地記憶體控制器。
-如果你在 Socket 0 上運行一個線程，但它訪問的數據卻落在 Socket 1 的記憶體中，這個請求必須經過 &lt;strong>UPI (Intel)&lt;/strong> 或 &lt;strong>Infinity Fabric (AMD)&lt;/strong> 總線。這就是所謂的 &lt;strong>Remote Memory Access&lt;/strong>。
-&lt;strong>這導致了一個殘酷的事實：訪問遠端記憶體的延遲，比本地記憶體高出 30% 到 50%。&lt;/strong>&lt;/p>
-&lt;h2 id="sre-的實戰對策追求極致的局部性-locality">SRE 的實戰對策：追求極致的局部性 (Locality)&lt;/h2>
-&lt;p>如果你在處理高頻交易、實時音頻或大規模資料庫，你不能把記憶體訪問交給內核隨機分配。&lt;/p>
-&lt;h3 id="1-cpu-pinning-與記憶體親和性">1. CPU Pinning 與記憶體親和性&lt;/h3>
-&lt;p>不要讓內核在不同的核心之間隨機搬移你的線程（Context Switch）。使用 &lt;code>numactl&lt;/code> 強制將進程綁定在特定的 NUMA 節點上：
-&lt;code>numactl --cpunodebind=0 --membind=0 ./my_app&lt;/code>
-這確保了 &lt;strong>「計算」與「數據」在物理空間上是最近的&lt;/strong>。&lt;/p>
-&lt;h3 id="2-禁用-smt-超線程">2. 禁用 SMT (超線程)&lt;/h3>
-&lt;p>對於極致低延遲的場景，超線程 (Hyper-Threading) 其實是一種干擾。兩個邏輯核心共享同一個物理算術邏輯單元 (ALU)，這會引入不可預測的抖動 (Jitter)。在追求 P99.99 穩定性的系統中，直接在 BIOS 裡關掉 SMT。&lt;/p></description></item><item><title>Design Philosophy</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</guid><description>&lt;h1 id="kafka-核心設計哲學分佈式流處理的基石">Kafka 核心設計哲學：分佈式流處理的基石&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Distributed Systems / Messaging Queue&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥇 Gold (Architectural Foundation)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>Kafka 的成功不在於它是一個「消息隊列」，而是在於它將自己定位為一個 &lt;strong>「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong>。透過將隨機寫入轉化為 &lt;strong>順序寫入 (Sequential I/O)&lt;/strong> 並利用 &lt;strong>頁快取 (Page Cache)&lt;/strong> 與 &lt;strong>零拷貝 (Zero Copy)&lt;/strong>，Kafka 打破了傳統 MQ 在吞吐量上的瓶頸，實現了極高規模的數據流處理。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-核心架構三要素">🏗️ 核心架構三要素&lt;/h3>
-&lt;ol>
-&lt;li>&lt;strong>Append-only Log&lt;/strong>：所有數據以追加方式寫入日誌文件，確保了寫入性能的極致，並天然支持多消費者以不同 Offset 讀取。&lt;/li>
-&lt;li>&lt;strong>Partitioning (分區)&lt;/strong>：通過將 Topic 分為多個 Partition，實現了水平擴展 (Horizontal Scaling) 與並行處理能力。&lt;/li>
-&lt;li>&lt;strong>Replication (副本)&lt;/strong>：通過 Leader-Follower 機制確保數據的高可用性，即使部分 Broker 宕機，數據依然可被恢復。&lt;/li>
-&lt;/ol>
-&lt;h3 id="-性能加速秘密">⚡ 性能加速秘密&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>Sequential I/O&lt;/strong>：磁盤順序寫入速度遠快於隨機寫入。&lt;/li>
-&lt;li>&lt;strong>Zero Copy (sendfile)&lt;/strong>：數據直接從內核 Page Cache 傳輸到 NIC 緩衝區，跳過了用戶空間的多次拷貝，極大降低了 CPU 負荷。&lt;/li>
-&lt;li>&lt;strong>Batching&lt;/strong>：將多條消息聚合為一個 Batch 傳輸，減少網絡交互次數。&lt;/li>
-&lt;/ul>
-&lt;h2 id="synergy">Synergy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>LSM-Tree&lt;/strong>：Kafka 的日誌結構與 NoSQL (如 Cassandra, RocksDB) 的 LSM-Tree 理念一致，均追求寫入性能最大化。&lt;/li>
-&lt;li>&lt;strong>Event Sourcing&lt;/strong>：Kafka 的 Log 結構是實現事件溯源 (Event Sourcing) 的天然基礎，允許系統在任何時間點重建狀態。&lt;/li>
-&lt;/ul></description></item><item><title>Ebpf Modern Observability</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/</guid><description>&lt;h1 id="超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎">超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎&lt;/h1>
-&lt;p>對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：&lt;code>ping&lt;/code> $
-ightarrow$ &lt;code>curl&lt;/code> $
-ightarrow$ &lt;code>tcpdump&lt;/code> $
-ightarrow$ &lt;code>strace&lt;/code>。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。&lt;/p>
-&lt;p>&lt;code>tcpdump&lt;/code> 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；&lt;code>strace&lt;/code> 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。&lt;/p>
-&lt;p>這正是 &lt;strong>eBPF (Extended Berkeley Packet Filter)&lt;/strong> 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個&lt;strong>可編程的平台&lt;/strong>。&lt;/p>
-&lt;h2 id="ebpf-的本質在核心內部植入探針">eBPF 的本質：在核心內部植入「探針」&lt;/h2>
-&lt;p>簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。&lt;/p>
-&lt;h3 id="1-從代碼到執行的垂直路徑">1. 從代碼到執行的「垂直路徑」&lt;/h3>
-&lt;p>一個 eBPF 程序的旅程如下：
-&lt;strong>SRE 腳本 (&lt;code>bpftrace&lt;/code>/&lt;code>Cilium&lt;/code>)&lt;/strong> $
-ightarrow$ &lt;strong>LLVM 編譯&lt;/strong> $
-ightarrow$ &lt;strong>&lt;code>bpf()&lt;/code> 系統呼叫&lt;/strong> $
-ightarrow$ &lt;strong>Verifier (驗證器)&lt;/strong> $
-ightarrow$ &lt;strong>JIT 編譯&lt;/strong> $
-ightarrow$ &lt;strong>核心掛鉤點 (Hook Point)&lt;/strong> $
-ightarrow$ &lt;strong>事件觸發&lt;/strong>。&lt;/p></description></item><item><title>Gpu Llm K8S Scheduling</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/gpu-llm-k8s-scheduling/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/gpu-llm-k8s-scheduling/</guid><description>&lt;h1 id="從-ollama-到生產環境如何在-kubernetes-中大規模部署-gpu-加速的-llm">從 Ollama 到生產環境：如何在 Kubernetes 中大規模部署 GPU 加速的 LLM&lt;/h1>
-&lt;p>對於大多數 AI 開發者來說，部署第一個 LLM 模型的體驗通常是：安裝 Ollama $
-ightarrow$ &lt;code>ollama run llama3&lt;/code> $
-ightarrow$ 跑通。這在本地開發時非常完美，但當你需要將其推向生產環境時，你會發現本地工具完全無法處理以下問題：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>GPU 資源碎片化&lt;/strong>：如何高效分配多張 GPU？&lt;/li>
-&lt;li>&lt;strong>冷啟動延遲&lt;/strong>：數十 GB 的模型權重加載需要多久？&lt;/li>
-&lt;li>&lt;strong>可用性保障&lt;/strong>：單機崩潰怎麼辦？如何實現自動擴縮容？&lt;/li>
-&lt;li>&lt;strong>合規與隔離&lt;/strong>：在金融或醫療等受管制行業，如何實現完全的 Air-gapped (氣隙) 部署？&lt;/li>
-&lt;/ul>
-&lt;p>這正是 &lt;strong>LLMKube&lt;/strong> 類型的 K8s Operator 試圖解決的核心痛點。&lt;/p>
-&lt;h2 id="1-突破單機限制gpu-的-k8s-編排">1. 突破「單機」限制：GPU 的 K8s 編排&lt;/h2>
-&lt;p>在 K8s 中運行 GPU 任務，最簡單的做法是使用 NVIDIA GPU Operator，但這僅僅解決了「能看到 GPU」的問題，沒有解決「如何高效用好 GPU」的問題。&lt;/p>
-&lt;h3 id="從--a-la-carte-到--封裝化部署">從- a la carte 到- 封裝化部署&lt;/h3>
-&lt;p>傳統方式需要 SRE 手動配置 CUDA 版本、安裝 Driver、設定環境變數 $
+ightarrow$ 回傳文字。&lt;/p&gt;
+&lt;p&gt;但如果你真的試著在生產環境運行 Agent，你會發現對話框其實是個巨大的瓶頸。當 Agent 需要處理複雜的狀態、更新數據或請求用戶確認時，純文字的互動會變得異常低效。這就是為什麼我最近在關注 &lt;strong&gt;CopilotKit&lt;/strong&gt;，以及它背後推動的 &lt;strong&gt;AG-UI Protocol&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;對話框之後的思考什麼是-agent-native-ui&#34;&gt;對話框之後的思考：什麼是 Agent-Native UI？&lt;/h2&gt;
+&lt;p&gt;簡單來說，Agent-Native UI 意味著介面不再是靜態的，而是&lt;strong&gt;隨 Agent 的計畫而動態演化&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;想像一下，當你要求 Agent 「幫我分析上季度的銷售數據並調整預算」時，它不應該只是回覆你「我正在分析中&amp;hellip;」，而應該直接在介面上渲染出一個實時更新的分析圖表，並在需要你確認預算金額時，自動彈出一個輸入表單。&lt;/p&gt;
+&lt;p&gt;這就是 CopilotKit 核心解決的問題。它不再把 UI 當成單純的輸出端，而是將其視為 Agent 執行路徑的一部分。&lt;/p&gt;
+&lt;h2 id=&#34;copilotkit-的技術核心&#34;&gt;CopilotKit 的技術核心&lt;/h2&gt;
+&lt;p&gt;CopilotKit 其實是為前端開發者提供了一套工具鏈，讓 AI Agent 能夠直接「操縱」前端介面：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Generative UI (生成式 UI)&lt;/strong&gt;：Agent 可以根據當前的狀態，在運行時決定要渲染哪個組件。這讓 UI 從「預定義」變成了「動態生成」。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;共享狀態層 (Shared State Layer)&lt;/strong&gt;：這是最關鍵的部分。後端 Agent 的狀態與前端 UI 實時同步。不用再寫複雜的 Polling 或 WebSocket 邏輯，Agent 修改狀態，UI 直接反應。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;內建的 HITL (Human-in-the-Loop)&lt;/strong&gt;：在生產級 Agent 中，完全自動化是危險的。CopilotKit 提供了一套標準流程，讓 Agent 能在關鍵節點「暫停」，請求用戶確認或修改，然後再繼續執行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;useAgent&lt;/code&gt; Hook&lt;/strong&gt;：對於 React 開發者來說，這就像是一個控制開關，讓前端能以程式化方式讀取 Agent 的狀態或觸發動作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;從工具調用到介面同步&#34;&gt;從「工具調用」到「介面同步」&lt;/h2&gt;
+&lt;p&gt;目前的 Agent 框架（如 LangGraph 或 CrewAI）大多專注於後端的邏輯編排（Orchestration）。但後端跑得再快，如果前端還在等文字流 (Streaming) 輸出，用戶體驗依然是破碎的。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Core Concepts</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</guid>
+      <description>&lt;h1 id=&#34;kafka-核心概念與元件詳解&#34;&gt;Kafka 核心概念與元件詳解&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Distributed Systems / Message Queue&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥇 Gold (Foundational Knowledge)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;Kafka 的強大在於它將訊息系統抽象為一個 &lt;strong&gt;「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong&gt;。透過將 Topic 拆分為 Partition，並使用 Offset 作為消費游標，Kafka 實現了極高吞吐量的順序寫入與並行消費，從而解耦了生產者與消費者的處理速度。&lt;/p&gt;
+&lt;h2 id=&#34;核心元件詳解&#34;&gt;核心元件詳解&lt;/h2&gt;
+&lt;h3 id=&#34;1-topic-主題&#34;&gt;1. Topic (主題)&lt;/h3&gt;
+&lt;p&gt;Topic 是 Kafka 中對訊息進行邏輯分類的單位。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;特性&lt;/strong&gt;：一個 Topic 可以包含多個 Partition。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;設計要點&lt;/strong&gt;：Topic 的命名應反映其數據的語義（例如 &lt;code&gt;user_login_events&lt;/code&gt;），且一旦創建，Partition 數量增加後通常無法減少。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-partition-分區-rightarrow-並行度的核心&#34;&gt;2. Partition (分區) $\rightarrow$ 並行度的核心&lt;/h3&gt;
+&lt;p&gt;Partition 是 Topic 的物理拆分，是 Kafka 實現水平擴展的基礎。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;分發邏輯&lt;/strong&gt;：生產者根據 Key 的 Hash 值決定訊息進入哪個 Partition。若 Key 為空，則採用輪詢 (Round-robin) 策略。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;順序保證&lt;/strong&gt;：Kafka 僅保證 &lt;strong&gt;單個 Partition 內&lt;/strong&gt; 的訊息順序，不保證整個 Topic 的全局順序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-messagerecord-訊息&#34;&gt;3. Message/Record (訊息)&lt;/h3&gt;
+&lt;p&gt;訊息是 Kafka 傳輸的最小原子單位。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Cpu Numa</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</guid>
+      <description>&lt;h1 id=&#34;記憶體的物理學cpu-拓撲與-numa-懲罰&#34;&gt;記憶體的物理學：CPU 拓撲與 NUMA 懲罰&lt;/h1&gt;
+&lt;p&gt;很多人在調優高性能應用時，習慣於監控 CPU 使用率。當看到 CPU 只有 50% 但吞吐量卻上不去時，第一反應通常是「程式有鎖」或「網路慢」。
+但對於跑在多路伺服器上的應用，真正的兇手往往是 &lt;strong&gt;NUMA (Non-Uniform Memory Access)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;記憶體訪問不再是均一的&#34;&gt;記憶體訪問不再是「均一」的&lt;/h2&gt;
+&lt;p&gt;在單路 CPU 時代，CPU 訪問記憶體就像在同一個房間拿東西。但在現代多路伺服器中，每個 CPU 都有自己的本地記憶體控制器。
+如果你在 Socket 0 上運行一個線程，但它訪問的數據卻落在 Socket 1 的記憶體中，這個請求必須經過 &lt;strong&gt;UPI (Intel)&lt;/strong&gt; 或 &lt;strong&gt;Infinity Fabric (AMD)&lt;/strong&gt; 總線。這就是所謂的 &lt;strong&gt;Remote Memory Access&lt;/strong&gt;。
+&lt;strong&gt;這導致了一個殘酷的事實：訪問遠端記憶體的延遲，比本地記憶體高出 30% 到 50%。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;sre-的實戰對策追求極致的局部性-locality&#34;&gt;SRE 的實戰對策：追求極致的局部性 (Locality)&lt;/h2&gt;
+&lt;p&gt;如果你在處理高頻交易、實時音頻或大規模資料庫，你不能把記憶體訪問交給內核隨機分配。&lt;/p&gt;
+&lt;h3 id=&#34;1-cpu-pinning-與記憶體親和性&#34;&gt;1. CPU Pinning 與記憶體親和性&lt;/h3&gt;
+&lt;p&gt;不要讓內核在不同的核心之間隨機搬移你的線程（Context Switch）。使用 &lt;code&gt;numactl&lt;/code&gt; 強制將進程綁定在特定的 NUMA 節點上：
+&lt;code&gt;numactl --cpunodebind=0 --membind=0 ./my_app&lt;/code&gt;
+這確保了 &lt;strong&gt;「計算」與「數據」在物理空間上是最近的&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;2-禁用-smt-超線程&#34;&gt;2. 禁用 SMT (超線程)&lt;/h3&gt;
+&lt;p&gt;對於極致低延遲的場景，超線程 (Hyper-Threading) 其實是一種干擾。兩個邏輯核心共享同一個物理算術邏輯單元 (ALU)，這會引入不可預測的抖動 (Jitter)。在追求 P99.99 穩定性的系統中，直接在 BIOS 裡關掉 SMT。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Design Philosophy</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</guid>
+      <description>&lt;h1 id=&#34;kafka-核心設計哲學分佈式流處理的基石&#34;&gt;Kafka 核心設計哲學：分佈式流處理的基石&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Distributed Systems / Messaging Queue&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥇 Gold (Architectural Foundation)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;Kafka 的成功不在於它是一個「消息隊列」，而是在於它將自己定位為一個 &lt;strong&gt;「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong&gt;。透過將隨機寫入轉化為 &lt;strong&gt;順序寫入 (Sequential I/O)&lt;/strong&gt; 並利用 &lt;strong&gt;頁快取 (Page Cache)&lt;/strong&gt; 與 &lt;strong&gt;零拷貝 (Zero Copy)&lt;/strong&gt;，Kafka 打破了傳統 MQ 在吞吐量上的瓶頸，實現了極高規模的數據流處理。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-核心架構三要素&#34;&gt;🏗️ 核心架構三要素&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Append-only Log&lt;/strong&gt;：所有數據以追加方式寫入日誌文件，確保了寫入性能的極致，並天然支持多消費者以不同 Offset 讀取。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Partitioning (分區)&lt;/strong&gt;：通過將 Topic 分為多個 Partition，實現了水平擴展 (Horizontal Scaling) 與並行處理能力。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Replication (副本)&lt;/strong&gt;：通過 Leader-Follower 機制確保數據的高可用性，即使部分 Broker 宕機，數據依然可被恢復。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;-性能加速秘密&#34;&gt;⚡ 性能加速秘密&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sequential I/O&lt;/strong&gt;：磁盤順序寫入速度遠快於隨機寫入。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Zero Copy (sendfile)&lt;/strong&gt;：數據直接從內核 Page Cache 傳輸到 NIC 緩衝區，跳過了用戶空間的多次拷貝，極大降低了 CPU 負荷。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Batching&lt;/strong&gt;：將多條消息聚合為一個 Batch 傳輸，減少網絡交互次數。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;LSM-Tree&lt;/strong&gt;：Kafka 的日誌結構與 NoSQL (如 Cassandra, RocksDB) 的 LSM-Tree 理念一致，均追求寫入性能最大化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Event Sourcing&lt;/strong&gt;：Kafka 的 Log 結構是實現事件溯源 (Event Sourcing) 的天然基礎，允許系統在任何時間點重建狀態。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Ebpf Modern Observability</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/</guid>
+      <description>&lt;h1 id=&#34;超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎&#34;&gt;超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎&lt;/h1&gt;
+&lt;p&gt;對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：&lt;code&gt;ping&lt;/code&gt; $
+ightarrow$ &lt;code&gt;curl&lt;/code&gt; $
+ightarrow$ &lt;code&gt;tcpdump&lt;/code&gt; $
+ightarrow$ &lt;code&gt;strace&lt;/code&gt;。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tcpdump&lt;/code&gt; 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；&lt;code&gt;strace&lt;/code&gt; 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。&lt;/p&gt;
+&lt;p&gt;這正是 &lt;strong&gt;eBPF (Extended Berkeley Packet Filter)&lt;/strong&gt; 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個&lt;strong&gt;可編程的平台&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;ebpf-的本質在核心內部植入探針&#34;&gt;eBPF 的本質：在核心內部植入「探針」&lt;/h2&gt;
+&lt;p&gt;簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。&lt;/p&gt;
+&lt;h3 id=&#34;1-從代碼到執行的垂直路徑&#34;&gt;1. 從代碼到執行的「垂直路徑」&lt;/h3&gt;
+&lt;p&gt;一個 eBPF 程序的旅程如下：
+&lt;strong&gt;SRE 腳本 (&lt;code&gt;bpftrace&lt;/code&gt;/&lt;code&gt;Cilium&lt;/code&gt;)&lt;/strong&gt; $
+ightarrow$ &lt;strong&gt;LLVM 編譯&lt;/strong&gt; $
+ightarrow$ &lt;strong&gt;&lt;code&gt;bpf()&lt;/code&gt; 系統呼叫&lt;/strong&gt; $
+ightarrow$ &lt;strong&gt;Verifier (驗證器)&lt;/strong&gt; $
+ightarrow$ &lt;strong&gt;JIT 編譯&lt;/strong&gt; $
+ightarrow$ &lt;strong&gt;核心掛鉤點 (Hook Point)&lt;/strong&gt; $
+ightarrow$ &lt;strong&gt;事件觸發&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Gpu Llm K8S Scheduling</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/gpu-llm-k8s-scheduling/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/gpu-llm-k8s-scheduling/</guid>
+      <description>&lt;h1 id=&#34;從-ollama-到生產環境如何在-kubernetes-中大規模部署-gpu-加速的-llm&#34;&gt;從 Ollama 到生產環境：如何在 Kubernetes 中大規模部署 GPU 加速的 LLM&lt;/h1&gt;
+&lt;p&gt;對於大多數 AI 開發者來說，部署第一個 LLM 模型的體驗通常是：安裝 Ollama $
+ightarrow$ &lt;code&gt;ollama run llama3&lt;/code&gt; $
+ightarrow$ 跑通。這在本地開發時非常完美，但當你需要將其推向生產環境時，你會發現本地工具完全無法處理以下問題：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;GPU 資源碎片化&lt;/strong&gt;：如何高效分配多張 GPU？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;冷啟動延遲&lt;/strong&gt;：數十 GB 的模型權重加載需要多久？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可用性保障&lt;/strong&gt;：單機崩潰怎麼辦？如何實現自動擴縮容？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合規與隔離&lt;/strong&gt;：在金融或醫療等受管制行業，如何實現完全的 Air-gapped (氣隙) 部署？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這正是 &lt;strong&gt;LLMKube&lt;/strong&gt; 類型的 K8s Operator 試圖解決的核心痛點。&lt;/p&gt;
+&lt;h2 id=&#34;1-突破單機限制gpu-的-k8s-編排&#34;&gt;1. 突破「單機」限制：GPU 的 K8s 編排&lt;/h2&gt;
+&lt;p&gt;在 K8s 中運行 GPU 任務，最簡單的做法是使用 NVIDIA GPU Operator，但這僅僅解決了「能看到 GPU」的問題，沒有解決「如何高效用好 GPU」的問題。&lt;/p&gt;
+&lt;h3 id=&#34;從--a-la-carte-到--封裝化部署&#34;&gt;從- a la carte 到- 封裝化部署&lt;/h3&gt;
+&lt;p&gt;傳統方式需要 SRE 手動配置 CUDA 版本、安裝 Driver、設定環境變數 $
 ightarrow$ 過程極其痛苦且易錯。
-LLMKube 將其轉化為&lt;strong>宣告式 API&lt;/strong>：通過單個命令 &lt;code>llmkube deploy&lt;/code>，它在底層自動完成了：&lt;/p></description></item><item><title>Graphrag Deep Dive</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/graphrag-deep-dive/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/graphrag-deep-dive/</guid><description>&lt;h1 id="超越向量搜索為什麼-graphrag-是複雜知識系統的終局">超越向量搜索：為什麼 GraphRAG 是複雜知識系統的終局？&lt;/h1>
-&lt;p>&lt;strong>發佈日期&lt;/strong>: 2026-04-21
-&lt;strong>分類&lt;/strong>: AI-Infrastructure / Knowledge-Engineering
-&lt;strong>關鍵字&lt;/strong>: GraphRAG, 知識圖譜, 全局總結, 混合檢索&lt;/p>
-&lt;hr>
-&lt;h2 id="01-向量-rag-的天花板">01. 向量 RAG 的「天花板」&lt;/h2>
-&lt;p>大多數人對 RAG (Retrieval-Augmented Generation) 的理解停留在：&lt;code>用戶問題&lt;/code> $\rightarrow$ &lt;code>向量搜索&lt;/code> $\rightarrow$ &lt;code>取出 Top-K 片段&lt;/code> $\rightarrow$ &lt;code>生成答案&lt;/code>。&lt;/p>
-&lt;p>這種模式在處理「特定事實」 (例如：「產品 A 的保固期多久？」) 時表現優異。但當你面臨 &lt;strong>「全局性問題」&lt;/strong> 時，它會徹底失效。&lt;/p>
-&lt;p>例如，如果你問：「這 100 份技術文檔中，最核心的三個技術爭議是什麼？」
-向量 RAG 會嘗試尋找包含「爭議」或「核心」字眼的片段，但它無法將分散在不同文件、不同段落的邏輯鏈條串聯起來。它能看到「點」，但看不見「網」。&lt;/p>
-&lt;p>&lt;strong>這就是向量 RAG 的天花板：它缺乏對全局結構的感知。&lt;/strong>&lt;/p>
-&lt;hr>
-&lt;h2 id="02-graphrag從片段檢索到知識導航">02. GraphRAG：從「片段檢索」到「知識導航」&lt;/h2>
-&lt;p>GraphRAG 的核心在於不再僅僅依賴向量的近似度，而是構建一個真正的&lt;strong>知識圖譜 (Knowledge Graph)&lt;/strong>。&lt;/p>
-&lt;h3 id="它的運作邏輯是這樣的">它的運作邏輯是這樣的：&lt;/h3>
-&lt;ol>
-&lt;li>&lt;strong>實體提取 $\rightarrow$ 關係映射&lt;/strong>：利用 LLM 掃描全文，將所有關鍵實體 (Entity) 與它們之間的關係 (Relationship) 提取出來，形成 $\text{(主體, 關係, 客體)}$ 的三元組。&lt;/li>
-&lt;li>&lt;strong>社群發現 (Community Detection)&lt;/strong>：利用 Leiden 算法等圖算法，將關係緊密的實體聚類為不同的「社群」。&lt;/li>
-&lt;li>&lt;strong>分層總結 (Hierarchical Summarization)&lt;/strong>：為每個社群生成一份摘要。這樣，複雜的知識庫就被轉化為一個&lt;strong>知識金字塔&lt;/strong> $\rightarrow$ 從底層的細節片段 $\rightarrow$ 中層的模塊總結 $\rightarrow$ 頂層的全局概覽。&lt;/li>
-&lt;/ol>
-&lt;p>當用戶提出全局問題時，GraphRAG 不再去搜索碎片，而是直接在「社群摘要」層級進行 Map-Reduce 聚合。&lt;/p></description></item><item><title>Homelab</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/homelab/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/homelab/</guid><description>&lt;h1 id="-homelab-deep-dive-hub">🏠 HomeLab Deep Dive Hub&lt;/h1>
-&lt;p>Where SRE meets the home. This hub is about building &amp;ldquo;Sovereign Infrastructure&amp;rdquo; — having total control over your compute, storage, and AI.&lt;/p>
-&lt;h2 id="-storage-mastery">💾 Storage Mastery&lt;/h2>
-&lt;p>&lt;em>Focus: Data durability and the fight against Bit Rot.&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>ZFS&lt;/strong>: [[articles/homelab/nas-zfs-integrity|NAS ZFS &amp;amp; Data Integrity]]&lt;/li>
-&lt;li>&lt;strong>Architecture&lt;/strong>: [[articles/homelab/nas-vs-das|NAS vs DAS: Choosing your Pipe]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-hypervisor--compute">🖥️ Hypervisor &amp;amp; Compute&lt;/h2>
-&lt;p>&lt;em>Focus: Virtualization at scale on consumer hardware.&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Proxmox&lt;/strong>: [[articles/homelab/proxmox-deep-dive|Proxmox VE Deep Dive]]&lt;/li>
-&lt;li>&lt;strong>GPU&lt;/strong>: [[articles/homelab/local-ai-infra|Local AI Infra: GPU Passthrough]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-app-ecosystem">📦 App Ecosystem&lt;/h2>
-&lt;p>&lt;em>Focus: Moving from &amp;ldquo;managing files&amp;rdquo; to &amp;ldquo;managing services.&amp;rdquo;&lt;/em>&lt;/p></description></item><item><title>Iam Cli</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</guid><description>&lt;h1 id="aws-cli高效帳號切換實踐">AWS-CLI：高效帳號切換實踐&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Operations / CLI Efficiency&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Productivity Hack)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>對於管理多個 AWS 環境 (Dev/Staging/Prod) 的 SRE 而言，頻繁的帳號切換是最高頻的痛點。透過 &lt;strong>環境變數隔離&lt;/strong> 與 &lt;strong>Shell Function 封裝&lt;/strong>，可以將切換成本從「手動修改配置」降低至「單次指令」。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-三種切換方案對比">🚀 三種切換方案對比&lt;/h3>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th style="text-align: left">方案&lt;/th>
-&lt;th style="text-align: left">操作方式&lt;/th>
-&lt;th style="text-align: left">適用場景&lt;/th>
-&lt;th style="text-align: left">優缺點&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td style="text-align: left">&lt;strong>&amp;ndash;profile 參數&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">&lt;code>aws s3 ls --profile lab&lt;/code>&lt;/td>
-&lt;td style="text-align: left">單次指令&lt;/td>
-&lt;td style="text-align: left">$\checkmark$ 最安全 $\text{X}$ 輸入冗長&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align: left">&lt;strong>環境變數&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">&lt;code>export AWS_PROFILE=lab&lt;/code>&lt;/td>
-&lt;td style="text-align: left">當前 Session&lt;/td>
-&lt;td style="text-align: left">$\checkmark$ 快速 $\text{X}$ 容易忘記切換導致誤操作&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align: left">&lt;strong>Shell Function&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">&lt;code>change_aws_profile lab&lt;/code>&lt;/td>
-&lt;td style="text-align: left">全局快速切換&lt;/td>
-&lt;td style="text-align: left">$\checkmark$ 極速 $\text{X}$ 需配置 &lt;code>.zshrc/.bashrc&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;h3 id="-最佳實踐shell-function-封裝">🛠️ 最佳實踐：Shell Function 封裝&lt;/h3>
-&lt;p>在 &lt;code>.zshrc&lt;/code> 或 &lt;code>.bashrc&lt;/code> 中添加以下代碼：&lt;/p></description></item><item><title>Intro</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</guid><description>&lt;h1 id="-數位分身從-devops-到-ai-agentic-經營者">🌐 數位分身：從 DevOps 到 AI Agentic 經營者&lt;/h1>
-&lt;p>歡迎來到 Alan 的數位分身 (Digital Twin) 知識庫。這裡不僅僅是一個技術部落格，而是一個 &lt;strong>「活的知識體系」&lt;/strong>。&lt;/p>
-&lt;h2 id="關於本站">關於本站&lt;/h2>
-&lt;p>本站是由 Alan 與他的 AI Agent (Hermes) 共同維護的數位分身。其核心目標是將 DevOps/SRE 的工程嚴謹性與 AI 的指數級生產力相結合，探索如何透過 &lt;strong>Vibe Coding&lt;/strong> 與 &lt;strong>Agentic Workflow&lt;/strong> 構建高效的數位資產。&lt;/p>
-&lt;h2 id="核心哲學">核心哲學&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Depth-First&lt;/strong>：在技術深處建立護城河。&lt;/li>
-&lt;li>&lt;strong>Breadth-First&lt;/strong>：在市場感知中快速探索。&lt;/li>
-&lt;li>&lt;strong>Closed-Loop Evolution&lt;/strong>：執行 $\rightarrow$ 評估 $\rightarrow$ 修正 $\rightarrow$ 進化。&lt;/li>
-&lt;/ul>
-&lt;h2 id="導航指引">導航指引&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Cloud Infrastructure&lt;/strong>: 紀錄在 AWS 等雲端環境中的架構實踐與坑洞。&lt;/li>
-&lt;li>&lt;strong>Database Engineering&lt;/strong>: 探討資料庫優化與維運的藝術。&lt;/li>
-&lt;li>&lt;strong>Automation&lt;/strong>: 分享將重複性工作轉化為自動化工具的過程。&lt;/li>
-&lt;li>&lt;strong>Journey&lt;/strong>: 記錄從傳統工程師轉型為 AI-Native Builder 的心路歷程。&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;p>&lt;em>本站內容由 Alan 策劃，Hermes Agent 協同編寫並維護。&lt;/em>&lt;/p></description></item><item><title>Io Uring Performance</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/io-uring-performance/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/io-uring-performance/</guid><description>&lt;h1 id="告別系統呼叫稅為什麼-io_uring-是高性能-linux-服務的未來">告別系統呼叫稅：為什麼 io_uring 是高性能 Linux 服務的未來？&lt;/h1>
-&lt;p>在高性能伺服器的開發中，我們一直面臨一個巨大的瓶頸：&lt;strong>系統呼叫 (Syscall) 稅&lt;/strong>。&lt;/p>
-&lt;p>每當應用程式想要讀取檔案或發送網路封包時，它必須通過 &lt;code>read()&lt;/code> 或 &lt;code>write()&lt;/code> 進入核心。這次切換（Context Switch）伴隨著權限檢查、暫存器保存和快取失效。在每秒處理數百萬次 I/O 的極端場景下，這些微小的開銷會累積成巨大的效能損失。&lt;/p>
-&lt;p>&lt;code>io_uring&lt;/code> 的出現，徹底改變了 Linux 處理 I/O 的方式。它不再是「請求 $
+LLMKube 將其轉化為&lt;strong&gt;宣告式 API&lt;/strong&gt;：通過單個命令 &lt;code&gt;llmkube deploy&lt;/code&gt;，它在底層自動完成了：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Graphrag Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/graphrag-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/graphrag-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;超越向量搜索為什麼-graphrag-是複雜知識系統的終局&#34;&gt;超越向量搜索：為什麼 GraphRAG 是複雜知識系統的終局？&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;發佈日期&lt;/strong&gt;: 2026-04-21
+&lt;strong&gt;分類&lt;/strong&gt;: AI-Infrastructure / Knowledge-Engineering
+&lt;strong&gt;關鍵字&lt;/strong&gt;: GraphRAG, 知識圖譜, 全局總結, 混合檢索&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;01-向量-rag-的天花板&#34;&gt;01. 向量 RAG 的「天花板」&lt;/h2&gt;
+&lt;p&gt;大多數人對 RAG (Retrieval-Augmented Generation) 的理解停留在：&lt;code&gt;用戶問題&lt;/code&gt; $\rightarrow$ &lt;code&gt;向量搜索&lt;/code&gt; $\rightarrow$ &lt;code&gt;取出 Top-K 片段&lt;/code&gt; $\rightarrow$ &lt;code&gt;生成答案&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;這種模式在處理「特定事實」 (例如：「產品 A 的保固期多久？」) 時表現優異。但當你面臨 &lt;strong&gt;「全局性問題」&lt;/strong&gt; 時，它會徹底失效。&lt;/p&gt;
+&lt;p&gt;例如，如果你問：「這 100 份技術文檔中，最核心的三個技術爭議是什麼？」
+向量 RAG 會嘗試尋找包含「爭議」或「核心」字眼的片段，但它無法將分散在不同文件、不同段落的邏輯鏈條串聯起來。它能看到「點」，但看不見「網」。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;這就是向量 RAG 的天花板：它缺乏對全局結構的感知。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;02-graphrag從片段檢索到知識導航&#34;&gt;02. GraphRAG：從「片段檢索」到「知識導航」&lt;/h2&gt;
+&lt;p&gt;GraphRAG 的核心在於不再僅僅依賴向量的近似度，而是構建一個真正的&lt;strong&gt;知識圖譜 (Knowledge Graph)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;它的運作邏輯是這樣的&#34;&gt;它的運作邏輯是這樣的：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;實體提取 $\rightarrow$ 關係映射&lt;/strong&gt;：利用 LLM 掃描全文，將所有關鍵實體 (Entity) 與它們之間的關係 (Relationship) 提取出來，形成 $\text{(主體, 關係, 客體)}$ 的三元組。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;社群發現 (Community Detection)&lt;/strong&gt;：利用 Leiden 算法等圖算法，將關係緊密的實體聚類為不同的「社群」。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分層總結 (Hierarchical Summarization)&lt;/strong&gt;：為每個社群生成一份摘要。這樣，複雜的知識庫就被轉化為一個&lt;strong&gt;知識金字塔&lt;/strong&gt; $\rightarrow$ 從底層的細節片段 $\rightarrow$ 中層的模塊總結 $\rightarrow$ 頂層的全局概覽。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;當用戶提出全局問題時，GraphRAG 不再去搜索碎片，而是直接在「社群摘要」層級進行 Map-Reduce 聚合。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Homelab</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/homelab/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/homelab/</guid>
+      <description>&lt;h1 id=&#34;-homelab-deep-dive-hub&#34;&gt;🏠 HomeLab Deep Dive Hub&lt;/h1&gt;
+&lt;p&gt;Where SRE meets the home. This hub is about building &amp;ldquo;Sovereign Infrastructure&amp;rdquo; — having total control over your compute, storage, and AI.&lt;/p&gt;
+&lt;h2 id=&#34;-storage-mastery&#34;&gt;💾 Storage Mastery&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Data durability and the fight against Bit Rot.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ZFS&lt;/strong&gt;: [[articles/homelab/nas-zfs-integrity|NAS ZFS &amp;amp; Data Integrity]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Architecture&lt;/strong&gt;: [[articles/homelab/nas-vs-das|NAS vs DAS: Choosing your Pipe]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-hypervisor--compute&#34;&gt;🖥️ Hypervisor &amp;amp; Compute&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Virtualization at scale on consumer hardware.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Proxmox&lt;/strong&gt;: [[articles/homelab/proxmox-deep-dive|Proxmox VE Deep Dive]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GPU&lt;/strong&gt;: [[articles/homelab/local-ai-infra|Local AI Infra: GPU Passthrough]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-app-ecosystem&#34;&gt;📦 App Ecosystem&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Moving from &amp;ldquo;managing files&amp;rdquo; to &amp;ldquo;managing services.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Iam Cli</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</guid>
+      <description>&lt;h1 id=&#34;aws-cli高效帳號切換實踐&#34;&gt;AWS-CLI：高效帳號切換實踐&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Cloud Operations / CLI Efficiency&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥉 Bronze (Productivity Hack)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;對於管理多個 AWS 環境 (Dev/Staging/Prod) 的 SRE 而言，頻繁的帳號切換是最高頻的痛點。透過 &lt;strong&gt;環境變數隔離&lt;/strong&gt; 與 &lt;strong&gt;Shell Function 封裝&lt;/strong&gt;，可以將切換成本從「手動修改配置」降低至「單次指令」。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-三種切換方案對比&#34;&gt;🚀 三種切換方案對比&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;方案&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;操作方式&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;適用場景&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;優缺點&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;&amp;ndash;profile 參數&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;aws s3 ls --profile lab&lt;/code&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;單次指令&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;$\checkmark$ 最安全 $\text{X}$ 輸入冗長&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;環境變數&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;export AWS_PROFILE=lab&lt;/code&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;當前 Session&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;$\checkmark$ 快速 $\text{X}$ 容易忘記切換導致誤操作&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Shell Function&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;change_aws_profile lab&lt;/code&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;全局快速切換&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;$\checkmark$ 極速 $\text{X}$ 需配置 &lt;code&gt;.zshrc/.bashrc&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;-最佳實踐shell-function-封裝&#34;&gt;🛠️ 最佳實踐：Shell Function 封裝&lt;/h3&gt;
+&lt;p&gt;在 &lt;code&gt;.zshrc&lt;/code&gt; 或 &lt;code&gt;.bashrc&lt;/code&gt; 中添加以下代碼：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Intro</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/intro/</guid>
+      <description>&lt;h1 id=&#34;-數位分身從-devops-到-ai-agentic-經營者&#34;&gt;🌐 數位分身：從 DevOps 到 AI Agentic 經營者&lt;/h1&gt;
+&lt;p&gt;歡迎來到 Alan 的數位分身 (Digital Twin) 知識庫。這裡不僅僅是一個技術部落格，而是一個 &lt;strong&gt;「活的知識體系」&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;關於本站&#34;&gt;關於本站&lt;/h2&gt;
+&lt;p&gt;本站是由 Alan 與他的 AI Agent (Hermes) 共同維護的數位分身。其核心目標是將 DevOps/SRE 的工程嚴謹性與 AI 的指數級生產力相結合，探索如何透過 &lt;strong&gt;Vibe Coding&lt;/strong&gt; 與 &lt;strong&gt;Agentic Workflow&lt;/strong&gt; 構建高效的數位資產。&lt;/p&gt;
+&lt;h2 id=&#34;核心哲學&#34;&gt;核心哲學&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Depth-First&lt;/strong&gt;：在技術深處建立護城河。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Breadth-First&lt;/strong&gt;：在市場感知中快速探索。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Closed-Loop Evolution&lt;/strong&gt;：執行 $\rightarrow$ 評估 $\rightarrow$ 修正 $\rightarrow$ 進化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;導航指引&#34;&gt;導航指引&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud Infrastructure&lt;/strong&gt;: 紀錄在 AWS 等雲端環境中的架構實踐與坑洞。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Database Engineering&lt;/strong&gt;: 探討資料庫優化與維運的藝術。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automation&lt;/strong&gt;: 分享將重複性工作轉化為自動化工具的過程。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Journey&lt;/strong&gt;: 記錄從傳統工程師轉型為 AI-Native Builder 的心路歷程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本站內容由 Alan 策劃，Hermes Agent 協同編寫並維護。&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Io Uring Performance</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/io-uring-performance/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/io-uring-performance/</guid>
+      <description>&lt;h1 id=&#34;告別系統呼叫稅為什麼-io_uring-是高性能-linux-服務的未來&#34;&gt;告別系統呼叫稅：為什麼 io_uring 是高性能 Linux 服務的未來？&lt;/h1&gt;
+&lt;p&gt;在高性能伺服器的開發中，我們一直面臨一個巨大的瓶頸：&lt;strong&gt;系統呼叫 (Syscall) 稅&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;每當應用程式想要讀取檔案或發送網路封包時，它必須通過 &lt;code&gt;read()&lt;/code&gt; 或 &lt;code&gt;write()&lt;/code&gt; 進入核心。這次切換（Context Switch）伴隨著權限檢查、暫存器保存和快取失效。在每秒處理數百萬次 I/O 的極端場景下，這些微小的開銷會累積成巨大的效能損失。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;io_uring&lt;/code&gt; 的出現，徹底改變了 Linux 處理 I/O 的方式。它不再是「請求 $
 ightarrow$ 等待 $
-ightarrow$ 回應」，而是一場基於 &lt;strong>共享記憶體環形緩衝區 (Ring Buffers)&lt;/strong> 的非同步協作。&lt;/p>
-&lt;h2 id="核心機制兩把環形緩衝區">核心機制：兩把環形緩衝區&lt;/h2>
-&lt;p>&lt;code>io_uring&lt;/code> 的精髓在於它在用戶空間與核心空間之間建立了兩塊共享記憶體區域，徹底消除了大多數 I/O 操作中的系統呼叫需求。&lt;/p>
-&lt;h3 id="1-提交隊列-submission-queue-sq">1. 提交隊列 (Submission Queue, SQ)&lt;/h3>
-&lt;p>應用程式不再呼叫 &lt;code>read()&lt;/code>，而是將一個「提交條目 (SQE)」直接寫入 SQ 環形緩衝區。這個條目詳細描述了操作內容（例如：從哪個 FD 讀取多少資料到哪個緩衝區）。&lt;/p>
-&lt;h3 id="2-完成隊列-completion-queue-cq">2. 完成隊列 (Completion Queue, CQ)&lt;/h3>
-&lt;p>核心處理完 I/O 後，會將結果（例如：讀到了多少個 Byte）寫入 CQ 環形緩衝區。應用程式只需要定期檢查 CQ 環，就能知道哪些操作已完成。&lt;/p>
-&lt;h3 id="3-從-exton-到-exto1-的進化">3. 從 $ ext{O(N)}$ 到 $ ext{O(1)}$ 的進化&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>傳統 I/O&lt;/strong>：$N$ 次 I/O 操作 $
-ightarrow$ $N$ 次系統呼叫。&lt;/li>
-&lt;li>&lt;strong>io_uring&lt;/strong>：$N$ 次 I/O 操作 $
-ightarrow$ 1 次 &lt;code>io_uring_enter()&lt;/code>（甚至 0 次，如果開啟了 &lt;code>SQPOLL&lt;/code> 模式）。&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="垂直軌跡一個-io-請求的生命週期">垂直軌跡：一個 I/O 請求的生命週期&lt;/h2>
-&lt;ol>
-&lt;li>&lt;strong>提交 (Submission)&lt;/strong>：應用程式在 SQ 中填寫一個 SQE $
-ightarrow$ 呼叫 &lt;code>io_uring_enter()&lt;/code> 通知核心（或由核心執行緒自動輪詢）。&lt;/li>
-&lt;li>&lt;strong>非同步執行 (Async Execution)&lt;/strong>：核心接收到 SQE 後，將工作分派給內部工作執行緒或硬體驅動，立即將控制權交還給用戶空間。&lt;/li>
-&lt;li>&lt;strong>完成 (Completion)&lt;/strong>：當硬體完成 I/O 後，核心將結果寫入 CQ 環。&lt;/li>
-&lt;li>&lt;strong>收割 (Harvesting)&lt;/strong>：應用程式從 CQ 環中讀取結果，全程無需再次進入核心。&lt;/li>
-&lt;/ol>
-&lt;h2 id="sre-的觀測視角瓶頸在哪裡">SRE 的觀測視角：瓶頸在哪裡？&lt;/h2>
-&lt;p>雖然 &lt;code>io_uring&lt;/code> 極其強大，但它也引入了新的調優維度：&lt;/p></description></item><item><title>K8S Gateway Api Evolution</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-gateway-api-evolution/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-gateway-api-evolution/</guid><description>&lt;h1 id="從-ingress-到-gateway-apikubernetes-流量管理的範式轉移">從 Ingress 到 Gateway API：Kubernetes 流量管理的範式轉移&lt;/h1>
-&lt;p>如果你在 K8s 中管理過流量，你一定被 Ingress 的「註釋地獄 (Annotation Hell)」折磨過。&lt;/p>
-&lt;p>為了實現一個簡單的金絲雀發佈 (Canary Release) 或路徑重寫，你得在 YAML 裡寫上一大堆像 &lt;code>nginx.ingress.kubernetes.io/rewrite-target: /&lt;/code> 這樣的註釋。這不僅讓配置變得難以維護，更糟糕的是，這些註석是&lt;strong>供應商綁定&lt;/strong>的 $
-ightarrow$ 如果你從 Nginx 換到 Istio，所有的配置全部得重寫。&lt;/p>
-&lt;p>這就是為什麼 Kubernetes 推出了 &lt;strong>Gateway API&lt;/strong>。它不是對 Ingress 的小修小補，而是一次權責分離的範式轉移。&lt;/p>
-&lt;h2 id="1-角色分離誰該負責什麼">1. 角色分離：誰該負責什麼？&lt;/h2>
-&lt;p>Ingress 的問題在於它試圖用一個資源解決所有問題。而 Gateway API 引入了&lt;strong>角色導向 (Role-oriented)&lt;/strong> 的模型：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>基礎設施提供商 (Infrastructure Provider)&lt;/strong> $
-ightarrow$ 定義 &lt;code>GatewayClass&lt;/code>：決定使用哪種硬體或軟體 (例如 AWS ALB 或 Istio)。&lt;/li>
-&lt;li>&lt;strong>叢集運維人員 (Cluster Operator)&lt;/strong> $
-ightarrow$ 定義 &lt;code>Gateway&lt;/code>：實例化一個負載均衡器，決定它監聽哪個端口、哪個證書。&lt;/li>
-&lt;li>&lt;strong>應用開發者 (App Developer)&lt;/strong> $
-ightarrow$ 定定義 &lt;code>HTTPRoute&lt;/code> / &lt;code>TCPRoute&lt;/code>：決定流量如何分發到自己的 Service。&lt;/li>
-&lt;/ul>
-&lt;p>&lt;strong>這種分離意味著：&lt;/strong> 開發者可以自由地管理自己的路由規則，而不需要擁有整個叢集或負載均衡器的管理權限，實現了真正的自服務。&lt;/p></description></item><item><title>K8S Networking Plumbing</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-networking-plumbing/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-networking-plumbing/</guid><description>&lt;h1 id="k8s-網路底層揭秘從-pod-sandbox-到-clusterip-的封包旅程">K8s 網路底層揭秘：從 Pod Sandbox 到 ClusterIP 的封包旅程&lt;/h1>
-&lt;p>如果你問一個 K8s 開發者「Service 是什麼？」，他可能會告訴你「它是一個穩定的虛擬 IP，負責把流量分發到後端 Pod」。&lt;/p>
-&lt;p>但在 SRE 眼中，&lt;strong>Kubernetes 的 Service 是一個巨大的謊言。&lt;/strong>&lt;/p>
-&lt;p>事實上，ClusterIP 並不是一個真實的網路設備，也沒有一個真正的伺服器在監聽那個 IP。它其實是一個&lt;strong>分佈式核心級防火牆規則&lt;/strong>。當你發送一個請求到 Service IP 時，封包在到達目標之前，已經在 Linux 核心中被「悄悄地」修改了。&lt;/p>
-&lt;h2 id="1-pod-的隔離單元pod-sandbox-與-pause-容器">1. Pod 的「隔離單元」：Pod Sandbox 與 Pause 容器&lt;/h2>
-&lt;p>在深入網路路徑前，得先理解 Pod 的物理結構。K8s 的 Pod 並不是一個單一的容器，而是一個 &lt;strong>Sandbox (沙箱)&lt;/strong>。&lt;/p>
-&lt;h3 id="錨點pause-容器">錨點：Pause 容器&lt;/h3>
-&lt;p>每當一個 Pod 啟動時，Kubelet 會先啟動一個幾乎不佔資源的 &lt;code>pause&lt;/code> 容器。它的唯一作用就是&lt;strong>持有&lt;/strong>一組命名空間 (Namespaces)，包括：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Network Namespace (NET)&lt;/strong>：一套私有的 IP、路由表與端口。&lt;/li>
-&lt;li>&lt;strong>IPC Namespace&lt;/strong>：私有的共享記憶體。&lt;/li>
-&lt;/ul>
-&lt;p>隨後啟動的所有應用容器，都會通過 &lt;code>setns()&lt;/code> 系統呼叫，「寄生」在 &lt;code>pause&lt;/code> 容器的命名空間中。這就是為什麼同一個 Pod 內的兩個容器可以用 &lt;code>localhost&lt;/code> 互相通信，且不能綁定同一個端口 $ ext{(:8080)}$ 的原因 $
-ightarrow$ 因為它們共享同一個核心網路對象。&lt;/p></description></item><item><title>K8S Pod Lifecycle</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-pod-lifecycle/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-pod-lifecycle/</guid><description>&lt;h1 id="k8s-pod-生命週期為什麼-api-狀態總是在欺騙sre">K8s Pod 生命週期：為什麼 API 狀態總是在「欺騙」SRE？&lt;/h1>
-&lt;p>對於大多數開發者來說，檢查 Pod 狀態的習慣是 &lt;code>kubectl get pods&lt;/code> $
-ightarrow$ 看到 &lt;code>Running&lt;/code> $
-ightarrow$ 認為服務正常。&lt;/p>
-&lt;p>但對於 SRE 來說，這是一種危險的錯覺。Kubernetes 的狀態更新是一個&lt;strong>非同步的宣告式狀態機&lt;/strong>。API Server 記錄的是「期望狀態」，而 Kubelet 負責將其轉化為「實際狀態」。在這兩者之間，存在著一個巨大的 &lt;strong>SRE 資訊差 (SRE Gap)&lt;/strong>。&lt;/p>
-&lt;h2 id="1-從意圖到過程pod-的垂直路徑">1. 從「意圖」到「過程」：Pod 的垂直路徑&lt;/h2>
-&lt;p>一個 Pod 從被定義到真正運行，經歷了三個層級的交接。如果你只看 API，你只能看到結果，而看不到過程中的崩潰。&lt;/p>
-&lt;h3 id="第一階段控制平面-orchestration-layer">第一階段：控制平面 (Orchestration Layer)&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>API Server&lt;/strong>：接收 YAML $
+ightarrow$ 回應」，而是一場基於 &lt;strong&gt;共享記憶體環形緩衝區 (Ring Buffers)&lt;/strong&gt; 的非同步協作。&lt;/p&gt;
+&lt;h2 id=&#34;核心機制兩把環形緩衝區&#34;&gt;核心機制：兩把環形緩衝區&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;io_uring&lt;/code&gt; 的精髓在於它在用戶空間與核心空間之間建立了兩塊共享記憶體區域，徹底消除了大多數 I/O 操作中的系統呼叫需求。&lt;/p&gt;
+&lt;h3 id=&#34;1-提交隊列-submission-queue-sq&#34;&gt;1. 提交隊列 (Submission Queue, SQ)&lt;/h3&gt;
+&lt;p&gt;應用程式不再呼叫 &lt;code&gt;read()&lt;/code&gt;，而是將一個「提交條目 (SQE)」直接寫入 SQ 環形緩衝區。這個條目詳細描述了操作內容（例如：從哪個 FD 讀取多少資料到哪個緩衝區）。&lt;/p&gt;
+&lt;h3 id=&#34;2-完成隊列-completion-queue-cq&#34;&gt;2. 完成隊列 (Completion Queue, CQ)&lt;/h3&gt;
+&lt;p&gt;核心處理完 I/O 後，會將結果（例如：讀到了多少個 Byte）寫入 CQ 環形緩衝區。應用程式只需要定期檢查 CQ 環，就能知道哪些操作已完成。&lt;/p&gt;
+&lt;h3 id=&#34;3-從-exton-到-exto1-的進化&#34;&gt;3. 從 $	ext{O(N)}$ 到 $	ext{O(1)}$ 的進化&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;傳統 I/O&lt;/strong&gt;：$N$ 次 I/O 操作 $
+ightarrow$ $N$ 次系統呼叫。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;io_uring&lt;/strong&gt;：$N$ 次 I/O 操作 $
+ightarrow$ 1 次 &lt;code&gt;io_uring_enter()&lt;/code&gt;（甚至 0 次，如果開啟了 &lt;code&gt;SQPOLL&lt;/code&gt; 模式）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;垂直軌跡一個-io-請求的生命週期&#34;&gt;垂直軌跡：一個 I/O 請求的生命週期&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;提交 (Submission)&lt;/strong&gt;：應用程式在 SQ 中填寫一個 SQE $
+ightarrow$ 呼叫 &lt;code&gt;io_uring_enter()&lt;/code&gt; 通知核心（或由核心執行緒自動輪詢）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;非同步執行 (Async Execution)&lt;/strong&gt;：核心接收到 SQE 後，將工作分派給內部工作執行緒或硬體驅動，立即將控制權交還給用戶空間。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;完成 (Completion)&lt;/strong&gt;：當硬體完成 I/O 後，核心將結果寫入 CQ 環。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;收割 (Harvesting)&lt;/strong&gt;：應用程式從 CQ 環中讀取結果，全程無需再次進入核心。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;sre-的觀測視角瓶頸在哪裡&#34;&gt;SRE 的觀測視角：瓶頸在哪裡？&lt;/h2&gt;
+&lt;p&gt;雖然 &lt;code&gt;io_uring&lt;/code&gt; 極其強大，但它也引入了新的調優維度：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>K8S Gateway Api Evolution</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-gateway-api-evolution/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-gateway-api-evolution/</guid>
+      <description>&lt;h1 id=&#34;從-ingress-到-gateway-apikubernetes-流量管理的範式轉移&#34;&gt;從 Ingress 到 Gateway API：Kubernetes 流量管理的範式轉移&lt;/h1&gt;
+&lt;p&gt;如果你在 K8s 中管理過流量，你一定被 Ingress 的「註釋地獄 (Annotation Hell)」折磨過。&lt;/p&gt;
+&lt;p&gt;為了實現一個簡單的金絲雀發佈 (Canary Release) 或路徑重寫，你得在 YAML 裡寫上一大堆像 &lt;code&gt;nginx.ingress.kubernetes.io/rewrite-target: /&lt;/code&gt; 這樣的註釋。這不僅讓配置變得難以維護，更糟糕的是，這些註석是&lt;strong&gt;供應商綁定&lt;/strong&gt;的 $
+ightarrow$ 如果你從 Nginx 換到 Istio，所有的配置全部得重寫。&lt;/p&gt;
+&lt;p&gt;這就是為什麼 Kubernetes 推出了 &lt;strong&gt;Gateway API&lt;/strong&gt;。它不是對 Ingress 的小修小補，而是一次權責分離的範式轉移。&lt;/p&gt;
+&lt;h2 id=&#34;1-角色分離誰該負責什麼&#34;&gt;1. 角色分離：誰該負責什麼？&lt;/h2&gt;
+&lt;p&gt;Ingress 的問題在於它試圖用一個資源解決所有問題。而 Gateway API 引入了&lt;strong&gt;角色導向 (Role-oriented)&lt;/strong&gt; 的模型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;基礎設施提供商 (Infrastructure Provider)&lt;/strong&gt; $
+ightarrow$ 定義 &lt;code&gt;GatewayClass&lt;/code&gt;：決定使用哪種硬體或軟體 (例如 AWS ALB 或 Istio)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;叢集運維人員 (Cluster Operator)&lt;/strong&gt; $
+ightarrow$ 定義 &lt;code&gt;Gateway&lt;/code&gt;：實例化一個負載均衡器，決定它監聽哪個端口、哪個證書。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;應用開發者 (App Developer)&lt;/strong&gt; $
+ightarrow$ 定定義 &lt;code&gt;HTTPRoute&lt;/code&gt; / &lt;code&gt;TCPRoute&lt;/code&gt;：決定流量如何分發到自己的 Service。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;這種分離意味著：&lt;/strong&gt; 開發者可以自由地管理自己的路由規則，而不需要擁有整個叢集或負載均衡器的管理權限，實現了真正的自服務。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>K8S Networking Plumbing</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-networking-plumbing/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-networking-plumbing/</guid>
+      <description>&lt;h1 id=&#34;k8s-網路底層揭秘從-pod-sandbox-到-clusterip-的封包旅程&#34;&gt;K8s 網路底層揭秘：從 Pod Sandbox 到 ClusterIP 的封包旅程&lt;/h1&gt;
+&lt;p&gt;如果你問一個 K8s 開發者「Service 是什麼？」，他可能會告訴你「它是一個穩定的虛擬 IP，負責把流量分發到後端 Pod」。&lt;/p&gt;
+&lt;p&gt;但在 SRE 眼中，&lt;strong&gt;Kubernetes 的 Service 是一個巨大的謊言。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;事實上，ClusterIP 並不是一個真實的網路設備，也沒有一個真正的伺服器在監聽那個 IP。它其實是一個&lt;strong&gt;分佈式核心級防火牆規則&lt;/strong&gt;。當你發送一個請求到 Service IP 時，封包在到達目標之前，已經在 Linux 核心中被「悄悄地」修改了。&lt;/p&gt;
+&lt;h2 id=&#34;1-pod-的隔離單元pod-sandbox-與-pause-容器&#34;&gt;1. Pod 的「隔離單元」：Pod Sandbox 與 Pause 容器&lt;/h2&gt;
+&lt;p&gt;在深入網路路徑前，得先理解 Pod 的物理結構。K8s 的 Pod 並不是一個單一的容器，而是一個 &lt;strong&gt;Sandbox (沙箱)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;錨點pause-容器&#34;&gt;錨點：Pause 容器&lt;/h3&gt;
+&lt;p&gt;每當一個 Pod 啟動時，Kubelet 會先啟動一個幾乎不佔資源的 &lt;code&gt;pause&lt;/code&gt; 容器。它的唯一作用就是&lt;strong&gt;持有&lt;/strong&gt;一組命名空間 (Namespaces)，包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Network Namespace (NET)&lt;/strong&gt;：一套私有的 IP、路由表與端口。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IPC Namespace&lt;/strong&gt;：私有的共享記憶體。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;隨後啟動的所有應用容器，都會通過 &lt;code&gt;setns()&lt;/code&gt; 系統呼叫，「寄生」在 &lt;code&gt;pause&lt;/code&gt; 容器的命名空間中。這就是為什麼同一個 Pod 內的兩個容器可以用 &lt;code&gt;localhost&lt;/code&gt; 互相通信，且不能綁定同一個端口 $	ext{(:8080)}$ 的原因 $
+ightarrow$ 因為它們共享同一個核心網路對象。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>K8S Pod Lifecycle</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-pod-lifecycle/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-pod-lifecycle/</guid>
+      <description>&lt;h1 id=&#34;k8s-pod-生命週期為什麼-api-狀態總是在欺騙sre&#34;&gt;K8s Pod 生命週期：為什麼 API 狀態總是在「欺騙」SRE？&lt;/h1&gt;
+&lt;p&gt;對於大多數開發者來說，檢查 Pod 狀態的習慣是 &lt;code&gt;kubectl get pods&lt;/code&gt; $
+ightarrow$ 看到 &lt;code&gt;Running&lt;/code&gt; $
+ightarrow$ 認為服務正常。&lt;/p&gt;
+&lt;p&gt;但對於 SRE 來說，這是一種危險的錯覺。Kubernetes 的狀態更新是一個&lt;strong&gt;非同步的宣告式狀態機&lt;/strong&gt;。API Server 記錄的是「期望狀態」，而 Kubelet 負責將其轉化為「實際狀態」。在這兩者之間，存在著一個巨大的 &lt;strong&gt;SRE 資訊差 (SRE Gap)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;1-從意圖到過程pod-的垂直路徑&#34;&gt;1. 從「意圖」到「過程」：Pod 的垂直路徑&lt;/h2&gt;
+&lt;p&gt;一個 Pod 從被定義到真正運行，經歷了三個層級的交接。如果你只看 API，你只能看到結果，而看不到過程中的崩潰。&lt;/p&gt;
+&lt;h3 id=&#34;第一階段控制平面-orchestration-layer&#34;&gt;第一階段：控制平面 (Orchestration Layer)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;API Server&lt;/strong&gt;：接收 YAML $
 ightarrow$ 寫入 etcd $
-ightarrow$ 狀態：&lt;code>Pending&lt;/code>。&lt;/li>
-&lt;li>&lt;strong>Scheduler&lt;/strong>：發現未分配的 Pod $
+ightarrow$ 狀態：&lt;code&gt;Pending&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scheduler&lt;/strong&gt;：發現未分配的 Pod $
 ightarrow$ 根據資源權重選擇節點 $
-ightarrow$ 寫回 &lt;code>Binding&lt;/code> 對象。&lt;/li>
-&lt;li>&lt;strong>真相&lt;/strong>：此時 Pod 依然是 &lt;code>Pending&lt;/code>，它僅僅是一個「被安排好位置的願望」。&lt;/li>
-&lt;/ul>
-&lt;h3 id="第二階段節點實現-runtime-layer">第二階段：節點實現 (Runtime Layer)&lt;/h3>
-&lt;p>當 Kubelet 發現 Pod 被分配到自己節點後，真正的「肉搏戰」開始了：&lt;/p></description></item><item><title>K8S Resource Limits</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-resource-limits/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-resource-limits/</guid><description>&lt;h1 id="k8s-resource-limits-的真相為什麼你的-cpu-使用率很低延遲卻在飆升">K8s Resource Limits 的真相：為什麼你的 CPU 使用率很低，延遲卻在飆升？&lt;/h1>
-&lt;p>在 Kubernetes 的 YAML 設定中，&lt;code>resources.limits&lt;/code> 是每個開發者都會寫的配置。但大多數人對它的理解僅停留在「限制資源使用量」這個表面層級。&lt;/p>
-&lt;p>事實上，K8s 的 Limits 不是「預留 (Reservation)」，而是「天花板 (Ceiling)」。而且，CPU Limit 和 Memory Limit 在核心層級的執行機制截然不同：&lt;strong>一個導致的是「慢 (Throttling)」，另一個導致的是「死 (OOM Kill)」。&lt;/strong>&lt;/p>
-&lt;h2 id="1-cpu-limit隱形的凍結陷阱">1. CPU Limit：隱形的「凍結」陷阱&lt;/h2>
-&lt;p>許多 SRE 曾遇到過這種詭異現象：&lt;code>kubectl top pod&lt;/code> 顯示 CPU 使用率僅 30%，但服務的 P99 延遲卻從 20ms 飆升到 200ms。&lt;/p>
-&lt;h3 id="核心機制cfs-quota-完全公平調度配額">核心機制：CFS Quota (完全公平調度配額)&lt;/h3>
-&lt;p>當你設定 &lt;code>limits.cpu: 500m&lt;/code> 時，核心並不是在監控每秒的平均值，而是在執行一個&lt;strong>時間窗 (Window)&lt;/strong> 遊戲：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>周期 (Period)&lt;/strong>：預設為 100ms。&lt;/li>
-&lt;li>&lt;strong>配額 (Quota)&lt;/strong>：50ms。&lt;/li>
-&lt;/ul>
-&lt;p>如果你的一個請求觸發了 4 個執行緒並行處理，每個執行緒消耗 25ms，那麼在短短 &lt;strong>25ms 的牆鐘時間 (Wall-clock time)&lt;/strong> 內，你就用完了整個 100ms 周期所有的 50ms 配額。&lt;/p></description></item><item><title>K8S Storage Plumbing</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/</guid><description>&lt;h1 id="為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄">為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」&lt;/h1>
-&lt;p>在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 &lt;code>ContainerCreating&lt;/code>。&lt;/p>
-&lt;p>大多數人習慣執行 &lt;code>kubectl describe pod&lt;/code> 看到 &lt;code>MountVolume.SetUp failed&lt;/code> 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：&lt;strong>K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。&lt;/strong>&lt;/p>
-&lt;p>從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
+ightarrow$ 寫回 &lt;code&gt;Binding&lt;/code&gt; 對象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;真相&lt;/strong&gt;：此時 Pod 依然是 &lt;code&gt;Pending&lt;/code&gt;，它僅僅是一個「被安排好位置的願望」。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;第二階段節點實現-runtime-layer&#34;&gt;第二階段：節點實現 (Runtime Layer)&lt;/h3&gt;
+&lt;p&gt;當 Kubelet 發現 Pod 被分配到自己節點後，真正的「肉搏戰」開始了：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>K8S Resource Limits</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-resource-limits/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-resource-limits/</guid>
+      <description>&lt;h1 id=&#34;k8s-resource-limits-的真相為什麼你的-cpu-使用率很低延遲卻在飆升&#34;&gt;K8s Resource Limits 的真相：為什麼你的 CPU 使用率很低，延遲卻在飆升？&lt;/h1&gt;
+&lt;p&gt;在 Kubernetes 的 YAML 設定中，&lt;code&gt;resources.limits&lt;/code&gt; 是每個開發者都會寫的配置。但大多數人對它的理解僅停留在「限制資源使用量」這個表面層級。&lt;/p&gt;
+&lt;p&gt;事實上，K8s 的 Limits 不是「預留 (Reservation)」，而是「天花板 (Ceiling)」。而且，CPU Limit 和 Memory Limit 在核心層級的執行機制截然不同：&lt;strong&gt;一個導致的是「慢 (Throttling)」，另一個導致的是「死 (OOM Kill)」。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;1-cpu-limit隱形的凍結陷阱&#34;&gt;1. CPU Limit：隱形的「凍結」陷阱&lt;/h2&gt;
+&lt;p&gt;許多 SRE 曾遇到過這種詭異現象：&lt;code&gt;kubectl top pod&lt;/code&gt; 顯示 CPU 使用率僅 30%，但服務的 P99 延遲卻從 20ms 飆升到 200ms。&lt;/p&gt;
+&lt;h3 id=&#34;核心機制cfs-quota-完全公平調度配額&#34;&gt;核心機制：CFS Quota (完全公平調度配額)&lt;/h3&gt;
+&lt;p&gt;當你設定 &lt;code&gt;limits.cpu: 500m&lt;/code&gt; 時，核心並不是在監控每秒的平均值，而是在執行一個&lt;strong&gt;時間窗 (Window)&lt;/strong&gt; 遊戲：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;周期 (Period)&lt;/strong&gt;：預設為 100ms。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;配額 (Quota)&lt;/strong&gt;：50ms。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果你的一個請求觸發了 4 個執行緒並行處理，每個執行緒消耗 25ms，那麼在短短 &lt;strong&gt;25ms 的牆鐘時間 (Wall-clock time)&lt;/strong&gt; 內，你就用完了整個 100ms 周期所有的 50ms 配額。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>K8S Storage Plumbing</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/</guid>
+      <description>&lt;h1 id=&#34;為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄&#34;&gt;為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」&lt;/h1&gt;
+&lt;p&gt;在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 &lt;code&gt;ContainerCreating&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;大多數人習慣執行 &lt;code&gt;kubectl describe pod&lt;/code&gt; 看到 &lt;code&gt;MountVolume.SetUp failed&lt;/code&gt; 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：&lt;strong&gt;K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
 ightarrow$ CSI 驅動 $
 ightarrow$ Kubelet $
-ightarrow$ Linux 核心 VFS 的長途跋涉。&lt;/p>
-&lt;h2 id="儲存請求的垂直路徑從-api-到-block">儲存請求的「垂直路徑」：從 API 到 Block&lt;/h2>
-&lt;h3 id="1-宣告層-k8s-api">1. 宣告層 (K8s API)&lt;/h3>
-&lt;p>一切始於 &lt;code>PersistentVolumeClaim&lt;/code> (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (&lt;code>ReadWriteOnce&lt;/code> 等)。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>SRE 訊號&lt;/strong>：如果 PVC 狀態一直是 &lt;code>Pending&lt;/code>，請直接檢查 &lt;code>StorageClass&lt;/code> 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-編排層-kubelet--csi">2. 編排層 (Kubelet &amp;amp; CSI)&lt;/h3>
-&lt;p>當 Pod 被調度到節點後，真正的「搬運」開始了：&lt;/p></description></item><item><title>Local Ai Infra</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/local-ai-infra/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/local-ai-infra/</guid><description>&lt;h1 id="構建私有-ai-研發環境從-proxmox-gpu-穿透到本地-llm-生產線">構建私有 AI 研發環境：從 Proxmox GPU 穿透到本地 LLM 生產線&lt;/h1>
-&lt;p>很多 AI 工程師的開發流程是這樣的：寫一個 Prompt $\rightarrow$ 調用 OpenAI API $\rightarrow$ 等待結果 $\rightarrow$ 調整 Prompt $\rightarrow$ 重複。
-這種模式在原型階段很高效，但在工程實踐中存在三個致命缺陷：&lt;strong>隱私洩漏、Token 成本不可控、以及對第三方 API 的絕對依賴&lt;/strong>。如果你在構建一個企業級的 AI 應用，將「推理能力」視為外部依賴，就如同將數據庫託管在一個你無法控制其延遲的第三方服務上。
-對於 SRE 或 DevOps 工程師來說，真正的解決方案是構建一套 &lt;strong>「主權 AI (Sovereign AI)」&lt;/strong> 基礎設施。&lt;/p>
-&lt;h2 id="第一層打破虛擬化的壁壘-gpu-passthrough">第一層：打破虛擬化的壁壘 (GPU Passthrough)&lt;/h2>
-&lt;p>要在 HomeLab 中運行本地 LLM，首先要解決的是 GPU 的訪問問題。
-很多人嘗試在 LXC 容器中部署 GPU，但如果你追求的是生產級的穩定性，&lt;strong>VM (虛擬機) + PCIe Passthrough&lt;/strong> 是唯一的選擇。LXC 雖然輕量，但在處理 NVIDIA 驅動版本更新或內核模塊衝突時，經常會導致宿主機崩潰。
-&lt;strong>SRE 的實踐路徑：&lt;/strong>&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>IOMMU 隔離&lt;/strong>：在 Proxmox 的 GRUB 中開啟 &lt;code>intel_iommu=on&lt;/code>，確保 GPU 被正確隔離到獨立的 IOMMU 組中。&lt;/li>
-&lt;li>&lt;strong>PCI Passthrough&lt;/strong>：將 GPU 直接映射給 Ubuntu Server VM。這樣 VM 看到的不是「虛擬 GPU」，而是一個原生的 PCIe 設備。&lt;/li>
-&lt;li>&lt;strong>驅動對齊&lt;/strong>：在 VM 內部安裝匹配的 CUDA Toolkit。
-&lt;strong>避坑指南&lt;/strong>：如果你遇到 &lt;code>nvidia-smi&lt;/code> 在宿主機可用但在 VM 中失效，通常是 PCIe 電源狀態或 IOMMU 分 grouped 過大導致的。這時需要開啟 &lt;code>pcie_acs_override&lt;/code> 來強制分割設備組。&lt;/li>
-&lt;/ol>
-&lt;h2 id="第二層推理引擎的選擇-vllm-vs-ollama">第二層：推理引擎的選擇 (vLLM vs Ollama)&lt;/h2>
-&lt;p>有了硬件訪問權後，接下來是選擇「推理引擎」。這裡的關鍵在於 &lt;strong>吞吐量 (Throughput)&lt;/strong> 與 &lt;strong>延遲 (Latency)&lt;/strong> 的權衡。&lt;/p></description></item><item><title>Mongodb</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/mongodb/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/mongodb/</guid><description>&lt;h1 id="mongodb資料備份與還原實踐-dump--restore">MongoDB：資料備份與還原實踐 (Dump &amp;amp; Restore)&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Database Engineering / Disaster Recovery&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥈 Silver (Operational Standard)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>資料備份是資料庫維運的最後一道防線。&lt;code>mongodump&lt;/code> 與 &lt;code>mongorestore&lt;/code> 構成了 MongoDB 基礎備份的閉環。關鍵在於理解 &lt;strong>BSON 格式&lt;/strong> 的高效性以及在大規模資料恢復時的 &lt;strong>性能影響&lt;/strong>。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-備份流程-mongodump">📦 備份流程 (mongodump)&lt;/h3>
-&lt;p>&lt;code>mongodump&lt;/code> 將資料導出為 BSON 格式，確保資料類型的原生保留。&lt;/p>
-&lt;p>&lt;strong>常用指令組合：&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>全庫備份&lt;/strong>：&lt;code>mongodump --db &amp;lt;db_name&amp;gt;&lt;/code>&lt;/li>
-&lt;li>&lt;strong>特定集合備份&lt;/strong>：&lt;code>mongodump --db &amp;lt;db_name&amp;gt; --collection &amp;lt;coll_name&amp;gt;&lt;/code>&lt;/li>
-&lt;li>&lt;strong>遠端伺服器備份&lt;/strong>：使用 URI 格式 &lt;code>mongodump --uri=&amp;quot;mongodb://user:pass@host:port/db&amp;quot;&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;h3 id="-還原流程-mongorestore">🔄 還原流程 (mongorestore)&lt;/h3>
-&lt;p>&lt;code>mongorestore&lt;/code> 負責將 BSON 檔案還原至目標庫。&lt;/p>
-&lt;p>&lt;strong>關鍵指令：&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>全庫還原&lt;/strong>：&lt;code>mongorestore --db &amp;lt;db_name&amp;gt; &amp;lt;backup_path&amp;gt;&lt;/code>&lt;/li>
-&lt;li>&lt;strong>特定集合還原&lt;/strong>：&lt;code>mongorestore --db &amp;lt;db_name&amp;gt; --collection &amp;lt;coll_name&amp;gt; &amp;lt;path_to_bson&amp;gt;&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;h3 id="-運維坑洞">⚠️ 運維坑洞&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>性能衝擊&lt;/strong>：在生產環境執行 &lt;code>mongodump&lt;/code> 可能導致 I/O 飆高。建議在從庫 (Secondary) 執行或在低峰期操作。&lt;/li>
-&lt;li>&lt;strong>空間壓力&lt;/strong>：BSON 格式相對較大，還原時需確保目標磁碟有足夠緩衝空間。&lt;/li>
-&lt;li>&lt;strong>版本兼容&lt;/strong>：確保 &lt;code>mongodump&lt;/code> 與 &lt;code>mongorestore&lt;/code> 的版本與資料庫版本一致，避免 BSON 格式不兼容。&lt;/li>
-&lt;/ul>
-&lt;h2 id="synergy">Synergy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>SRE 自動化&lt;/strong>：建議將此流程封裝進 CronJob 或 Kubernetes Job，實現每日自動快照。&lt;/li>
-&lt;li>&lt;strong>Cloud Migration&lt;/strong>：這是將資料從 On-premise 遷移至 MongoDB Atlas 的最快路徑。&lt;/li>
-&lt;/ul></description></item><item><title>Multi Agent Evolution</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/multi-agent-evolution/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/multi-agent-evolution/</guid><description>&lt;h1 id="從靜態編排到動態演化多-agent-協作與自演化引擎">從「靜態編排」到「動態演化」：多 Agent 協作與自演化引擎&lt;/h1>
-&lt;p>在目前的 AI Agent 開發中，大多數人還在使用「流程圖模式 (Flowchart Mode)」：定義 Agent A 做什麼 $
+ightarrow$ Linux 核心 VFS 的長途跋涉。&lt;/p&gt;
+&lt;h2 id=&#34;儲存請求的垂直路徑從-api-到-block&#34;&gt;儲存請求的「垂直路徑」：從 API 到 Block&lt;/h2&gt;
+&lt;h3 id=&#34;1-宣告層-k8s-api&#34;&gt;1. 宣告層 (K8s API)&lt;/h3&gt;
+&lt;p&gt;一切始於 &lt;code&gt;PersistentVolumeClaim&lt;/code&gt; (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (&lt;code&gt;ReadWriteOnce&lt;/code&gt; 等)。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SRE 訊號&lt;/strong&gt;：如果 PVC 狀態一直是 &lt;code&gt;Pending&lt;/code&gt;，請直接檢查 &lt;code&gt;StorageClass&lt;/code&gt; 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-編排層-kubelet--csi&#34;&gt;2. 編排層 (Kubelet &amp;amp; CSI)&lt;/h3&gt;
+&lt;p&gt;當 Pod 被調度到節點後，真正的「搬運」開始了：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Local Ai Infra</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/local-ai-infra/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/local-ai-infra/</guid>
+      <description>&lt;h1 id=&#34;構建私有-ai-研發環境從-proxmox-gpu-穿透到本地-llm-生產線&#34;&gt;構建私有 AI 研發環境：從 Proxmox GPU 穿透到本地 LLM 生產線&lt;/h1&gt;
+&lt;p&gt;很多 AI 工程師的開發流程是這樣的：寫一個 Prompt $\rightarrow$ 調用 OpenAI API $\rightarrow$ 等待結果 $\rightarrow$ 調整 Prompt $\rightarrow$ 重複。
+這種模式在原型階段很高效，但在工程實踐中存在三個致命缺陷：&lt;strong&gt;隱私洩漏、Token 成本不可控、以及對第三方 API 的絕對依賴&lt;/strong&gt;。如果你在構建一個企業級的 AI 應用，將「推理能力」視為外部依賴，就如同將數據庫託管在一個你無法控制其延遲的第三方服務上。
+對於 SRE 或 DevOps 工程師來說，真正的解決方案是構建一套 &lt;strong&gt;「主權 AI (Sovereign AI)」&lt;/strong&gt; 基礎設施。&lt;/p&gt;
+&lt;h2 id=&#34;第一層打破虛擬化的壁壘-gpu-passthrough&#34;&gt;第一層：打破虛擬化的壁壘 (GPU Passthrough)&lt;/h2&gt;
+&lt;p&gt;要在 HomeLab 中運行本地 LLM，首先要解決的是 GPU 的訪問問題。
+很多人嘗試在 LXC 容器中部署 GPU，但如果你追求的是生產級的穩定性，&lt;strong&gt;VM (虛擬機) + PCIe Passthrough&lt;/strong&gt; 是唯一的選擇。LXC 雖然輕量，但在處理 NVIDIA 驅動版本更新或內核模塊衝突時，經常會導致宿主機崩潰。
+&lt;strong&gt;SRE 的實踐路徑：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;IOMMU 隔離&lt;/strong&gt;：在 Proxmox 的 GRUB 中開啟 &lt;code&gt;intel_iommu=on&lt;/code&gt;，確保 GPU 被正確隔離到獨立的 IOMMU 組中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PCI Passthrough&lt;/strong&gt;：將 GPU 直接映射給 Ubuntu Server VM。這樣 VM 看到的不是「虛擬 GPU」，而是一個原生的 PCIe 設備。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;驅動對齊&lt;/strong&gt;：在 VM 內部安裝匹配的 CUDA Toolkit。
+&lt;strong&gt;避坑指南&lt;/strong&gt;：如果你遇到 &lt;code&gt;nvidia-smi&lt;/code&gt; 在宿主機可用但在 VM 中失效，通常是 PCIe 電源狀態或 IOMMU 分 grouped 過大導致的。這時需要開啟 &lt;code&gt;pcie_acs_override&lt;/code&gt; 來強制分割設備組。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;第二層推理引擎的選擇-vllm-vs-ollama&#34;&gt;第二層：推理引擎的選擇 (vLLM vs Ollama)&lt;/h2&gt;
+&lt;p&gt;有了硬件訪問權後，接下來是選擇「推理引擎」。這裡的關鍵在於 &lt;strong&gt;吞吐量 (Throughput)&lt;/strong&gt; 與 &lt;strong&gt;延遲 (Latency)&lt;/strong&gt; 的權衡。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Mongodb</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/mongodb/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/mongodb/</guid>
+      <description>&lt;h1 id=&#34;mongodb資料備份與還原實踐-dump--restore&#34;&gt;MongoDB：資料備份與還原實踐 (Dump &amp;amp; Restore)&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Database Engineering / Disaster Recovery&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥈 Silver (Operational Standard)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;資料備份是資料庫維運的最後一道防線。&lt;code&gt;mongodump&lt;/code&gt; 與 &lt;code&gt;mongorestore&lt;/code&gt; 構成了 MongoDB 基礎備份的閉環。關鍵在於理解 &lt;strong&gt;BSON 格式&lt;/strong&gt; 的高效性以及在大規模資料恢復時的 &lt;strong&gt;性能影響&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-備份流程-mongodump&#34;&gt;📦 備份流程 (mongodump)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;mongodump&lt;/code&gt; 將資料導出為 BSON 格式，確保資料類型的原生保留。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;常用指令組合：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;全庫備份&lt;/strong&gt;：&lt;code&gt;mongodump --db &amp;lt;db_name&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特定集合備份&lt;/strong&gt;：&lt;code&gt;mongodump --db &amp;lt;db_name&amp;gt; --collection &amp;lt;coll_name&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;遠端伺服器備份&lt;/strong&gt;：使用 URI 格式 &lt;code&gt;mongodump --uri=&amp;quot;mongodb://user:pass@host:port/db&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-還原流程-mongorestore&#34;&gt;🔄 還原流程 (mongorestore)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;mongorestore&lt;/code&gt; 負責將 BSON 檔案還原至目標庫。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;關鍵指令：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;全庫還原&lt;/strong&gt;：&lt;code&gt;mongorestore --db &amp;lt;db_name&amp;gt; &amp;lt;backup_path&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特定集合還原&lt;/strong&gt;：&lt;code&gt;mongorestore --db &amp;lt;db_name&amp;gt; --collection &amp;lt;coll_name&amp;gt; &amp;lt;path_to_bson&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-運維坑洞&#34;&gt;⚠️ 運維坑洞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;性能衝擊&lt;/strong&gt;：在生產環境執行 &lt;code&gt;mongodump&lt;/code&gt; 可能導致 I/O 飆高。建議在從庫 (Secondary) 執行或在低峰期操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;空間壓力&lt;/strong&gt;：BSON 格式相對較大，還原時需確保目標磁碟有足夠緩衝空間。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;版本兼容&lt;/strong&gt;：確保 &lt;code&gt;mongodump&lt;/code&gt; 與 &lt;code&gt;mongorestore&lt;/code&gt; 的版本與資料庫版本一致，避免 BSON 格式不兼容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SRE 自動化&lt;/strong&gt;：建議將此流程封裝進 CronJob 或 Kubernetes Job，實現每日自動快照。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cloud Migration&lt;/strong&gt;：這是將資料從 On-premise 遷移至 MongoDB Atlas 的最快路徑。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Multi Agent Evolution</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/multi-agent-evolution/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/multi-agent-evolution/</guid>
+      <description>&lt;h1 id=&#34;從靜態編排到動態演化多-agent-協作與自演化引擎&#34;&gt;從「靜態編排」到「動態演化」：多 Agent 協作與自演化引擎&lt;/h1&gt;
+&lt;p&gt;在目前的 AI Agent 開發中，大多數人還在使用「流程圖模式 (Flowchart Mode)」：定義 Agent A 做什麼 $
 ightarrow$ 傳給 Agent B $
-ightarrow$ Agent B 輸出結果。這就是典型的 &lt;strong>Static Orchestration (靜態編排)&lt;/strong>。&lt;/p>
-&lt;p>這種模式在簡單任務中有效，但在面對複雜且不可預測的生產環境時會迅速失效。因為現實世界的任務沒有固定的路徑，需要的不是一套「流程圖」，而是一套&lt;strong>能自我調整的協作機制&lt;/strong>。&lt;/p>
-&lt;h2 id="協作層從單兵作戰到-crewai-模式">協作層：從單兵作戰到 CrewAI 模式&lt;/h2>
-&lt;p>&lt;strong>crewAI&lt;/strong> 代表了協作層的進化。它不再僅僅是定義任務序列，而是定義 &lt;strong>「角色 (Role)」&lt;/strong> 與 &lt;strong>「目標 (Goal)」&lt;/strong>。&lt;/p>
-&lt;p>在 CrewAI 的邏輯裡，Agent 之間不再是簡單的接力，而是像一個真實的團隊：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>角色分工&lt;/strong>：有人負責研究，有人負責審核，有人負責執行。&lt;/li>
-&lt;li>&lt;strong>動態協作&lt;/strong>：根據任務的複雜度，Agent 可以自主決定何時需要請求同事的幫助，或如何分配子任務。&lt;/li>
-&lt;/ul>
-&lt;p>這將 Agent 的能力從單純的「工具調用」提升到了「組織協作」的高度。但即使是 CrewAI，它依然依賴於人類預先定義的角色和 Prompt。如果環境變了，我們依然需要手動調整 Prompt。&lt;/p>
-&lt;h2 id="演化層evolver-與-gep-協議的突破">演化層：Evolver 與 GEP 協議的突破&lt;/h2>
-&lt;p>這就是為什麼我非常關注 &lt;strong>Evolver&lt;/strong> 及其提出的 &lt;strong>GEP (Genome Evolution Protocol)&lt;/strong>。&lt;/p>
-&lt;p>Evolver 試圖解決 Agent 開發中最痛苦的一環：&lt;strong>Prompt 的維護與迭代&lt;/strong>。它將 Agent 的能力視為一種可演化的「基因 (Genome)」，將 Prompt 和工具定義封裝成「基因片段 (Genes)」與「膠囊 (Capsules)」。&lt;/p></description></item><item><title>Nas Vs Das</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</guid><description>&lt;h1 id="nas-vs-das如何為你的-homelab-選擇正確的儲儲架構">NAS vs DAS：如何為你的 HomeLab 選擇正確的儲儲架構？&lt;/h1>
-&lt;p>在構建 HomeLab 時，最讓人糾結的決定之一就是：我是該買一台成品 NAS，還是買個 DAS 擴展櫃直接掛在伺服器上？
-很多人會把這兩者混為一談，認為只要是「很多硬碟在一起」就差不多。但從系統架構來看，NAS 與 DAS 之間隔著一道巨大的鴻溝：&lt;strong>網路棧 (Network Stack)&lt;/strong>。這道鴻溝決定了你的數據是追求「流動性」還是「極限速度」。&lt;/p>
-&lt;h2 id="das追求-raw-io-的極端主義">DAS：追求 Raw I/O 的極端主義&lt;/h2>
-&lt;p>DAS (Direct Attached Storage) 的邏輯非常簡單：&lt;strong>去掉所有中間商，讓 CPU 直接看到硬碟。&lt;/strong>
-無論是透過 Thunderbolt 4、SAS HBA 還是簡單的 USB-C，DAS 的數據路徑極短。它不需要經過 TCP/IP 封裝，不需要處理網路碰撞，也不需要經過另一台伺服器的 CPU 轉發。&lt;/p>
-&lt;h3 id="為什麼選擇-das">為什麼選擇 DAS？&lt;/h3>
-&lt;p>當你的工作流對 &lt;strong>延遲 (Latency)&lt;/strong> 極其敏感時，DAS 是唯一選擇。例如 4K 原始素材的剪輯、本地高 IOPS 的資料庫分析，或是需要極速快取層的應用。在 DAS 面前，任何網路協議（即使是 10GbE）都會顯得臃腫。&lt;/p>
-&lt;h3 id="das-的致命傷宿主機鎖定-host-lockout">DAS 的致命傷：宿主機鎖定 (Host Lockout)&lt;/h3>
-&lt;p>DAS 的性能是以 &lt;strong>「可用性」&lt;/strong> 為代價的。
-在 DAS 架構中，儲存設備沒有自己的「大腦」，它完全依賴宿主機的 OS 來管理文件系統。這意味著如果你的伺服器主機板燒了，或者 OS 崩潰導致無法啟動，即使你的硬碟全部健康，你的數據也被「鎖死」在那個故障的宿主機後面。你必須物理性地將整個擴展櫃搬到另一台兼容的機器上才能讀取數據。&lt;/p>
-&lt;h2 id="nas以網路稅換取數據流動性">NAS：以網路稅換取數據流動性&lt;/h2>
-&lt;p>NAS (Network Attached Storage) 實際上是一台 &lt;strong>專用的儲存伺服器&lt;/strong>。它有自己的 CPU、記憶體和 OS。
-當你請求一個檔案時，路徑變成了：&lt;code>Client $\rightarrow$ Network $\rightarrow$ NAS OS $\rightarrow$ Disk&lt;/code>。這裡產生了所謂的 &lt;strong>「網路稅」 (Network Tax)&lt;/strong> —— 數據需要被封裝成 SMB/NFS 協議，經過網路交換機，再由 NAS 的 CPU 解包並讀取。&lt;/p></description></item><item><title>NAS ZFS Truth</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</guid><description>&lt;h1 id="nas-的真相為什麼你需要的不是容量而是完整性">NAS 的真相：為什麼你需要的不是「容量」，而是「完整性」？&lt;/h1>
-&lt;h2 id="核心視角從被動桶子到主動引擎">核心視角：從「被動桶子」到「主動引擎」&lt;/h2>
-&lt;p>大多數人看待 NAS 時，首先想到的是「容量」——多少 TB 的空間能存我的電影和照片。但對於 SRE 來說，這是一個危險的誤區。&lt;/p>
-&lt;p>專業的 NAS 不應該被視為一個「裝滿硬碟的盒子」，而應該是一個旨在最大化 &lt;strong>數據持久性 (Data Durability)&lt;/strong> 與 &lt;strong>可用性 (Availability)&lt;/strong> 的系統。真正的分水嶺在於你使用的是傳統的硬件 RAID，還是像 &lt;strong>ZFS&lt;/strong> 這樣具備「自癒能力」的軟件定義存儲。&lt;/p>
-&lt;hr>
-&lt;h2 id="1-物理層的陷阱cmr-vs-smr">1. 物理層的陷阱：CMR vs SMR&lt;/h2>
-&lt;p>在購買硬碟前，你必須面對一個隱形的陷阱：&lt;strong>SMR (疊瓦式磁記錄)&lt;/strong>。
-SMR 硬碟為了增加密度，將數據像瓦片一樣重疊寫入。這在單純的存檔時沒問題，但在 RAID 重構 (Rebuild) 過程中，SMR 的寫入放大效應會導致重構速度慢到令人絕望，甚至直接導致整個陣列崩潰。&lt;/p>
-&lt;p>&lt;strong>SRE 建議&lt;/strong>：永遠選擇 &lt;strong>CMR (傳統磁記錄)&lt;/strong> 硬碟，並使用 &lt;strong>IT Mode (Initiator Target)&lt;/strong> 的 HBA 卡將原盤直接交給操作系統，徹底擺脫私有 RAID 卡的廠商鎖定。&lt;/p>
-&lt;h2 id="2-zfs數據完整性的黃金標準">2. ZFS：數據完整性的黃金標準&lt;/h2>
-&lt;p>為什麼 ZFS 被稱為存儲界的「黃金標準」？因為它解決了傳統存儲最恐懼的問題：&lt;strong>靜默數據損壞 (Silent Data Corruption / Bit Rot)&lt;/strong>。&lt;/p>
-&lt;h3 id="copy-on-write-cow消除寫入空洞">Copy-on-Write (CoW)：消除寫入空洞&lt;/h3>
-&lt;p>傳統文件系統在更新數據時會覆蓋原位。如果在此過程中斷電，會產生所謂的「寫入空洞 (Write Hole)」，導致文件損毀。ZFS 採用 &lt;strong>CoW&lt;/strong> 機制：永遠不覆蓋原數據，而是先將新數據寫入新塊，最後才更新指針。這意味著你的數據在寫入完成前，原件永遠是安全的。&lt;/p>
-&lt;h3 id="arc-與-zil性能與安全的分離">ARC 與 ZIL：性能與安全的分離&lt;/h3>
-&lt;p>ZFS 並不依賴傳統的 LRU 緩存，而是使用 &lt;strong>ARC (Adaptive Replacement Cache)&lt;/strong>，同時追蹤數據的「頻率」與「近期性」，讓緩存命中率大幅提升。而對於同步寫入，則通過 &lt;strong>ZIL (ZFS Intent Log)&lt;/strong> 確保在不犧牲性能的前提下，數據能立即持久化。&lt;/p></description></item><item><title>Network Tuning Deep Dive</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/network-tuning-deep-dive/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/network-tuning-deep-dive/</guid><description>&lt;h1 id="從黑洞到-bufferbloat高併發環境下的-linux-核心網路調優實戰">從「黑洞」到 Bufferbloat：高併發環境下的 Linux 核心網路調優實戰&lt;/h1>
-&lt;p>很多 SRE 在面對網路問題時，習慣於在 L7（應用層）找 Bug，或者在 L3（路由層）檢查連通性。但最棘手的問題往往發生在 L4（傳輸層）與核心之間的&lt;strong>灰色地帶&lt;/strong>。&lt;/p>
-&lt;p>這裡有兩道隱形的牆：一道是 &lt;strong>Conntrack (連線追蹤)&lt;/strong>，一旦滿了，你的服務會瞬間變成一個「黑洞」；另一道是 &lt;strong>Socket Buffers (套接字緩衝區)&lt;/strong>，配置不當會導致你的延遲在沒有丟包的情況下莫名飆升。&lt;/p>
-&lt;h2 id="第一道牆conntrack--靜默丟包的罪魁禍首">第一道牆：Conntrack —— 靜默丟包的罪魁禍首&lt;/h2>
-&lt;p>在 K8s 叢集中，&lt;code>kube-proxy&lt;/code> 使用的 &lt;code>iptables&lt;/code> 模式極度依賴核心的 &lt;code>nf_conntrack&lt;/code> 模組。它為每個流 (Flow) 建立一個「影子狀態」，記錄封包的來源、目的地與狀態。&lt;/p>
-&lt;h3 id="1-當核心變成黑洞">1. 當核心變成「黑洞」&lt;/h3>
-&lt;p>Conntrack 的失敗模式是二元的：一旦達到 &lt;code>nf_conntrack_max&lt;/code> 的上限，核心會直接&lt;strong>停止路由&lt;/strong>，將新封包靜默丟棄 (Silent Drop)。&lt;/p>
-&lt;p>這最讓人崩潰的地方在於：&lt;strong>應用程式完全健康，CPU 沒滿，記憶體充足，但連線卻隨機超時。&lt;/strong>&lt;/p>
-&lt;h3 id="2-sre-的除錯軌跡追蹤黑洞連線">2. SRE 的除錯軌跡：追蹤「黑洞」連線&lt;/h3>
-&lt;p>&lt;strong>現象&lt;/strong>：高流量 API Gateway 開始出現 1% 的隨機 &lt;code>Connection Timeout&lt;/code>。&lt;/p>
-&lt;p>&lt;strong>Trace 過程&lt;/strong>：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>檢查核心日誌&lt;/strong>：&lt;code>dmesg -T | grep -i conntrack&lt;/code> $
-ightarrow$ 發現 &lt;code>nf_conntrack: table full, dropping packet&lt;/code>。&lt;/li>
-&lt;li>&lt;strong>量化飽和度&lt;/strong>：&lt;code>sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max&lt;/code> $
-ightarrow$ 發現 count 剛好等於 max。&lt;/li>
-&lt;li>&lt;strong>分析 churn (流轉率)&lt;/strong>：使用 &lt;code>conntrack -L&lt;/code> 分析發現，大量連線處於 &lt;code>TIME_WAIT&lt;/code> 狀態。&lt;/li>
-&lt;li>&lt;strong>根因&lt;/strong>：後端 legacy API 不支援 Keep-Alive，導致每次請求都建立新連線，填滿表單的速度快於核心回收的速度。&lt;/li>
-&lt;/ol>
-&lt;p>&lt;strong>對策&lt;/strong>：&lt;/p></description></item><item><title>Ops Guide</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</guid><description>&lt;h1 id="kafka-快速操作指南從部署到調試">Kafka 快速操作指南：從部署到調試&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Operations / SRE&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Operational Tooling)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>對於 SRE 而言，掌握 Kafka 的 CLI 工具不僅是為了部署，更是為了在故障發生時快速定位問題。理解 &lt;code>kafka-topics&lt;/code> $\rightarrow$ &lt;code>kafka-console-producer&lt;/code> $\rightarrow$ &lt;code>kafka-console-consumer&lt;/code> 的數據流向是所有調試的基礎。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-核心指令速查表">🛠️ 核心指令速查表&lt;/h3>
-&lt;h4 id="1-topic-管理-the-skeleton">1. Topic 管理 (The Skeleton)&lt;/h4>
-&lt;ul>
-&lt;li>&lt;strong>創建 Topic&lt;/strong>：
-&lt;code>kafka-topics.sh --create --topic my-topic --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2&lt;/code>&lt;/li>
-&lt;li>&lt;strong>查看 Topic 詳情&lt;/strong>：
-&lt;code>kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092&lt;/code>&lt;/li>
-&lt;li>&lt;strong>刪除 Topic&lt;/strong>：
-&lt;code>kafka-topics.sh --delete --topic my-topic --bootstrap-server localhost:9092&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;h4 id="2-數據生產與消費-the-flow">2. 數據生產與消費 (The Flow)&lt;/h4>
-&lt;ul>
-&lt;li>&lt;strong>快速發送消息 (Producer)&lt;/strong>：
-&lt;code>kafka-console-producer.sh --topic my-topic --bootstrap-server localhost:9092&lt;/code> $\rightarrow$ &lt;em>進入交互模式後輸入消息&lt;/em>&lt;/li>
-&lt;li>&lt;strong>從頭讀取所有消息 (Consumer)&lt;/strong>：
-&lt;code>kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server localhost:9092&lt;/code>&lt;/li>
-&lt;li>&lt;strong>指定消費者組讀取 (Consumer Group)&lt;/strong>：
-&lt;code>kafka-console-consumer.sh --topic my-topic --group my-group --bootstrap-server localhost:9092&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;h4 id="3-狀態監控-the-health-check">3. 狀態監控 (The Health Check)&lt;/h4>
-&lt;ul>
-&lt;li>&lt;strong>查看消費者組偏移量 (Consumer Lag)&lt;/strong>：
-&lt;code>kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092&lt;/code>
-&lt;em>$\text{關鍵指標}$：$\text{LOG-END-OFFSET} - \text{CURRENT-OFFSET} = \text{LAG}$&lt;/em>&lt;/li>
-&lt;/ul>
-&lt;h3 id="-sre-實操坑洞">⚠️ SRE 實操坑洞&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>Zookeeper 依賴&lt;/strong>：在舊版本中，所有元數據都在 ZK，如果 ZK 響應慢，會導致所有 Broker 劇烈抖動。&lt;/li>
-&lt;li>&lt;strong>Partition 數量不可減少&lt;/strong>：一旦 Topic 創建，Partition 數量只能增加不能減少。建議在創建時根據預期吞吐量合理設定。&lt;/li>
-&lt;/ul>
-&lt;h2 id="synergy">Synergy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Prometheus Monitoring&lt;/strong>：建議將 &lt;code>kafka-exporter&lt;/code> 接入 Prometheus，將上述 CLI 指標轉化為實時 Dashboard 監控。&lt;/li>
-&lt;li>&lt;strong>Log Aggregation&lt;/strong>：Kafka 是 ELK 棧 (Elasticsearch-Logstash-Kibana) 中最核心的緩衝層。&lt;/li>
-&lt;/ul></description></item><item><title>Prompt Patterns</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</guid><description>&lt;h1 id="突破-prompt-的迷思從咒語轉向工程模式">突破 Prompt 的迷思：從「咒語」轉向「工程模式」&lt;/h1>
-&lt;p>在 AI 圈子裡，很多人把 Prompt Engineering 描述成一種「煉金術」或「寫咒語」。他們會分享一些神奇的短語，比如「這對我的職業生涯至關重要」或者「深呼吸，一步步思考」，並宣稱這能神奇地提升模型表現。
-但如果你試過將這些「咒語」部署到生產環境，你很快會發現：&lt;strong>咒語是不可靠的。&lt;/strong>
+ightarrow$ Agent B 輸出結果。這就是典型的 &lt;strong&gt;Static Orchestration (靜態編排)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這種模式在簡單任務中有效，但在面對複雜且不可預測的生產環境時會迅速失效。因為現實世界的任務沒有固定的路徑，需要的不是一套「流程圖」，而是一套&lt;strong&gt;能自我調整的協作機制&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;協作層從單兵作戰到-crewai-模式&#34;&gt;協作層：從單兵作戰到 CrewAI 模式&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;crewAI&lt;/strong&gt; 代表了協作層的進化。它不再僅僅是定義任務序列，而是定義 &lt;strong&gt;「角色 (Role)」&lt;/strong&gt; 與 &lt;strong&gt;「目標 (Goal)」&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;在 CrewAI 的邏輯裡，Agent 之間不再是簡單的接力，而是像一個真實的團隊：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;角色分工&lt;/strong&gt;：有人負責研究，有人負責審核，有人負責執行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;動態協作&lt;/strong&gt;：根據任務的複雜度，Agent 可以自主決定何時需要請求同事的幫助，或如何分配子任務。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這將 Agent 的能力從單純的「工具調用」提升到了「組織協作」的高度。但即使是 CrewAI，它依然依賴於人類預先定義的角色和 Prompt。如果環境變了，我們依然需要手動調整 Prompt。&lt;/p&gt;
+&lt;h2 id=&#34;演化層evolver-與-gep-協議的突破&#34;&gt;演化層：Evolver 與 GEP 協議的突破&lt;/h2&gt;
+&lt;p&gt;這就是為什麼我非常關注 &lt;strong&gt;Evolver&lt;/strong&gt; 及其提出的 &lt;strong&gt;GEP (Genome Evolution Protocol)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;Evolver 試圖解決 Agent 開發中最痛苦的一環：&lt;strong&gt;Prompt 的維護與迭代&lt;/strong&gt;。它將 Agent 的能力視為一種可演化的「基因 (Genome)」，將 Prompt 和工具定義封裝成「基因片段 (Genes)」與「膠囊 (Capsules)」。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Nas Vs Das</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</guid>
+      <description>&lt;h1 id=&#34;nas-vs-das如何為你的-homelab-選擇正確的儲儲架構&#34;&gt;NAS vs DAS：如何為你的 HomeLab 選擇正確的儲儲架構？&lt;/h1&gt;
+&lt;p&gt;在構建 HomeLab 時，最讓人糾結的決定之一就是：我是該買一台成品 NAS，還是買個 DAS 擴展櫃直接掛在伺服器上？
+很多人會把這兩者混為一談，認為只要是「很多硬碟在一起」就差不多。但從系統架構來看，NAS 與 DAS 之間隔著一道巨大的鴻溝：&lt;strong&gt;網路棧 (Network Stack)&lt;/strong&gt;。這道鴻溝決定了你的數據是追求「流動性」還是「極限速度」。&lt;/p&gt;
+&lt;h2 id=&#34;das追求-raw-io-的極端主義&#34;&gt;DAS：追求 Raw I/O 的極端主義&lt;/h2&gt;
+&lt;p&gt;DAS (Direct Attached Storage) 的邏輯非常簡單：&lt;strong&gt;去掉所有中間商，讓 CPU 直接看到硬碟。&lt;/strong&gt;
+無論是透過 Thunderbolt 4、SAS HBA 還是簡單的 USB-C，DAS 的數據路徑極短。它不需要經過 TCP/IP 封裝，不需要處理網路碰撞，也不需要經過另一台伺服器的 CPU 轉發。&lt;/p&gt;
+&lt;h3 id=&#34;為什麼選擇-das&#34;&gt;為什麼選擇 DAS？&lt;/h3&gt;
+&lt;p&gt;當你的工作流對 &lt;strong&gt;延遲 (Latency)&lt;/strong&gt; 極其敏感時，DAS 是唯一選擇。例如 4K 原始素材的剪輯、本地高 IOPS 的資料庫分析，或是需要極速快取層的應用。在 DAS 面前，任何網路協議（即使是 10GbE）都會顯得臃腫。&lt;/p&gt;
+&lt;h3 id=&#34;das-的致命傷宿主機鎖定-host-lockout&#34;&gt;DAS 的致命傷：宿主機鎖定 (Host Lockout)&lt;/h3&gt;
+&lt;p&gt;DAS 的性能是以 &lt;strong&gt;「可用性」&lt;/strong&gt; 為代價的。
+在 DAS 架構中，儲存設備沒有自己的「大腦」，它完全依賴宿主機的 OS 來管理文件系統。這意味著如果你的伺服器主機板燒了，或者 OS 崩潰導致無法啟動，即使你的硬碟全部健康，你的數據也被「鎖死」在那個故障的宿主機後面。你必須物理性地將整個擴展櫃搬到另一台兼容的機器上才能讀取數據。&lt;/p&gt;
+&lt;h2 id=&#34;nas以網路稅換取數據流動性&#34;&gt;NAS：以網路稅換取數據流動性&lt;/h2&gt;
+&lt;p&gt;NAS (Network Attached Storage) 實際上是一台 &lt;strong&gt;專用的儲存伺服器&lt;/strong&gt;。它有自己的 CPU、記憶體和 OS。
+當你請求一個檔案時，路徑變成了：&lt;code&gt;Client $\rightarrow$ Network $\rightarrow$ NAS OS $\rightarrow$ Disk&lt;/code&gt;。這裡產生了所謂的 &lt;strong&gt;「網路稅」 (Network Tax)&lt;/strong&gt; —— 數據需要被封裝成 SMB/NFS 協議，經過網路交換機，再由 NAS 的 CPU 解包並讀取。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>NAS ZFS Truth</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</guid>
+      <description>&lt;h1 id=&#34;nas-的真相為什麼你需要的不是容量而是完整性&#34;&gt;NAS 的真相：為什麼你需要的不是「容量」，而是「完整性」？&lt;/h1&gt;
+&lt;h2 id=&#34;核心視角從被動桶子到主動引擎&#34;&gt;核心視角：從「被動桶子」到「主動引擎」&lt;/h2&gt;
+&lt;p&gt;大多數人看待 NAS 時，首先想到的是「容量」——多少 TB 的空間能存我的電影和照片。但對於 SRE 來說，這是一個危險的誤區。&lt;/p&gt;
+&lt;p&gt;專業的 NAS 不應該被視為一個「裝滿硬碟的盒子」，而應該是一個旨在最大化 &lt;strong&gt;數據持久性 (Data Durability)&lt;/strong&gt; 與 &lt;strong&gt;可用性 (Availability)&lt;/strong&gt; 的系統。真正的分水嶺在於你使用的是傳統的硬件 RAID，還是像 &lt;strong&gt;ZFS&lt;/strong&gt; 這樣具備「自癒能力」的軟件定義存儲。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-物理層的陷阱cmr-vs-smr&#34;&gt;1. 物理層的陷阱：CMR vs SMR&lt;/h2&gt;
+&lt;p&gt;在購買硬碟前，你必須面對一個隱形的陷阱：&lt;strong&gt;SMR (疊瓦式磁記錄)&lt;/strong&gt;。
+SMR 硬碟為了增加密度，將數據像瓦片一樣重疊寫入。這在單純的存檔時沒問題，但在 RAID 重構 (Rebuild) 過程中，SMR 的寫入放大效應會導致重構速度慢到令人絕望，甚至直接導致整個陣列崩潰。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SRE 建議&lt;/strong&gt;：永遠選擇 &lt;strong&gt;CMR (傳統磁記錄)&lt;/strong&gt; 硬碟，並使用 &lt;strong&gt;IT Mode (Initiator Target)&lt;/strong&gt; 的 HBA 卡將原盤直接交給操作系統，徹底擺脫私有 RAID 卡的廠商鎖定。&lt;/p&gt;
+&lt;h2 id=&#34;2-zfs數據完整性的黃金標準&#34;&gt;2. ZFS：數據完整性的黃金標準&lt;/h2&gt;
+&lt;p&gt;為什麼 ZFS 被稱為存儲界的「黃金標準」？因為它解決了傳統存儲最恐懼的問題：&lt;strong&gt;靜默數據損壞 (Silent Data Corruption / Bit Rot)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;copy-on-write-cow消除寫入空洞&#34;&gt;Copy-on-Write (CoW)：消除寫入空洞&lt;/h3&gt;
+&lt;p&gt;傳統文件系統在更新數據時會覆蓋原位。如果在此過程中斷電，會產生所謂的「寫入空洞 (Write Hole)」，導致文件損毀。ZFS 採用 &lt;strong&gt;CoW&lt;/strong&gt; 機制：永遠不覆蓋原數據，而是先將新數據寫入新塊，最後才更新指針。這意味著你的數據在寫入完成前，原件永遠是安全的。&lt;/p&gt;
+&lt;h3 id=&#34;arc-與-zil性能與安全的分離&#34;&gt;ARC 與 ZIL：性能與安全的分離&lt;/h3&gt;
+&lt;p&gt;ZFS 並不依賴傳統的 LRU 緩存，而是使用 &lt;strong&gt;ARC (Adaptive Replacement Cache)&lt;/strong&gt;，同時追蹤數據的「頻率」與「近期性」，讓緩存命中率大幅提升。而對於同步寫入，則通過 &lt;strong&gt;ZIL (ZFS Intent Log)&lt;/strong&gt; 確保在不犧牲性能的前提下，數據能立即持久化。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Network Tuning Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/network-tuning-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/network-tuning-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;從黑洞到-bufferbloat高併發環境下的-linux-核心網路調優實戰&#34;&gt;從「黑洞」到 Bufferbloat：高併發環境下的 Linux 核心網路調優實戰&lt;/h1&gt;
+&lt;p&gt;很多 SRE 在面對網路問題時，習慣於在 L7（應用層）找 Bug，或者在 L3（路由層）檢查連通性。但最棘手的問題往往發生在 L4（傳輸層）與核心之間的&lt;strong&gt;灰色地帶&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;這裡有兩道隱形的牆：一道是 &lt;strong&gt;Conntrack (連線追蹤)&lt;/strong&gt;，一旦滿了，你的服務會瞬間變成一個「黑洞」；另一道是 &lt;strong&gt;Socket Buffers (套接字緩衝區)&lt;/strong&gt;，配置不當會導致你的延遲在沒有丟包的情況下莫名飆升。&lt;/p&gt;
+&lt;h2 id=&#34;第一道牆conntrack--靜默丟包的罪魁禍首&#34;&gt;第一道牆：Conntrack —— 靜默丟包的罪魁禍首&lt;/h2&gt;
+&lt;p&gt;在 K8s 叢集中，&lt;code&gt;kube-proxy&lt;/code&gt; 使用的 &lt;code&gt;iptables&lt;/code&gt; 模式極度依賴核心的 &lt;code&gt;nf_conntrack&lt;/code&gt; 模組。它為每個流 (Flow) 建立一個「影子狀態」，記錄封包的來源、目的地與狀態。&lt;/p&gt;
+&lt;h3 id=&#34;1-當核心變成黑洞&#34;&gt;1. 當核心變成「黑洞」&lt;/h3&gt;
+&lt;p&gt;Conntrack 的失敗模式是二元的：一旦達到 &lt;code&gt;nf_conntrack_max&lt;/code&gt; 的上限，核心會直接&lt;strong&gt;停止路由&lt;/strong&gt;，將新封包靜默丟棄 (Silent Drop)。&lt;/p&gt;
+&lt;p&gt;這最讓人崩潰的地方在於：&lt;strong&gt;應用程式完全健康，CPU 沒滿，記憶體充足，但連線卻隨機超時。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-sre-的除錯軌跡追蹤黑洞連線&#34;&gt;2. SRE 的除錯軌跡：追蹤「黑洞」連線&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;現象&lt;/strong&gt;：高流量 API Gateway 開始出現 1% 的隨機 &lt;code&gt;Connection Timeout&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Trace 過程&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;檢查核心日誌&lt;/strong&gt;：&lt;code&gt;dmesg -T | grep -i conntrack&lt;/code&gt; $
+ightarrow$ 發現 &lt;code&gt;nf_conntrack: table full, dropping packet&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量化飽和度&lt;/strong&gt;：&lt;code&gt;sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max&lt;/code&gt; $
+ightarrow$ 發現 count 剛好等於 max。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分析 churn (流轉率)&lt;/strong&gt;：使用 &lt;code&gt;conntrack -L&lt;/code&gt; 分析發現，大量連線處於 &lt;code&gt;TIME_WAIT&lt;/code&gt; 狀態。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;根因&lt;/strong&gt;：後端 legacy API 不支援 Keep-Alive，導致每次請求都建立新連線，填滿表單的速度快於核心回收的速度。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;對策&lt;/strong&gt;：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ops Guide</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</guid>
+      <description>&lt;h1 id=&#34;kafka-快速操作指南從部署到調試&#34;&gt;Kafka 快速操作指南：從部署到調試&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Cloud Operations / SRE&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥉 Bronze (Operational Tooling)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;對於 SRE 而言，掌握 Kafka 的 CLI 工具不僅是為了部署，更是為了在故障發生時快速定位問題。理解 &lt;code&gt;kafka-topics&lt;/code&gt; $\rightarrow$ &lt;code&gt;kafka-console-producer&lt;/code&gt; $\rightarrow$ &lt;code&gt;kafka-console-consumer&lt;/code&gt; 的數據流向是所有調試的基礎。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-核心指令速查表&#34;&gt;🛠️ 核心指令速查表&lt;/h3&gt;
+&lt;h4 id=&#34;1-topic-管理-the-skeleton&#34;&gt;1. Topic 管理 (The Skeleton)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;創建 Topic&lt;/strong&gt;：
+&lt;code&gt;kafka-topics.sh --create --topic my-topic --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看 Topic 詳情&lt;/strong&gt;：
+&lt;code&gt;kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;刪除 Topic&lt;/strong&gt;：
+&lt;code&gt;kafka-topics.sh --delete --topic my-topic --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-數據生產與消費-the-flow&#34;&gt;2. 數據生產與消費 (The Flow)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;快速發送消息 (Producer)&lt;/strong&gt;：
+&lt;code&gt;kafka-console-producer.sh --topic my-topic --bootstrap-server localhost:9092&lt;/code&gt; $\rightarrow$ &lt;em&gt;進入交互模式後輸入消息&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;從頭讀取所有消息 (Consumer)&lt;/strong&gt;：
+&lt;code&gt;kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指定消費者組讀取 (Consumer Group)&lt;/strong&gt;：
+&lt;code&gt;kafka-console-consumer.sh --topic my-topic --group my-group --bootstrap-server localhost:9092&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-狀態監控-the-health-check&#34;&gt;3. 狀態監控 (The Health Check)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;查看消費者組偏移量 (Consumer Lag)&lt;/strong&gt;：
+&lt;code&gt;kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092&lt;/code&gt;
+&lt;em&gt;$\text{關鍵指標}$：$\text{LOG-END-OFFSET} - \text{CURRENT-OFFSET} = \text{LAG}$&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-sre-實操坑洞&#34;&gt;⚠️ SRE 實操坑洞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Zookeeper 依賴&lt;/strong&gt;：在舊版本中，所有元數據都在 ZK，如果 ZK 響應慢，會導致所有 Broker 劇烈抖動。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Partition 數量不可減少&lt;/strong&gt;：一旦 Topic 創建，Partition 數量只能增加不能減少。建議在創建時根據預期吞吐量合理設定。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Prometheus Monitoring&lt;/strong&gt;：建議將 &lt;code&gt;kafka-exporter&lt;/code&gt; 接入 Prometheus，將上述 CLI 指標轉化為實時 Dashboard 監控。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Log Aggregation&lt;/strong&gt;：Kafka 是 ELK 棧 (Elasticsearch-Logstash-Kibana) 中最核心的緩衝層。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Prompt Patterns</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/prompt-patterns/</guid>
+      <description>&lt;h1 id=&#34;突破-prompt-的迷思從咒語轉向工程模式&#34;&gt;突破 Prompt 的迷思：從「咒語」轉向「工程模式」&lt;/h1&gt;
+&lt;p&gt;在 AI 圈子裡，很多人把 Prompt Engineering 描述成一種「煉金術」或「寫咒語」。他們會分享一些神奇的短語，比如「這對我的職業生涯至關重要」或者「深呼吸，一步步思考」，並宣稱這能神奇地提升模型表現。
+但如果你試過將這些「咒語」部署到生產環境，你很快會發現：&lt;strong&gt;咒語是不可靠的。&lt;/strong&gt;
 同樣的 Prompt 在不同版本的模型上表現迥異，甚至在相同的模型上，只要輸入數據稍微變動，輸出結果就會從「完美」跌落到「胡言亂語」。
-對於工程師來說，我們不能依賴隨機性。Prompt Engineering 的本質不應該是「尋找正確的詞彙」，而應該是 &lt;strong>「透過結構化約束，縮小模型的搜索空間」&lt;/strong>。&lt;/p>
-&lt;h2 id="prompt-的本質縮小搜索空間">Prompt 的本質：縮小搜索空間&lt;/h2>
-&lt;p>LLM 的運作邏輯是預測下一個 token。如果你給的指令太模糊，模型在生成答案時，其可能的路徑（搜索空間）會非常巨大，這就導致了不穩定性。
-&lt;strong>「咒語」之所以有效，是因為它們在潛意識中誘導模型進入某個特定的概率分佈。&lt;/strong> 但更專業的做法是提供&lt;strong>結構化約束&lt;/strong>。&lt;/p>
-&lt;h3 id="1-從指令轉向工作記憶-cot">1. 從「指令」轉向「工作記憶」 (CoT)&lt;/h3>
-&lt;p>很多人知道 &lt;code>Think step-by-step&lt;/code> 有用，但不知道為什麼。
-從底層來看，這是在強迫模型將「推理過程」顯式化地寫在輸出中。這些生成的推理 token 實際上變成了模型的 &lt;strong>「外部工作記憶」&lt;/strong>。模型在生成最終答案前，先在上下文（Context）中建立了一條邏輯鏈條，這大大降低了邏輯跳躍導致的錯誤。
-&lt;strong>工程實踐&lt;/strong>：不要只要求模型「思考」，而要給它 &lt;strong>Few-Shot CoT&lt;/strong>。提供 3-5 個 &lt;code>問題 $\rightarrow$ 推理過程 $\rightarrow$ 答案&lt;/code> 的範例，直接定義它的思考路徑。&lt;/p>
-&lt;h3 id="2-拒絕上帝-prompt模組化分解">2. 拒絕「上帝 Prompt」：模組化分解&lt;/h3>
-&lt;p>很多開發者的習慣是寫一個幾千字的「上帝 Prompt」，把所有規則、背景、格式要求全部塞進去。
-這會導致兩個問題：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Lost-in-the-Middle&lt;/strong>：模型會忽略掉 Prompt 中間部分的指令。&lt;/li>
-&lt;li>&lt;strong>指令衝突&lt;/strong>：當規則太多時，模型在權衡不同指令的優先級時會產生混亂。
-&lt;strong>工程實踐&lt;/strong>：採取 &lt;strong>Prompt Decomposition (分解)&lt;/strong>。
+對於工程師來說，我們不能依賴隨機性。Prompt Engineering 的本質不應該是「尋找正確的詞彙」，而應該是 &lt;strong&gt;「透過結構化約束，縮小模型的搜索空間」&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;prompt-的本質縮小搜索空間&#34;&gt;Prompt 的本質：縮小搜索空間&lt;/h2&gt;
+&lt;p&gt;LLM 的運作邏輯是預測下一個 token。如果你給的指令太模糊，模型在生成答案時，其可能的路徑（搜索空間）會非常巨大，這就導致了不穩定性。
+&lt;strong&gt;「咒語」之所以有效，是因為它們在潛意識中誘導模型進入某個特定的概率分佈。&lt;/strong&gt; 但更專業的做法是提供&lt;strong&gt;結構化約束&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;1-從指令轉向工作記憶-cot&#34;&gt;1. 從「指令」轉向「工作記憶」 (CoT)&lt;/h3&gt;
+&lt;p&gt;很多人知道 &lt;code&gt;Think step-by-step&lt;/code&gt; 有用，但不知道為什麼。
+從底層來看，這是在強迫模型將「推理過程」顯式化地寫在輸出中。這些生成的推理 token 實際上變成了模型的 &lt;strong&gt;「外部工作記憶」&lt;/strong&gt;。模型在生成最終答案前，先在上下文（Context）中建立了一條邏輯鏈條，這大大降低了邏輯跳躍導致的錯誤。
+&lt;strong&gt;工程實踐&lt;/strong&gt;：不要只要求模型「思考」，而要給它 &lt;strong&gt;Few-Shot CoT&lt;/strong&gt;。提供 3-5 個 &lt;code&gt;問題 $\rightarrow$ 推理過程 $\rightarrow$ 答案&lt;/code&gt; 的範例，直接定義它的思考路徑。&lt;/p&gt;
+&lt;h3 id=&#34;2-拒絕上帝-prompt模組化分解&#34;&gt;2. 拒絕「上帝 Prompt」：模組化分解&lt;/h3&gt;
+&lt;p&gt;很多開發者的習慣是寫一個幾千字的「上帝 Prompt」，把所有規則、背景、格式要求全部塞進去。
+這會導致兩個問題：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Lost-in-the-Middle&lt;/strong&gt;：模型會忽略掉 Prompt 中間部分的指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指令衝突&lt;/strong&gt;：當規則太多時，模型在權衡不同指令的優先級時會產生混亂。
+&lt;strong&gt;工程實踐&lt;/strong&gt;：採取 &lt;strong&gt;Prompt Decomposition (分解)&lt;/strong&gt;。
 將一個複雜任務拆成流水線：
-&lt;code>提取實體 (Prompt A)&lt;/code> $\rightarrow$ &lt;code>分析關係 (Prompt B)&lt;/code> $\rightarrow$ &lt;code>合成報告 (Prompt C)&lt;/code>。
-這樣你面對的是三個簡單、確定且易於評測的模組，而不是一個不可控的黑盒子。&lt;/li>
-&lt;/ul>
-&lt;h3 id="3-建立結構化錨點-structural-anchors">3. 建立結構化錨點 (Structural Anchors)&lt;/h3>
-&lt;p>不要用 &lt;code>請總結以下文本：[文本]&lt;/code> 這種模糊的寫法。在處理大規模數據時，模型很容易分不清哪裡是「指令」，哪裡是「待處理數據」。
-&lt;strong>工程實踐&lt;/strong>：使用明確的分隔符。&lt;/p></description></item><item><title>Proxmox VE: HomeLab 中的超融合基礎設施 (HCI) 實踐</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</guid><description>&lt;h1 id="proxmox-ve將家用電腦轉化為微型數據中心">Proxmox VE：將家用電腦轉化為微型數據中心&lt;/h1>
-&lt;p>對於大多數 HomeLab 玩家來說，虛擬化可能是為了「省錢」——用一台強大的主機運行十幾個服務。但從 SRE 的視角來看，Proxmox VE (PVE) 的真正價值在於它將 &lt;strong>KVM (全虛擬化)&lt;/strong> 與 &lt;strong>LXC (容器虛擬化)&lt;/strong> 完美地整合在單一的管理平面中，並原生支持 ZFS 與 Ceph，讓家用硬件也能跑出「企業級」的超融合基礎設施 (HCI)。&lt;/p>
-&lt;hr>
-&lt;h2 id="1-虛擬化策略kvm-與-lxc-的隔離-vs-性能權衡">1. 虛擬化策略：KVM 與 LXC 的「隔離 vs 性能」權衡&lt;/h2>
-&lt;p>在 PVE 中部署服務時，最容易犯的錯誤就是所有東西都用 VM (KVM)。實際上，正確的選型應該基於對 &lt;strong>Virtualization Overhead&lt;/strong> 的精確控制。&lt;/p>
-&lt;h3 id="kvm-kernel-based-virtual-machine絕對的隔離">KVM (Kernel-based Virtual Machine)：絕對的隔離&lt;/h3>
-&lt;p>KVM 是完整的硬件虛擬化，每個 VM 擁有獨立的內核。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>場景&lt;/strong>：當你需要運行 Windows、BSD，或者需要對內核進行深度調試時，KVM 是唯一選擇。&lt;/li>
-&lt;li>&lt;strong>代價&lt;/strong>：Guest OS 稅。即使是一個簡單的 Linux VM，也會消耗額外的 RAM 和 CPU 來維護其內核。&lt;/li>
-&lt;/ul>
-&lt;h3 id="lxc-linux-containers近乎原生的性能">LXC (Linux Containers)：近乎原生的性能&lt;/h3>
-&lt;p>LXC 是操作系統級虛擬化，與宿主機共享內核。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>場景&lt;/strong>：部署 Web 服務、微服務、輕量級 Bot。&lt;/li>
-&lt;li>&lt;strong>優勢&lt;/strong>：秒級啟動，內存占用極低。如果你運行一個簡單的 Nginx，LXC 的資源開銷幾乎可以忽略不計。&lt;/li>
-&lt;/ul>
-&lt;p>&lt;strong>SRE 決策模型&lt;/strong>：$\text{需要不同內核 / 高安全性} \rightarrow \text{KVM}$；$\text{追求性能 / 低開銷} \rightarrow \text{LXC}$。&lt;/p></description></item><item><title>Psi Metrics</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</guid><description>&lt;h1 id="別再看-cpu-利用率了用-psi-衡量系統的痛苦程度">別再看 CPU 利用率了：用 PSI 衡量系統的「痛苦程度」&lt;/h1>
-&lt;p>很多 SRE 在分析性能瓶頸時，習慣看 &lt;code>top&lt;/code> 裡的 CPU% 或 &lt;code>free&lt;/code> 裡的 Mem%。
-但這裡有一個巨大的陷阱：&lt;strong>利用率 (Utilization) $
-eq$ 飽和度 (Saturation)&lt;/strong>。
-一個 CPU 利用率 50% 的系統，依然可能是卡死的。為什麼？因為剩下的 50% 時間，CPU 可能都在等待 I/O 返回，或者在等待記憶體分頁。&lt;/p>
-&lt;h2 id="什麼是-psi-pressure-stall-information">什麼是 PSI (Pressure Stall Information)？&lt;/h2>
-&lt;p>PSI 是 Linux 內核提供的一套指標，它不再告訴你「資源被用了多少」，而是告訴你 &lt;strong>「任務因為等待資源而停頓了多久」&lt;/strong>。
-它將壓力分為三個維度：&lt;strong>CPU、Memory、I/O&lt;/strong>。&lt;/p>
-&lt;h3 id="1-some與full的區別">1. 「Some」與「Full」的區別&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>Some&lt;/strong>：至少有一個任務在等待資源，但系統還能跑其他東西。這是一個 &lt;strong>「警告信號」&lt;/strong>。&lt;/li>
-&lt;li>&lt;strong>Full&lt;/strong>：所有非空閒任務全部在等待資源。CPU 處於完全空轉狀態。這是一個 &lt;strong>「崩潰信號」&lt;/strong>。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-實戰分析讀懂-psi-信號">2. 實戰分析：讀懂 PSI 信號&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>CPU Pressure High&lt;/strong>: 如果 &lt;code>some&lt;/code> 很高但 &lt;code>full&lt;/code> 很低 $
-ightarrow$ 你有太多線程在爭搶核心，上下文切換開銷太大。&lt;/li>
-&lt;li>&lt;strong>Memory Pressure High&lt;/strong>: 如果 &lt;code>full&lt;/code> 突然飆升 $
-ightarrow$ 系統正在進行劇烈的直接回收 (Direct Reclaim) 或 Swap。這通常是 OOM (Out of Memory) 發生前的最後警告。&lt;/li>
-&lt;li>&lt;strong>I/O Pressure High&lt;/strong>: 如果 &lt;code>full&lt;/code> 持續處於高位 $
-ightarrow$ 你的儲存設備已經飽和，應用程序被完全阻塞在 I/O 路徑上。&lt;/li>
-&lt;/ul>
-&lt;h2 id="sre-實踐基於壓力的自動擴展-pressure-based-scaling">SRE 實踐：基於壓力的自動擴展 (Pressure-based Scaling)&lt;/h2>
-&lt;p>傳統的 Auto-scaling 是基於 CPU 閾值（例如 70% 擴容）。這很遲鈍，因為 CPU% 是滯後指標。
-&lt;strong>更先進的做法是監控 &lt;code>/proc/pressure/memory&lt;/code>&lt;/strong>：
-一旦 &lt;code>some&lt;/code> 壓力超過 10% 並持續 30 秒 $
+&lt;code&gt;提取實體 (Prompt A)&lt;/code&gt; $\rightarrow$ &lt;code&gt;分析關係 (Prompt B)&lt;/code&gt; $\rightarrow$ &lt;code&gt;合成報告 (Prompt C)&lt;/code&gt;。
+這樣你面對的是三個簡單、確定且易於評測的模組，而不是一個不可控的黑盒子。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-建立結構化錨點-structural-anchors&#34;&gt;3. 建立結構化錨點 (Structural Anchors)&lt;/h3&gt;
+&lt;p&gt;不要用 &lt;code&gt;請總結以下文本：[文本]&lt;/code&gt; 這種模糊的寫法。在處理大規模數據時，模型很容易分不清哪裡是「指令」，哪裡是「待處理數據」。
+&lt;strong&gt;工程實踐&lt;/strong&gt;：使用明確的分隔符。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Proxmox VE: HomeLab 中的超融合基礎設施 (HCI) 實踐</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</guid>
+      <description>&lt;h1 id=&#34;proxmox-ve將家用電腦轉化為微型數據中心&#34;&gt;Proxmox VE：將家用電腦轉化為微型數據中心&lt;/h1&gt;
+&lt;p&gt;對於大多數 HomeLab 玩家來說，虛擬化可能是為了「省錢」——用一台強大的主機運行十幾個服務。但從 SRE 的視角來看，Proxmox VE (PVE) 的真正價值在於它將 &lt;strong&gt;KVM (全虛擬化)&lt;/strong&gt; 與 &lt;strong&gt;LXC (容器虛擬化)&lt;/strong&gt; 完美地整合在單一的管理平面中，並原生支持 ZFS 與 Ceph，讓家用硬件也能跑出「企業級」的超融合基礎設施 (HCI)。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-虛擬化策略kvm-與-lxc-的隔離-vs-性能權衡&#34;&gt;1. 虛擬化策略：KVM 與 LXC 的「隔離 vs 性能」權衡&lt;/h2&gt;
+&lt;p&gt;在 PVE 中部署服務時，最容易犯的錯誤就是所有東西都用 VM (KVM)。實際上，正確的選型應該基於對 &lt;strong&gt;Virtualization Overhead&lt;/strong&gt; 的精確控制。&lt;/p&gt;
+&lt;h3 id=&#34;kvm-kernel-based-virtual-machine絕對的隔離&#34;&gt;KVM (Kernel-based Virtual Machine)：絕對的隔離&lt;/h3&gt;
+&lt;p&gt;KVM 是完整的硬件虛擬化，每個 VM 擁有獨立的內核。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;場景&lt;/strong&gt;：當你需要運行 Windows、BSD，或者需要對內核進行深度調試時，KVM 是唯一選擇。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代價&lt;/strong&gt;：Guest OS 稅。即使是一個簡單的 Linux VM，也會消耗額外的 RAM 和 CPU 來維護其內核。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;lxc-linux-containers近乎原生的性能&#34;&gt;LXC (Linux Containers)：近乎原生的性能&lt;/h3&gt;
+&lt;p&gt;LXC 是操作系統級虛擬化，與宿主機共享內核。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;場景&lt;/strong&gt;：部署 Web 服務、微服務、輕量級 Bot。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;優勢&lt;/strong&gt;：秒級啟動，內存占用極低。如果你運行一個簡單的 Nginx，LXC 的資源開銷幾乎可以忽略不計。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SRE 決策模型&lt;/strong&gt;：$\text{需要不同內核 / 高安全性} \rightarrow \text{KVM}$；$\text{追求性能 / 低開銷} \rightarrow \text{LXC}$。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Psi Metrics</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</guid>
+      <description>&lt;h1 id=&#34;別再看-cpu-利用率了用-psi-衡量系統的痛苦程度&#34;&gt;別再看 CPU 利用率了：用 PSI 衡量系統的「痛苦程度」&lt;/h1&gt;
+&lt;p&gt;很多 SRE 在分析性能瓶頸時，習慣看 &lt;code&gt;top&lt;/code&gt; 裡的 CPU% 或 &lt;code&gt;free&lt;/code&gt; 裡的 Mem%。
+但這裡有一個巨大的陷阱：&lt;strong&gt;利用率 (Utilization) $
+eq$ 飽和度 (Saturation)&lt;/strong&gt;。
+一個 CPU 利用率 50% 的系統，依然可能是卡死的。為什麼？因為剩下的 50% 時間，CPU 可能都在等待 I/O 返回，或者在等待記憶體分頁。&lt;/p&gt;
+&lt;h2 id=&#34;什麼是-psi-pressure-stall-information&#34;&gt;什麼是 PSI (Pressure Stall Information)？&lt;/h2&gt;
+&lt;p&gt;PSI 是 Linux 內核提供的一套指標，它不再告訴你「資源被用了多少」，而是告訴你 &lt;strong&gt;「任務因為等待資源而停頓了多久」&lt;/strong&gt;。
+它將壓力分為三個維度：&lt;strong&gt;CPU、Memory、I/O&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;1-some與full的區別&#34;&gt;1. 「Some」與「Full」的區別&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Some&lt;/strong&gt;：至少有一個任務在等待資源，但系統還能跑其他東西。這是一個 &lt;strong&gt;「警告信號」&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Full&lt;/strong&gt;：所有非空閒任務全部在等待資源。CPU 處於完全空轉狀態。這是一個 &lt;strong&gt;「崩潰信號」&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-實戰分析讀懂-psi-信號&#34;&gt;2. 實戰分析：讀懂 PSI 信號&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CPU Pressure High&lt;/strong&gt;: 如果 &lt;code&gt;some&lt;/code&gt; 很高但 &lt;code&gt;full&lt;/code&gt; 很低 $
+ightarrow$ 你有太多線程在爭搶核心，上下文切換開銷太大。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pressure High&lt;/strong&gt;: 如果 &lt;code&gt;full&lt;/code&gt; 突然飆升 $
+ightarrow$ 系統正在進行劇烈的直接回收 (Direct Reclaim) 或 Swap。這通常是 OOM (Out of Memory) 發生前的最後警告。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;I/O Pressure High&lt;/strong&gt;: 如果 &lt;code&gt;full&lt;/code&gt; 持續處於高位 $
+ightarrow$ 你的儲存設備已經飽和，應用程序被完全阻塞在 I/O 路徑上。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;sre-實踐基於壓力的自動擴展-pressure-based-scaling&#34;&gt;SRE 實踐：基於壓力的自動擴展 (Pressure-based Scaling)&lt;/h2&gt;
+&lt;p&gt;傳統的 Auto-scaling 是基於 CPU 閾值（例如 70% 擴容）。這很遲鈍，因為 CPU% 是滯後指標。
+&lt;strong&gt;更先進的做法是監控 &lt;code&gt;/proc/pressure/memory&lt;/code&gt;&lt;/strong&gt;：
+一旦 &lt;code&gt;some&lt;/code&gt; 壓力超過 10% 並持續 30 秒 $
 ightarrow$ 立即觸發擴容或清理快取。
-這是在系統真正崩潰之前，提前捕捉到「痛苦」的唯一方法。&lt;/p></description></item><item><title>Rag Truth</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/rag-truth/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/rag-truth/</guid><description>&lt;h1 id="rag-的真相為什麼你的向量搜索總是找不準">RAG 的真相：為什麼你的向量搜索總是找不準？&lt;/h1>
-&lt;p>如果你剛開始構建 RAG (檢索增強生成) 系統，你的路徑大概率是這樣的：將文檔切成 500 個 token 的塊 $\rightarrow$ 調用 Embedding 接口 $\rightarrow$ 存入向量數據庫 $\rightarrow$ 根據相似度取 Top-K $\rightarrow$ 餵給 LLM。
+這是在系統真正崩潰之前，提前捕捉到「痛苦」的唯一方法。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rag Truth</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/ai/rag-truth/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/ai/rag-truth/</guid>
+      <description>&lt;h1 id=&#34;rag-的真相為什麼你的向量搜索總是找不準&#34;&gt;RAG 的真相：為什麼你的向量搜索總是找不準？&lt;/h1&gt;
+&lt;p&gt;如果你剛開始構建 RAG (檢索增強生成) 系統，你的路徑大概率是這樣的：將文檔切成 500 個 token 的塊 $\rightarrow$ 調用 Embedding 接口 $\rightarrow$ 存入向量數據庫 $\rightarrow$ 根據相似度取 Top-K $\rightarrow$ 餵給 LLM。
 在測試集上，這看起來很完美。但一旦進入生產環境，你會發現 LLM 開始頻繁出現這種狀況：
 「雖然文檔裡明明有答案，但模型卻告訴我找不到」，或者「檢索回來的內容雖然看起來相關，但對回答問題完全沒幫助」。
-這就是 &lt;strong>Naive RAG (天真 RAG)&lt;/strong> 的陷阱。&lt;/p>
-&lt;h2 id="向量相似度-neq-答案相關度">向量相似度 $\neq$ 答案相關度&lt;/h2>
-&lt;p>很多開發者對向量搜索有一個致命的誤解：認為「語義相似」就等於「能回答問題」。
-&lt;strong>事實上，向量空間的距離（Cosine Similarity）捕捉的是「主題的接近程度」，而非「邏輯的相關性」。&lt;/strong>
-舉個例子：如果你搜索「如何修復 K8s 的 CrashLoopBackOff」，向量搜索可能會給你返回一篇關於「K8s 故障排除指南」的長文，因為兩者的語義高度相關。但你真正需要的是一段具體的 &lt;code>kubectl&lt;/code> 指令或一個特定的配置文件範例。
-這就是為什麼你的系統會出現「檢索到了，但沒用」的情況。&lt;/p>
-&lt;h2 id="第一道防線別讓分塊-chunking-毀了你的數據">第一道防線：別讓分塊 (Chunking) 毀了你的數據&lt;/h2>
-&lt;p>很多人把分塊當成一個簡單的 &lt;code>split()&lt;/code> 操作，設定個 500 token，加個 50 token 的重疊（Overlap）就完事了。
-這是最糟糕的做法。&lt;strong>固定大小的分塊會暴力地切斷邏輯鏈條。&lt;/strong>
+這就是 &lt;strong&gt;Naive RAG (天真 RAG)&lt;/strong&gt; 的陷阱。&lt;/p&gt;
+&lt;h2 id=&#34;向量相似度-neq-答案相關度&#34;&gt;向量相似度 $\neq$ 答案相關度&lt;/h2&gt;
+&lt;p&gt;很多開發者對向量搜索有一個致命的誤解：認為「語義相似」就等於「能回答問題」。
+&lt;strong&gt;事實上，向量空間的距離（Cosine Similarity）捕捉的是「主題的接近程度」，而非「邏輯的相關性」。&lt;/strong&gt;
+舉個例子：如果你搜索「如何修復 K8s 的 CrashLoopBackOff」，向量搜索可能會給你返回一篇關於「K8s 故障排除指南」的長文，因為兩者的語義高度相關。但你真正需要的是一段具體的 &lt;code&gt;kubectl&lt;/code&gt; 指令或一個特定的配置文件範例。
+這就是為什麼你的系統會出現「檢索到了，但沒用」的情況。&lt;/p&gt;
+&lt;h2 id=&#34;第一道防線別讓分塊-chunking-毀了你的數據&#34;&gt;第一道防線：別讓分塊 (Chunking) 毀了你的數據&lt;/h2&gt;
+&lt;p&gt;很多人把分塊當成一個簡單的 &lt;code&gt;split()&lt;/code&gt; 操作，設定個 500 token，加個 50 token 的重疊（Overlap）就完事了。
+這是最糟糕的做法。&lt;strong&gt;固定大小的分塊會暴力地切斷邏輯鏈條。&lt;/strong&gt;
 想像一下，一個關鍵的答案正好被切在第 500 個 token 的位置，前半段在塊 A，後半段在塊 B。當向量搜索只取 Top-1 時，LLM 拿到的只有半個答案。
-&lt;strong>工程實踐的演進路徑：&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>遞迴分塊 (Recursive Character Chunking)&lt;/strong>：優先按段落切 $\rightarrow$ 再按句子切 $\rightarrow$ 最後按單詞切。這能最大限度保留結構完整性。&lt;/li>
-&lt;li>&lt;strong>語義分塊 (Semantic Chunking)&lt;/strong>：不再設定固定長度，而是利用 Embedding 計算相鄰句子之間的餘弦相似度，當相似度掉到臨界值以下時，才判定為「話題切換」，在此處切分。&lt;/li>
-&lt;li>&lt;strong>結果&lt;/strong>：你的 Chunk 變成了一個個獨立的「知識單元」，而非被切碎的文字碎片。&lt;/li>
-&lt;/ul>
-&lt;h2 id="第二道防線混合搜索-hybrid-search-才是正解">第二道防線：混合搜索 (Hybrid Search) 才是正解&lt;/h2>
-&lt;p>單純依賴 Dense Embedding (向量搜索) 會讓你喪失對 &lt;strong>「精確匹配」&lt;/strong> 的控制力。
-如果你搜索一個特定的錯誤代碼 &lt;code>0x8004210B&lt;/code>，向量搜索可能會給你返回一堆關於「郵件發送失敗」的文檔（因為語義相關），但它可能找不到那篇唯一提到這個錯誤碼的修復指南。
-&lt;strong>SRE 級別的解決方案是 Hybrid Search：&lt;/strong>
+&lt;strong&gt;工程實踐的演進路徑：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;遞迴分塊 (Recursive Character Chunking)&lt;/strong&gt;：優先按段落切 $\rightarrow$ 再按句子切 $\rightarrow$ 最後按單詞切。這能最大限度保留結構完整性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;語義分塊 (Semantic Chunking)&lt;/strong&gt;：不再設定固定長度，而是利用 Embedding 計算相鄰句子之間的餘弦相似度，當相似度掉到臨界值以下時，才判定為「話題切換」，在此處切分。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;結果&lt;/strong&gt;：你的 Chunk 變成了一個個獨立的「知識單元」，而非被切碎的文字碎片。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;第二道防線混合搜索-hybrid-search-才是正解&#34;&gt;第二道防線：混合搜索 (Hybrid Search) 才是正解&lt;/h2&gt;
+&lt;p&gt;單純依賴 Dense Embedding (向量搜索) 會讓你喪失對 &lt;strong&gt;「精確匹配」&lt;/strong&gt; 的控制力。
+如果你搜索一個特定的錯誤代碼 &lt;code&gt;0x8004210B&lt;/code&gt;，向量搜索可能會給你返回一堆關於「郵件發送失敗」的文檔（因為語義相關），但它可能找不到那篇唯一提到這個錯誤碼的修復指南。
+&lt;strong&gt;SRE 級別的解決方案是 Hybrid Search：&lt;/strong&gt;
 $\text{最終得分} = \alpha \cdot \text{向量分數 (Semantic)} + (1-\alpha) \cdot \text{BM25 分數 (Keyword)}$
-透過結合 &lt;strong>BM25 (關鍵字搜索)&lt;/strong>，你保證了「精確名詞」能被命中；透過 &lt;strong>向量搜索&lt;/strong>，你保證了「意圖」能被捕捉。&lt;/p></description></item><item><title>Sre Stability Myth</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-stability-myth/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-stability-myth/</guid><description>&lt;h1 id="為什麼學完-k8s-和-terraform-之後你依然無法構建高可用系統">為什麼學完 K8s 和 Terraform 之後，你依然無法構建高可用系統？&lt;/h1>
-&lt;p>&lt;strong>Taxonomy:&lt;/strong> SRE / 基礎設施架構 (Infrastructure Architecture)
-&lt;strong>Signal:&lt;/strong> 🟡 Gold (高影響力 / 核心心法)&lt;/p>
-&lt;h2 id="核心洞察-core-insight">核心洞察 (Core Insight)&lt;/h2>
-&lt;p>穩定性不來自於對工具 (K8s, Terraform, Ansible) 的熟練度，而來自於對**「失效模式 (Failure Modes)」**的精確預判與解耦。工具是實現手段，而「系統化思考」才是防止 3 AM On-call 的唯一方法。&lt;/p>
-&lt;hr>
-&lt;h2 id="正文">正文&lt;/h2>
-&lt;p>許多工程師陷入了一個誤區：認為只要掌握了最流行的工具鏈，就等同於掌握了 SRE。&lt;/p>
-&lt;p>但現實是，工具只是手段。真正的穩定性，來自於對失效模式的預判。我在構建高負載系統時發現，最致命的崩潰往往不是因為工具不好用，而是因為**「強耦合」**。&lt;/p>
-&lt;h3 id="1-從強耦合到異步解耦">1. 從「強耦合」到「異步解耦」&lt;/h3>
-&lt;p>當你單純依賴同步調用 (Synchronous Calls)，一個下游服務的延遲會像多米諾骨牌一樣，迅速癱瘓整個集群。這是我在架構中引入 &lt;strong>Apache Kafka&lt;/strong> 的核心原因：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>將「即時響應」轉化為「最終一致」&lt;/strong>：通過消息隊列將生產者與消費者解耦。&lt;/li>
-&lt;li>&lt;strong>緩衝壓力&lt;/strong>：在高流量尖峰時，Kafka 充當緩衝池，防止後端服務被沖垮。&lt;/li>
-&lt;li>&lt;strong>結果&lt;/strong>：系統不再因為單點延遲而發生連鎖反應。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-從事後監控到事前可觀測">2. 從「事後監控」到「事前可觀測」&lt;/h3>
-&lt;p>大多數人的監控是「事後通知」：系統崩了 $\rightarrow$ 收到告警 $\rightarrow$ 開始排查。這不叫可觀測性，這叫「死後驗屍」。&lt;/p>
-&lt;p>真正的可觀測性應該是**「預警」**。&lt;/p>
-&lt;p>例如，我建立的&lt;strong>憑證監控平台 (Certificate Monitoring Platform)&lt;/strong>，目標不是告訴我憑證「已經過期」，而是在過期前 30 天就將風險量化並觸發自動化流程。當你能看到風險在發生前就處於可控狀態，你才真正擁有穩定性。&lt;/p>
-&lt;hr>
-&lt;h2 id="極客筆記-geek-note">極客筆記 (Geek Note)&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Kafka 實踐&lt;/strong>：在處理高吞吐量時，關注 Partition 分區策略與 Consumer Group 的再平衡 (Rebalance) 成本，這才是決定延遲的關鍵。&lt;/li>
-&lt;li>&lt;strong>Observability 升級&lt;/strong>：不要只看 CPU/Memory，要定義對業務有意義的 &lt;strong>SLO (Service Level Objective)&lt;/strong>，並將其轉化為 &lt;strong>Error Budget&lt;/strong>。&lt;/li>
-&lt;/ul>
-&lt;h2 id="協同效應-synergy">協同效應 (Synergy)&lt;/h2>
-&lt;p>&lt;strong>高規模基礎設施 (High-Scale Infra) $\rightarrow$ 主動可觀測性 (Proactive Observability) $\rightarrow$ AI-SRE 自動化 (Agentic SRE)&lt;/strong>
-當你擁有結構化的數據流 (Kafka) 和精準的觀測指標 (Cert Monitoring) 後，接下來的進化方向就是引入 AI Agent 實現自動化的根因分析 (Root Cause Analysis) 與自我修復。&lt;/p></description></item><item><title>Sre_Infra</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-infra/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-infra/</guid><description>&lt;h1 id="-sre--infrastructure-hub">🛠️ SRE &amp;amp; Infrastructure Hub&lt;/h1>
-&lt;p>Welcome to the SRE Knowledge Map. Here, we dive deep into the Linux kernel, networking stacks, and the art of building stable, high-performance systems.&lt;/p>
-&lt;h2 id="-performance--kernel">🚀 Performance &amp;amp; Kernel&lt;/h2>
-&lt;p>&lt;em>Focus: Squeezing every drop of performance from the hardware.&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>CPU &amp;amp; Memory&lt;/strong>: [[articles/performance/cpu-numa|CPU Topology &amp;amp; NUMA Penalties]] $\rightarrow$ [[articles/performance/cfs-scheduler|CFS Scheduler Deep Dive]]&lt;/li>
-&lt;li>&lt;strong>I/O Path&lt;/strong>: [[articles/performance/vfs-tracing|VFS &amp;amp; Page Cache Tracing]] $\rightarrow$ [[articles/performance/psi-metrics|PSI Pressure Metrics]]&lt;/li>
-&lt;li>&lt;strong>Network Stack&lt;/strong>: [[articles/tcp-stack-deep-dive|TCP Stack Internals]] $\rightarrow$ [[articles/network-tuning-deep-dive|Network Tuning Guide]]&lt;/li>
-&lt;li>&lt;strong>Observability&lt;/strong>: [[articles/ebpf-modern-observability|eBPF Modern Observability]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-container--orchestration">📦 Container &amp;amp; Orchestration&lt;/h2>
-&lt;p>&lt;em>Focus: The plumbing of modern cloud-native environments.&lt;/em>&lt;/p></description></item><item><title>Tcp Stack Deep Dive</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</guid><description>&lt;h1 id="當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤">當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤&lt;/h1>
-&lt;p>對於大多數開發者來說，發送一個網路請求就像是按下開關 $
-ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的&lt;strong>路徑導向 (Steering)&lt;/strong>。&lt;/p>
-&lt;p>如果你曾經遇到過這種情況：&lt;code>ping&lt;/code> 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 &lt;code>Connection Timeout&lt;/code> —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。&lt;/p>
-&lt;h2 id="封包的垂直旅程從-pod-到物理網卡">封包的「垂直旅程」：從 Pod 到物理網卡&lt;/h2>
-&lt;p>在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 &lt;strong>Context Handoffs (上下文交接)&lt;/strong>。這正是潛在延遲和丟包的來源。&lt;/p>
-&lt;h3 id="1-pod-命名空間-the-source">1. Pod 命名空間 (The Source)&lt;/h3>
-&lt;p>應用程式呼叫 &lt;code>connect()&lt;/code>，核心在 Pod 的網路命名空間 (&lt;code>netns&lt;/code>) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>追蹤點&lt;/strong>：&lt;code>Pod App&lt;/code> $
-ightarrow$ &lt;code>Socket Buffer (sk_buff)&lt;/code> $
-ightarrow$ &lt;code>eth0&lt;/code>。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-命名空間跳躍-the-jump">2. 命名空間跳躍 (The Jump)&lt;/h3>
-&lt;p>封包離開 Pod 的 &lt;code>eth0&lt;/code>，通過一個 &lt;strong>Virtual Ethernet (&lt;code>veth&lt;/code>) pair&lt;/strong>。&lt;code>veth&lt;/code> 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。&lt;/p></description></item><item><title>Tg Bots</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tg-bots/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tg-bots/</guid><description>&lt;h1 id="telegram-憑證監控機器人代碼優化實踐">Telegram 憑證監控機器人：代碼優化實踐&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Automation / Security Monitoring&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Engineering Improvement)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>自動化工具的生命週期在於 &lt;strong>「可維護性」&lt;/strong>。將硬編碼 (Hard-coded) 的參數轉移至配置文件 (YAML)，並通過指令化界面 (Command Interface) 暴露內部狀態，能將一個單純的「腳本」提升為一個「可運行的服務」。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-優化核心配置外部化">🛠️ 優化核心：配置外部化&lt;/h3>
-&lt;p>將 API Token、資料庫連接字串等敏感資訊從 Python 代碼移至 &lt;code>config.yaml&lt;/code>。
-&lt;strong>優點&lt;/strong>：無需修改代碼即可切換環境（Dev $\rightarrow$ Prod），且能避免密鑰洩漏至 Git 倉庫。&lt;/p>
-&lt;h3 id="-功能擴展狀態可視化">🤖 功能擴展：狀態可視化&lt;/h3>
-&lt;p>新增兩個核心指令提升可操作性：&lt;/p>
-&lt;ul>
-&lt;li>&lt;code>/show_cert_info&lt;/code>：直接從 MongoDB 讀取並格式化輸出目標域名的證書詳情（Subject, Issuer, Expiry）。&lt;/li>
-&lt;li>&lt;code>/help&lt;/code>：提供自助式指令指南，降低用戶進入門檻。&lt;/li>
-&lt;/ul>
-&lt;h3 id="-技術棧">⚙️ 技術棧&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>Language&lt;/strong>: Python 3.9+&lt;/li>
-&lt;li>&lt;strong>Storage&lt;/strong>: MongoDB (儲存憑證狀態與監控清單)&lt;/li>
-&lt;li>&lt;strong>Interface&lt;/strong>: Telegram Bot API&lt;/li>
-&lt;/ul>
-&lt;h2 id="synergy">Synergy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Observability&lt;/strong>：此模式可延伸至所有基礎設施監控工具，將「被動告警」轉化為「主動查詢」。&lt;/li>
-&lt;li>&lt;strong>Agentic Workflow&lt;/strong>：此機器人可作為 AI Agent 的一個「感知端 (Sensing Layer)」，讓 Agent 能夠監控憑證狀態並自動觸發更新流程。&lt;/li>
-&lt;/ul></description></item><item><title>Vfs Tracing</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</guid><description>&lt;h1 id="隱藏的-io-稅vfs-與-page-cache-的追蹤實踐">隱藏的 I/O 稅：VFS 與 Page Cache 的追蹤實踐&lt;/h1>
-&lt;p>當你調用 &lt;code>read()&lt;/code> 讀取一個檔案時，你以為數據直接從磁碟來到記憶體？
-不，它經歷了一場極其複雜的旅程。&lt;/p>
-&lt;h2 id="vfs文件系統的外交官">VFS：文件系統的「外交官」&lt;/h2>
-&lt;p>VFS (Virtual File System) 是 Linux 內核的一層抽象。無論底層是 Ext4、XFS 還是 NFS，對應用程序來說都一樣。但這個抽象層是有成本的。&lt;/p>
-&lt;h3 id="1-dentry-cache名稱的陷阱">1. Dentry Cache：名稱的陷阱&lt;/h3>
-&lt;p>每次打開檔案，內核都要將路徑（如 &lt;code>/var/log/syslog&lt;/code>）轉換為 Inode 編號。這個過程依賴於 &lt;strong>Dentry Cache&lt;/strong>。如果你的系統有數百萬個小檔案且快取不足，你會發現 CPU 消耗在 &lt;code>dentry_lookup&lt;/code> 上，而磁碟 IOPS 卻很低。&lt;/p>
-&lt;h3 id="2-page-cache最強的加速器也是最大的坑">2. Page Cache：最強的加速器，也是最大的坑&lt;/h3>
-&lt;p>Linux 會利用幾乎所有剩餘記憶體作為 Page Cache。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Read-ahead (預讀)&lt;/strong>：內核猜測你要讀接下來的塊，提前加載。&lt;/li>
-&lt;li>&lt;strong>Write-back (回寫)&lt;/strong>：&lt;code>write()&lt;/code> 調用幾乎總是瞬間完成，因為它只寫到了記憶體。
-&lt;strong>SRE 的噩夢：Write-out Spike&lt;/strong>
-當記憶體中的髒頁 (Dirty Pages) 過多，觸發內核的 &lt;code>pdflush&lt;/code> 強制回寫時，整個系統的 I/O 會突然被佔滿，導致所有讀寫操作卡死。這就是為什麼有些系統會莫名其妙地出現數秒的「凍結」。&lt;/li>
-&lt;/ul>
-&lt;h2 id="實戰用-ebpf-穿透-vfs">實戰：用 eBPF 穿透 VFS&lt;/h2>
-&lt;p>當 &lt;code>iostat&lt;/code> 告訴你磁碟很慢，但你懷疑是內核層的問題時，請使用 eBPF。
-使用 &lt;code>bpftrace&lt;/code> 追蹤 &lt;code>vfs_read&lt;/code> 的延遲分佈：
-&lt;code>bpftrace -e 'kprobe:vfs_read { @start[tid] = nsecs; } kretprobe:vfs_read /@start[tid]/ { @latency = hist(nsecs - @start[tid]); delete(@start[tid]); }'&lt;/code>
-這能讓你一眼看出：延遲是發生在 &lt;strong>VFS 層 (軟體開銷)&lt;/strong> 還是 &lt;strong>Block Layer (硬體開銷)&lt;/strong>。&lt;/p></description></item><item><title>Vllm</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/vllm/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/vllm/</guid><description>&lt;h1 id="記憶體才是真正的瓶頸vllm-如何用分頁重構-llm-推理">記憶體才是真正的瓶頸：vLLM 如何用「分頁」重構 LLM 推理&lt;/h1>
-&lt;p>當大多數人還在爭論哪個模型更強時，生產環境的工程師在爭論一件更現實的事：&lt;strong>GPU 記憶體怎麼才夠用？&lt;/strong>&lt;/p>
-&lt;p>在部署 LLM 時，最令人頭痛的不是計算量 (Compute)，而是 KV Cache (Key-Value Cache) 佔用的記憶體。傳統的推理引擎在處理長文本或高併發請求時，記憶體碎片化極其嚴重，導致 GPU 雖然還有空間，卻無法承載更多請求。&lt;/p>
-&lt;p>這就是為什麼 &lt;strong>vLLM&lt;/strong> 的出現被視為推理引擎的分水嶺。它引入了一個堪比作業系統分頁機制 (Virtual Memory) 的創新：&lt;strong>PagedAttention&lt;/strong>。&lt;/p>
-&lt;h2 id="pagedattentionllm-推理的分頁管理時刻">PagedAttention：LLM 推理的「分頁管理」時刻&lt;/h2>
-&lt;p>在 vLLM 出現之前，KV Cache 必須以連續的記憶體塊形式儲存。這就像在飯店訂房，如果你預訂了一個大套房但只住一個人，剩下的空間不能分給別人，造成巨大的浪費。&lt;/p>
-&lt;p>PagedAttention 改變了這個遊戲規則。它將 KV Cache 劃分為固定大小的「頁面 (Pages)」，並透過一個映射表 (Mapping Table) 進行管理。&lt;/p>
-&lt;p>這帶來了三個革命性的改變：&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>零碎片化 (Zero Fragmentation)&lt;/strong>：記憶體不再需要連續， wherever a free page exists, it can be used. 記憶體利用率接近 100%。&lt;/li>
-&lt;li>&lt;strong>高效共享 (Efficient Sharing)&lt;/strong>：在處理相同前綴 (Prompt Prefix) 的多個請求時，多個請求可以共享同一個物理頁面。這讓並發處理能力呈數量級提升。&lt;/li>
-&lt;li>&lt;strong>動態擴展&lt;/strong>：記憶體可以根據生成的 token 數量動態分配，不再需要預先估計最大長度。&lt;/li>
-&lt;/ol>
-&lt;h2 id="除了分頁vllm-還有哪些黑科技">除了分頁，vLLM 還有哪些「黑科技」？&lt;/h2>
-&lt;p>PagedAttention 是核心，但 vLLM 的高性能來自於一系列對底層的極致榨取：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Continuous Batching (連續批處理)&lt;/strong>：傳統 Batching 必須等整個批次全部生成完才能開始下一輪。vLLM 允許在任何一個請求完成後立即插入新請求，讓 GPU 永遠處於滿載狀態。&lt;/li>
-&lt;li>&lt;strong>優化內核 (Optimized Kernels)&lt;/strong>：深度整合了 FlashAttention 和 FlashInfer，將 Attention 的計算複雜度降到最低。&lt;/li>
-&lt;li>&lt;strong>極強的適配力&lt;/strong>：無論是 NVIDIA、AMD 還是 TPU，vLLM 幾乎支持所有主流硬體，並且對 FP8、AWQ 等量化格式有原生支持。&lt;/li>
-&lt;/ul>
-&lt;h2 id="從能跑到能規模化">從「能跑」到「能規模化」&lt;/h2>
-&lt;p>對開發者來說，vLLM 的價值在於它將 LLM 的部署從「實驗室產品」推向了「工業級產品」。&lt;/p></description></item></channel></rss>
+透過結合 &lt;strong&gt;BM25 (關鍵字搜索)&lt;/strong&gt;，你保證了「精確名詞」能被命中；透過 &lt;strong&gt;向量搜索&lt;/strong&gt;，你保證了「意圖」能被捕捉。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Sre Stability Myth</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-stability-myth/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-stability-myth/</guid>
+      <description>&lt;h1 id=&#34;為什麼學完-k8s-和-terraform-之後你依然無法構建高可用系統&#34;&gt;為什麼學完 K8s 和 Terraform 之後，你依然無法構建高可用系統？&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Taxonomy:&lt;/strong&gt; SRE / 基礎設施架構 (Infrastructure Architecture)
+&lt;strong&gt;Signal:&lt;/strong&gt; 🟡 Gold (高影響力 / 核心心法)&lt;/p&gt;
+&lt;h2 id=&#34;核心洞察-core-insight&#34;&gt;核心洞察 (Core Insight)&lt;/h2&gt;
+&lt;p&gt;穩定性不來自於對工具 (K8s, Terraform, Ansible) 的熟練度，而來自於對**「失效模式 (Failure Modes)」**的精確預判與解耦。工具是實現手段，而「系統化思考」才是防止 3 AM On-call 的唯一方法。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;正文&#34;&gt;正文&lt;/h2&gt;
+&lt;p&gt;許多工程師陷入了一個誤區：認為只要掌握了最流行的工具鏈，就等同於掌握了 SRE。&lt;/p&gt;
+&lt;p&gt;但現實是，工具只是手段。真正的穩定性，來自於對失效模式的預判。我在構建高負載系統時發現，最致命的崩潰往往不是因為工具不好用，而是因為**「強耦合」**。&lt;/p&gt;
+&lt;h3 id=&#34;1-從強耦合到異步解耦&#34;&gt;1. 從「強耦合」到「異步解耦」&lt;/h3&gt;
+&lt;p&gt;當你單純依賴同步調用 (Synchronous Calls)，一個下游服務的延遲會像多米諾骨牌一樣，迅速癱瘓整個集群。這是我在架構中引入 &lt;strong&gt;Apache Kafka&lt;/strong&gt; 的核心原因：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;將「即時響應」轉化為「最終一致」&lt;/strong&gt;：通過消息隊列將生產者與消費者解耦。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;緩衝壓力&lt;/strong&gt;：在高流量尖峰時，Kafka 充當緩衝池，防止後端服務被沖垮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;結果&lt;/strong&gt;：系統不再因為單點延遲而發生連鎖反應。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-從事後監控到事前可觀測&#34;&gt;2. 從「事後監控」到「事前可觀測」&lt;/h3&gt;
+&lt;p&gt;大多數人的監控是「事後通知」：系統崩了 $\rightarrow$ 收到告警 $\rightarrow$ 開始排查。這不叫可觀測性，這叫「死後驗屍」。&lt;/p&gt;
+&lt;p&gt;真正的可觀測性應該是**「預警」**。&lt;/p&gt;
+&lt;p&gt;例如，我建立的&lt;strong&gt;憑證監控平台 (Certificate Monitoring Platform)&lt;/strong&gt;，目標不是告訴我憑證「已經過期」，而是在過期前 30 天就將風險量化並觸發自動化流程。當你能看到風險在發生前就處於可控狀態，你才真正擁有穩定性。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;極客筆記-geek-note&#34;&gt;極客筆記 (Geek Note)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Kafka 實踐&lt;/strong&gt;：在處理高吞吐量時，關注 Partition 分區策略與 Consumer Group 的再平衡 (Rebalance) 成本，這才是決定延遲的關鍵。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Observability 升級&lt;/strong&gt;：不要只看 CPU/Memory，要定義對業務有意義的 &lt;strong&gt;SLO (Service Level Objective)&lt;/strong&gt;，並將其轉化為 &lt;strong&gt;Error Budget&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;協同效應-synergy&#34;&gt;協同效應 (Synergy)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;高規模基礎設施 (High-Scale Infra) $\rightarrow$ 主動可觀測性 (Proactive Observability) $\rightarrow$ AI-SRE 自動化 (Agentic SRE)&lt;/strong&gt;
+當你擁有結構化的數據流 (Kafka) 和精準的觀測指標 (Cert Monitoring) 後，接下來的進化方向就是引入 AI Agent 實現自動化的根因分析 (Root Cause Analysis) 與自我修復。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Sre_Infra</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-infra/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-infra/</guid>
+      <description>&lt;h1 id=&#34;-sre--infrastructure-hub&#34;&gt;🛠️ SRE &amp;amp; Infrastructure Hub&lt;/h1&gt;
+&lt;p&gt;Welcome to the SRE Knowledge Map. Here, we dive deep into the Linux kernel, networking stacks, and the art of building stable, high-performance systems.&lt;/p&gt;
+&lt;h2 id=&#34;-performance--kernel&#34;&gt;🚀 Performance &amp;amp; Kernel&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Squeezing every drop of performance from the hardware.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CPU &amp;amp; Memory&lt;/strong&gt;: [[articles/performance/cpu-numa|CPU Topology &amp;amp; NUMA Penalties]] $\rightarrow$ [[articles/performance/cfs-scheduler|CFS Scheduler Deep Dive]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;I/O Path&lt;/strong&gt;: [[articles/performance/vfs-tracing|VFS &amp;amp; Page Cache Tracing]] $\rightarrow$ [[articles/performance/psi-metrics|PSI Pressure Metrics]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Network Stack&lt;/strong&gt;: [[articles/tcp-stack-deep-dive|TCP Stack Internals]] $\rightarrow$ [[articles/network-tuning-deep-dive|Network Tuning Guide]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Observability&lt;/strong&gt;: [[articles/ebpf-modern-observability|eBPF Modern Observability]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-container--orchestration&#34;&gt;📦 Container &amp;amp; Orchestration&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: The plumbing of modern cloud-native environments.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Tcp Stack Deep Dive</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tcp-stack-deep-dive/</guid>
+      <description>&lt;h1 id=&#34;當你的服務出現-packet-loss-時底層到底發生了什麼tcpip-棧與-conntrack-深度追蹤&#34;&gt;當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤&lt;/h1&gt;
+&lt;p&gt;對於大多數開發者來說，發送一個網路請求就像是按下開關 $
+ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的&lt;strong&gt;路徑導向 (Steering)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;如果你曾經遇到過這種情況：&lt;code&gt;ping&lt;/code&gt; 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 &lt;code&gt;Connection Timeout&lt;/code&gt; —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。&lt;/p&gt;
+&lt;h2 id=&#34;封包的垂直旅程從-pod-到物理網卡&#34;&gt;封包的「垂直旅程」：從 Pod 到物理網卡&lt;/h2&gt;
+&lt;p&gt;在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 &lt;strong&gt;Context Handoffs (上下文交接)&lt;/strong&gt;。這正是潛在延遲和丟包的來源。&lt;/p&gt;
+&lt;h3 id=&#34;1-pod-命名空間-the-source&#34;&gt;1. Pod 命名空間 (The Source)&lt;/h3&gt;
+&lt;p&gt;應用程式呼叫 &lt;code&gt;connect()&lt;/code&gt;，核心在 Pod 的網路命名空間 (&lt;code&gt;netns&lt;/code&gt;) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;追蹤點&lt;/strong&gt;：&lt;code&gt;Pod App&lt;/code&gt; $
+ightarrow$ &lt;code&gt;Socket Buffer (sk_buff)&lt;/code&gt; $
+ightarrow$ &lt;code&gt;eth0&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-命名空間跳躍-the-jump&#34;&gt;2. 命名空間跳躍 (The Jump)&lt;/h3&gt;
+&lt;p&gt;封包離開 Pod 的 &lt;code&gt;eth0&lt;/code&gt;，通過一個 &lt;strong&gt;Virtual Ethernet (&lt;code&gt;veth&lt;/code&gt;) pair&lt;/strong&gt;。&lt;code&gt;veth&lt;/code&gt; 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Tg Bots</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tg-bots/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tg-bots/</guid>
+      <description>&lt;h1 id=&#34;telegram-憑證監控機器人代碼優化實踐&#34;&gt;Telegram 憑證監控機器人：代碼優化實踐&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Automation / Security Monitoring&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥉 Bronze (Engineering Improvement)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;自動化工具的生命週期在於 &lt;strong&gt;「可維護性」&lt;/strong&gt;。將硬編碼 (Hard-coded) 的參數轉移至配置文件 (YAML)，並通過指令化界面 (Command Interface) 暴露內部狀態，能將一個單純的「腳本」提升為一個「可運行的服務」。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-優化核心配置外部化&#34;&gt;🛠️ 優化核心：配置外部化&lt;/h3&gt;
+&lt;p&gt;將 API Token、資料庫連接字串等敏感資訊從 Python 代碼移至 &lt;code&gt;config.yaml&lt;/code&gt;。
+&lt;strong&gt;優點&lt;/strong&gt;：無需修改代碼即可切換環境（Dev $\rightarrow$ Prod），且能避免密鑰洩漏至 Git 倉庫。&lt;/p&gt;
+&lt;h3 id=&#34;-功能擴展狀態可視化&#34;&gt;🤖 功能擴展：狀態可視化&lt;/h3&gt;
+&lt;p&gt;新增兩個核心指令提升可操作性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/show_cert_info&lt;/code&gt;：直接從 MongoDB 讀取並格式化輸出目標域名的證書詳情（Subject, Issuer, Expiry）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/help&lt;/code&gt;：提供自助式指令指南，降低用戶進入門檻。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-技術棧&#34;&gt;⚙️ 技術棧&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Language&lt;/strong&gt;: Python 3.9+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Storage&lt;/strong&gt;: MongoDB (儲存憑證狀態與監控清單)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Interface&lt;/strong&gt;: Telegram Bot API&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Observability&lt;/strong&gt;：此模式可延伸至所有基礎設施監控工具，將「被動告警」轉化為「主動查詢」。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Agentic Workflow&lt;/strong&gt;：此機器人可作為 AI Agent 的一個「感知端 (Sensing Layer)」，讓 Agent 能夠監控憑證狀態並自動觸發更新流程。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Vfs Tracing</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</guid>
+      <description>&lt;h1 id=&#34;隱藏的-io-稅vfs-與-page-cache-的追蹤實踐&#34;&gt;隱藏的 I/O 稅：VFS 與 Page Cache 的追蹤實踐&lt;/h1&gt;
+&lt;p&gt;當你調用 &lt;code&gt;read()&lt;/code&gt; 讀取一個檔案時，你以為數據直接從磁碟來到記憶體？
+不，它經歷了一場極其複雜的旅程。&lt;/p&gt;
+&lt;h2 id=&#34;vfs文件系統的外交官&#34;&gt;VFS：文件系統的「外交官」&lt;/h2&gt;
+&lt;p&gt;VFS (Virtual File System) 是 Linux 內核的一層抽象。無論底層是 Ext4、XFS 還是 NFS，對應用程序來說都一樣。但這個抽象層是有成本的。&lt;/p&gt;
+&lt;h3 id=&#34;1-dentry-cache名稱的陷阱&#34;&gt;1. Dentry Cache：名稱的陷阱&lt;/h3&gt;
+&lt;p&gt;每次打開檔案，內核都要將路徑（如 &lt;code&gt;/var/log/syslog&lt;/code&gt;）轉換為 Inode 編號。這個過程依賴於 &lt;strong&gt;Dentry Cache&lt;/strong&gt;。如果你的系統有數百萬個小檔案且快取不足，你會發現 CPU 消耗在 &lt;code&gt;dentry_lookup&lt;/code&gt; 上，而磁碟 IOPS 卻很低。&lt;/p&gt;
+&lt;h3 id=&#34;2-page-cache最強的加速器也是最大的坑&#34;&gt;2. Page Cache：最強的加速器，也是最大的坑&lt;/h3&gt;
+&lt;p&gt;Linux 會利用幾乎所有剩餘記憶體作為 Page Cache。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Read-ahead (預讀)&lt;/strong&gt;：內核猜測你要讀接下來的塊，提前加載。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Write-back (回寫)&lt;/strong&gt;：&lt;code&gt;write()&lt;/code&gt; 調用幾乎總是瞬間完成，因為它只寫到了記憶體。
+&lt;strong&gt;SRE 的噩夢：Write-out Spike&lt;/strong&gt;
+當記憶體中的髒頁 (Dirty Pages) 過多，觸發內核的 &lt;code&gt;pdflush&lt;/code&gt; 強制回寫時，整個系統的 I/O 會突然被佔滿，導致所有讀寫操作卡死。這就是為什麼有些系統會莫名其妙地出現數秒的「凍結」。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;實戰用-ebpf-穿透-vfs&#34;&gt;實戰：用 eBPF 穿透 VFS&lt;/h2&gt;
+&lt;p&gt;當 &lt;code&gt;iostat&lt;/code&gt; 告訴你磁碟很慢，但你懷疑是內核層的問題時，請使用 eBPF。
+使用 &lt;code&gt;bpftrace&lt;/code&gt; 追蹤 &lt;code&gt;vfs_read&lt;/code&gt; 的延遲分佈：
+&lt;code&gt;bpftrace -e &#39;kprobe:vfs_read { @start[tid] = nsecs; } kretprobe:vfs_read /@start[tid]/ { @latency = hist(nsecs - @start[tid]); delete(@start[tid]); }&#39;&lt;/code&gt;
+這能讓你一眼看出：延遲是發生在 &lt;strong&gt;VFS 層 (軟體開銷)&lt;/strong&gt; 還是 &lt;strong&gt;Block Layer (硬體開銷)&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Vllm</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/vllm/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/vllm/</guid>
+      <description>&lt;h1 id=&#34;記憶體才是真正的瓶頸vllm-如何用分頁重構-llm-推理&#34;&gt;記憶體才是真正的瓶頸：vLLM 如何用「分頁」重構 LLM 推理&lt;/h1&gt;
+&lt;p&gt;當大多數人還在爭論哪個模型更強時，生產環境的工程師在爭論一件更現實的事：&lt;strong&gt;GPU 記憶體怎麼才夠用？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在部署 LLM 時，最令人頭痛的不是計算量 (Compute)，而是 KV Cache (Key-Value Cache) 佔用的記憶體。傳統的推理引擎在處理長文本或高併發請求時，記憶體碎片化極其嚴重，導致 GPU 雖然還有空間，卻無法承載更多請求。&lt;/p&gt;
+&lt;p&gt;這就是為什麼 &lt;strong&gt;vLLM&lt;/strong&gt; 的出現被視為推理引擎的分水嶺。它引入了一個堪比作業系統分頁機制 (Virtual Memory) 的創新：&lt;strong&gt;PagedAttention&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;pagedattentionllm-推理的分頁管理時刻&#34;&gt;PagedAttention：LLM 推理的「分頁管理」時刻&lt;/h2&gt;
+&lt;p&gt;在 vLLM 出現之前，KV Cache 必須以連續的記憶體塊形式儲存。這就像在飯店訂房，如果你預訂了一個大套房但只住一個人，剩下的空間不能分給別人，造成巨大的浪費。&lt;/p&gt;
+&lt;p&gt;PagedAttention 改變了這個遊戲規則。它將 KV Cache 劃分為固定大小的「頁面 (Pages)」，並透過一個映射表 (Mapping Table) 進行管理。&lt;/p&gt;
+&lt;p&gt;這帶來了三個革命性的改變：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;零碎片化 (Zero Fragmentation)&lt;/strong&gt;：記憶體不再需要連續， wherever a free page exists, it can be used. 記憶體利用率接近 100%。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高效共享 (Efficient Sharing)&lt;/strong&gt;：在處理相同前綴 (Prompt Prefix) 的多個請求時，多個請求可以共享同一個物理頁面。這讓並發處理能力呈數量級提升。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;動態擴展&lt;/strong&gt;：記憶體可以根據生成的 token 數量動態分配，不再需要預先估計最大長度。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;除了分頁vllm-還有哪些黑科技&#34;&gt;除了分頁，vLLM 還有哪些「黑科技」？&lt;/h2&gt;
+&lt;p&gt;PagedAttention 是核心，但 vLLM 的高性能來自於一系列對底層的極致榨取：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Continuous Batching (連續批處理)&lt;/strong&gt;：傳統 Batching 必須等整個批次全部生成完才能開始下一輪。vLLM 允許在任何一個請求完成後立即插入新請求，讓 GPU 永遠處於滿載狀態。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;優化內核 (Optimized Kernels)&lt;/strong&gt;：深度整合了 FlashAttention 和 FlashInfer，將 Attention 的計算複雜度降到最低。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;極強的適配力&lt;/strong&gt;：無論是 NVIDIA、AMD 還是 TPU，vLLM 幾乎支持所有主流硬體，並且對 FP8、AWQ 等量化格式有原生支持。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;從能跑到能規模化&#34;&gt;從「能跑」到「能規模化」&lt;/h2&gt;
+&lt;p&gt;對開發者來說，vLLM 的價值在於它將 LLM 的部署從「實驗室產品」推向了「工業級產品」。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

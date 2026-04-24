@@ -1,45 +1,77 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Homelab on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/categories/homelab/</link><description>Recent content in Homelab on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/categories/homelab/index.xml" rel="self" type="application/rss+xml"/><item><title>Nas Vs Das</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</guid><description>&lt;h1 id="nas-vs-das如何為你的-homelab-選擇正確的儲儲架構">NAS vs DAS：如何為你的 HomeLab 選擇正確的儲儲架構？&lt;/h1>
-&lt;p>在構建 HomeLab 時，最讓人糾結的決定之一就是：我是該買一台成品 NAS，還是買個 DAS 擴展櫃直接掛在伺服器上？
-很多人會把這兩者混為一談，認為只要是「很多硬碟在一起」就差不多。但從系統架構來看，NAS 與 DAS 之間隔著一道巨大的鴻溝：&lt;strong>網路棧 (Network Stack)&lt;/strong>。這道鴻溝決定了你的數據是追求「流動性」還是「極限速度」。&lt;/p>
-&lt;h2 id="das追求-raw-io-的極端主義">DAS：追求 Raw I/O 的極端主義&lt;/h2>
-&lt;p>DAS (Direct Attached Storage) 的邏輯非常簡單：&lt;strong>去掉所有中間商，讓 CPU 直接看到硬碟。&lt;/strong>
-無論是透過 Thunderbolt 4、SAS HBA 還是簡單的 USB-C，DAS 的數據路徑極短。它不需要經過 TCP/IP 封裝，不需要處理網路碰撞，也不需要經過另一台伺服器的 CPU 轉發。&lt;/p>
-&lt;h3 id="為什麼選擇-das">為什麼選擇 DAS？&lt;/h3>
-&lt;p>當你的工作流對 &lt;strong>延遲 (Latency)&lt;/strong> 極其敏感時，DAS 是唯一選擇。例如 4K 原始素材的剪輯、本地高 IOPS 的資料庫分析，或是需要極速快取層的應用。在 DAS 面前，任何網路協議（即使是 10GbE）都會顯得臃腫。&lt;/p>
-&lt;h3 id="das-的致命傷宿主機鎖定-host-lockout">DAS 的致命傷：宿主機鎖定 (Host Lockout)&lt;/h3>
-&lt;p>DAS 的性能是以 &lt;strong>「可用性」&lt;/strong> 為代價的。
-在 DAS 架構中，儲存設備沒有自己的「大腦」，它完全依賴宿主機的 OS 來管理文件系統。這意味著如果你的伺服器主機板燒了，或者 OS 崩潰導致無法啟動，即使你的硬碟全部健康，你的數據也被「鎖死」在那個故障的宿主機後面。你必須物理性地將整個擴展櫃搬到另一台兼容的機器上才能讀取數據。&lt;/p>
-&lt;h2 id="nas以網路稅換取數據流動性">NAS：以網路稅換取數據流動性&lt;/h2>
-&lt;p>NAS (Network Attached Storage) 實際上是一台 &lt;strong>專用的儲存伺服器&lt;/strong>。它有自己的 CPU、記憶體和 OS。
-當你請求一個檔案時，路徑變成了：&lt;code>Client $\rightarrow$ Network $\rightarrow$ NAS OS $\rightarrow$ Disk&lt;/code>。這裡產生了所謂的 &lt;strong>「網路稅」 (Network Tax)&lt;/strong> —— 數據需要被封裝成 SMB/NFS 協議，經過網路交換機，再由 NAS 的 CPU 解包並讀取。&lt;/p></description></item><item><title>NAS ZFS Truth</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</guid><description>&lt;h1 id="nas-的真相為什麼你需要的不是容量而是完整性">NAS 的真相：為什麼你需要的不是「容量」，而是「完整性」？&lt;/h1>
-&lt;h2 id="核心視角從被動桶子到主動引擎">核心視角：從「被動桶子」到「主動引擎」&lt;/h2>
-&lt;p>大多數人看待 NAS 時，首先想到的是「容量」——多少 TB 的空間能存我的電影和照片。但對於 SRE 來說，這是一個危險的誤區。&lt;/p>
-&lt;p>專業的 NAS 不應該被視為一個「裝滿硬碟的盒子」，而應該是一個旨在最大化 &lt;strong>數據持久性 (Data Durability)&lt;/strong> 與 &lt;strong>可用性 (Availability)&lt;/strong> 的系統。真正的分水嶺在於你使用的是傳統的硬件 RAID，還是像 &lt;strong>ZFS&lt;/strong> 這樣具備「自癒能力」的軟件定義存儲。&lt;/p>
-&lt;hr>
-&lt;h2 id="1-物理層的陷阱cmr-vs-smr">1. 物理層的陷阱：CMR vs SMR&lt;/h2>
-&lt;p>在購買硬碟前，你必須面對一個隱形的陷阱：&lt;strong>SMR (疊瓦式磁記錄)&lt;/strong>。
-SMR 硬碟為了增加密度，將數據像瓦片一樣重疊寫入。這在單純的存檔時沒問題，但在 RAID 重構 (Rebuild) 過程中，SMR 的寫入放大效應會導致重構速度慢到令人絕望，甚至直接導致整個陣列崩潰。&lt;/p>
-&lt;p>&lt;strong>SRE 建議&lt;/strong>：永遠選擇 &lt;strong>CMR (傳統磁記錄)&lt;/strong> 硬碟，並使用 &lt;strong>IT Mode (Initiator Target)&lt;/strong> 的 HBA 卡將原盤直接交給操作系統，徹底擺脫私有 RAID 卡的廠商鎖定。&lt;/p>
-&lt;h2 id="2-zfs數據完整性的黃金標準">2. ZFS：數據完整性的黃金標準&lt;/h2>
-&lt;p>為什麼 ZFS 被稱為存儲界的「黃金標準」？因為它解決了傳統存儲最恐懼的問題：&lt;strong>靜默數據損壞 (Silent Data Corruption / Bit Rot)&lt;/strong>。&lt;/p>
-&lt;h3 id="copy-on-write-cow消除寫入空洞">Copy-on-Write (CoW)：消除寫入空洞&lt;/h3>
-&lt;p>傳統文件系統在更新數據時會覆蓋原位。如果在此過程中斷電，會產生所謂的「寫入空洞 (Write Hole)」，導致文件損毀。ZFS 採用 &lt;strong>CoW&lt;/strong> 機制：永遠不覆蓋原數據，而是先將新數據寫入新塊，最後才更新指針。這意味著你的數據在寫入完成前，原件永遠是安全的。&lt;/p>
-&lt;h3 id="arc-與-zil性能與安全的分離">ARC 與 ZIL：性能與安全的分離&lt;/h3>
-&lt;p>ZFS 並不依賴傳統的 LRU 緩存，而是使用 &lt;strong>ARC (Adaptive Replacement Cache)&lt;/strong>，同時追蹤數據的「頻率」與「近期性」，讓緩存命中率大幅提升。而對於同步寫入，則通過 &lt;strong>ZIL (ZFS Intent Log)&lt;/strong> 確保在不犧牲性能的前提下，數據能立即持久化。&lt;/p></description></item><item><title>Proxmox VE: HomeLab 中的超融合基礎設施 (HCI) 實踐</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</guid><description>&lt;h1 id="proxmox-ve將家用電腦轉化為微型數據中心">Proxmox VE：將家用電腦轉化為微型數據中心&lt;/h1>
-&lt;p>對於大多數 HomeLab 玩家來說，虛擬化可能是為了「省錢」——用一台強大的主機運行十幾個服務。但從 SRE 的視角來看，Proxmox VE (PVE) 的真正價值在於它將 &lt;strong>KVM (全虛擬化)&lt;/strong> 與 &lt;strong>LXC (容器虛擬化)&lt;/strong> 完美地整合在單一的管理平面中，並原生支持 ZFS 與 Ceph，讓家用硬件也能跑出「企業級」的超融合基礎設施 (HCI)。&lt;/p>
-&lt;hr>
-&lt;h2 id="1-虛擬化策略kvm-與-lxc-的隔離-vs-性能權衡">1. 虛擬化策略：KVM 與 LXC 的「隔離 vs 性能」權衡&lt;/h2>
-&lt;p>在 PVE 中部署服務時，最容易犯的錯誤就是所有東西都用 VM (KVM)。實際上，正確的選型應該基於對 &lt;strong>Virtualization Overhead&lt;/strong> 的精確控制。&lt;/p>
-&lt;h3 id="kvm-kernel-based-virtual-machine絕對的隔離">KVM (Kernel-based Virtual Machine)：絕對的隔離&lt;/h3>
-&lt;p>KVM 是完整的硬件虛擬化，每個 VM 擁有獨立的內核。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>場景&lt;/strong>：當你需要運行 Windows、BSD，或者需要對內核進行深度調試時，KVM 是唯一選擇。&lt;/li>
-&lt;li>&lt;strong>代價&lt;/strong>：Guest OS 稅。即使是一個簡單的 Linux VM，也會消耗額外的 RAM 和 CPU 來維護其內核。&lt;/li>
-&lt;/ul>
-&lt;h3 id="lxc-linux-containers近乎原生的性能">LXC (Linux Containers)：近乎原生的性能&lt;/h3>
-&lt;p>LXC 是操作系統級虛擬化，與宿主機共享內核。&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>場景&lt;/strong>：部署 Web 服務、微服務、輕量級 Bot。&lt;/li>
-&lt;li>&lt;strong>優勢&lt;/strong>：秒級啟動，內存占用極低。如果你運行一個簡單的 Nginx，LXC 的資源開銷幾乎可以忽略不計。&lt;/li>
-&lt;/ul>
-&lt;p>&lt;strong>SRE 決策模型&lt;/strong>：$\text{需要不同內核 / 高安全性} \rightarrow \text{KVM}$；$\text{追求性能 / 低開銷} \rightarrow \text{LXC}$。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Homelab on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/categories/homelab/</link>
+    <description>Recent content in Homelab on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/categories/homelab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nas Vs Das</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-vs-das/</guid>
+      <description>&lt;h1 id=&#34;nas-vs-das如何為你的-homelab-選擇正確的儲儲架構&#34;&gt;NAS vs DAS：如何為你的 HomeLab 選擇正確的儲儲架構？&lt;/h1&gt;
+&lt;p&gt;在構建 HomeLab 時，最讓人糾結的決定之一就是：我是該買一台成品 NAS，還是買個 DAS 擴展櫃直接掛在伺服器上？
+很多人會把這兩者混為一談，認為只要是「很多硬碟在一起」就差不多。但從系統架構來看，NAS 與 DAS 之間隔著一道巨大的鴻溝：&lt;strong&gt;網路棧 (Network Stack)&lt;/strong&gt;。這道鴻溝決定了你的數據是追求「流動性」還是「極限速度」。&lt;/p&gt;
+&lt;h2 id=&#34;das追求-raw-io-的極端主義&#34;&gt;DAS：追求 Raw I/O 的極端主義&lt;/h2&gt;
+&lt;p&gt;DAS (Direct Attached Storage) 的邏輯非常簡單：&lt;strong&gt;去掉所有中間商，讓 CPU 直接看到硬碟。&lt;/strong&gt;
+無論是透過 Thunderbolt 4、SAS HBA 還是簡單的 USB-C，DAS 的數據路徑極短。它不需要經過 TCP/IP 封裝，不需要處理網路碰撞，也不需要經過另一台伺服器的 CPU 轉發。&lt;/p&gt;
+&lt;h3 id=&#34;為什麼選擇-das&#34;&gt;為什麼選擇 DAS？&lt;/h3&gt;
+&lt;p&gt;當你的工作流對 &lt;strong&gt;延遲 (Latency)&lt;/strong&gt; 極其敏感時，DAS 是唯一選擇。例如 4K 原始素材的剪輯、本地高 IOPS 的資料庫分析，或是需要極速快取層的應用。在 DAS 面前，任何網路協議（即使是 10GbE）都會顯得臃腫。&lt;/p&gt;
+&lt;h3 id=&#34;das-的致命傷宿主機鎖定-host-lockout&#34;&gt;DAS 的致命傷：宿主機鎖定 (Host Lockout)&lt;/h3&gt;
+&lt;p&gt;DAS 的性能是以 &lt;strong&gt;「可用性」&lt;/strong&gt; 為代價的。
+在 DAS 架構中，儲存設備沒有自己的「大腦」，它完全依賴宿主機的 OS 來管理文件系統。這意味著如果你的伺服器主機板燒了，或者 OS 崩潰導致無法啟動，即使你的硬碟全部健康，你的數據也被「鎖死」在那個故障的宿主機後面。你必須物理性地將整個擴展櫃搬到另一台兼容的機器上才能讀取數據。&lt;/p&gt;
+&lt;h2 id=&#34;nas以網路稅換取數據流動性&#34;&gt;NAS：以網路稅換取數據流動性&lt;/h2&gt;
+&lt;p&gt;NAS (Network Attached Storage) 實際上是一台 &lt;strong&gt;專用的儲存伺服器&lt;/strong&gt;。它有自己的 CPU、記憶體和 OS。
+當你請求一個檔案時，路徑變成了：&lt;code&gt;Client $\rightarrow$ Network $\rightarrow$ NAS OS $\rightarrow$ Disk&lt;/code&gt;。這裡產生了所謂的 &lt;strong&gt;「網路稅」 (Network Tax)&lt;/strong&gt; —— 數據需要被封裝成 SMB/NFS 協議，經過網路交換機，再由 NAS 的 CPU 解包並讀取。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>NAS ZFS Truth</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/nas-zfs-integrity/</guid>
+      <description>&lt;h1 id=&#34;nas-的真相為什麼你需要的不是容量而是完整性&#34;&gt;NAS 的真相：為什麼你需要的不是「容量」，而是「完整性」？&lt;/h1&gt;
+&lt;h2 id=&#34;核心視角從被動桶子到主動引擎&#34;&gt;核心視角：從「被動桶子」到「主動引擎」&lt;/h2&gt;
+&lt;p&gt;大多數人看待 NAS 時，首先想到的是「容量」——多少 TB 的空間能存我的電影和照片。但對於 SRE 來說，這是一個危險的誤區。&lt;/p&gt;
+&lt;p&gt;專業的 NAS 不應該被視為一個「裝滿硬碟的盒子」，而應該是一個旨在最大化 &lt;strong&gt;數據持久性 (Data Durability)&lt;/strong&gt; 與 &lt;strong&gt;可用性 (Availability)&lt;/strong&gt; 的系統。真正的分水嶺在於你使用的是傳統的硬件 RAID，還是像 &lt;strong&gt;ZFS&lt;/strong&gt; 這樣具備「自癒能力」的軟件定義存儲。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-物理層的陷阱cmr-vs-smr&#34;&gt;1. 物理層的陷阱：CMR vs SMR&lt;/h2&gt;
+&lt;p&gt;在購買硬碟前，你必須面對一個隱形的陷阱：&lt;strong&gt;SMR (疊瓦式磁記錄)&lt;/strong&gt;。
+SMR 硬碟為了增加密度，將數據像瓦片一樣重疊寫入。這在單純的存檔時沒問題，但在 RAID 重構 (Rebuild) 過程中，SMR 的寫入放大效應會導致重構速度慢到令人絕望，甚至直接導致整個陣列崩潰。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SRE 建議&lt;/strong&gt;：永遠選擇 &lt;strong&gt;CMR (傳統磁記錄)&lt;/strong&gt; 硬碟，並使用 &lt;strong&gt;IT Mode (Initiator Target)&lt;/strong&gt; 的 HBA 卡將原盤直接交給操作系統，徹底擺脫私有 RAID 卡的廠商鎖定。&lt;/p&gt;
+&lt;h2 id=&#34;2-zfs數據完整性的黃金標準&#34;&gt;2. ZFS：數據完整性的黃金標準&lt;/h2&gt;
+&lt;p&gt;為什麼 ZFS 被稱為存儲界的「黃金標準」？因為它解決了傳統存儲最恐懼的問題：&lt;strong&gt;靜默數據損壞 (Silent Data Corruption / Bit Rot)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;copy-on-write-cow消除寫入空洞&#34;&gt;Copy-on-Write (CoW)：消除寫入空洞&lt;/h3&gt;
+&lt;p&gt;傳統文件系統在更新數據時會覆蓋原位。如果在此過程中斷電，會產生所謂的「寫入空洞 (Write Hole)」，導致文件損毀。ZFS 採用 &lt;strong&gt;CoW&lt;/strong&gt; 機制：永遠不覆蓋原數據，而是先將新數據寫入新塊，最後才更新指針。這意味著你的數據在寫入完成前，原件永遠是安全的。&lt;/p&gt;
+&lt;h3 id=&#34;arc-與-zil性能與安全的分離&#34;&gt;ARC 與 ZIL：性能與安全的分離&lt;/h3&gt;
+&lt;p&gt;ZFS 並不依賴傳統的 LRU 緩存，而是使用 &lt;strong&gt;ARC (Adaptive Replacement Cache)&lt;/strong&gt;，同時追蹤數據的「頻率」與「近期性」，讓緩存命中率大幅提升。而對於同步寫入，則通過 &lt;strong&gt;ZIL (ZFS Intent Log)&lt;/strong&gt; 確保在不犧牲性能的前提下，數據能立即持久化。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Proxmox VE: HomeLab 中的超融合基礎設施 (HCI) 實踐</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/homelab/proxmox-hci-guide/</guid>
+      <description>&lt;h1 id=&#34;proxmox-ve將家用電腦轉化為微型數據中心&#34;&gt;Proxmox VE：將家用電腦轉化為微型數據中心&lt;/h1&gt;
+&lt;p&gt;對於大多數 HomeLab 玩家來說，虛擬化可能是為了「省錢」——用一台強大的主機運行十幾個服務。但從 SRE 的視角來看，Proxmox VE (PVE) 的真正價值在於它將 &lt;strong&gt;KVM (全虛擬化)&lt;/strong&gt; 與 &lt;strong&gt;LXC (容器虛擬化)&lt;/strong&gt; 完美地整合在單一的管理平面中，並原生支持 ZFS 與 Ceph，讓家用硬件也能跑出「企業級」的超融合基礎設施 (HCI)。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-虛擬化策略kvm-與-lxc-的隔離-vs-性能權衡&#34;&gt;1. 虛擬化策略：KVM 與 LXC 的「隔離 vs 性能」權衡&lt;/h2&gt;
+&lt;p&gt;在 PVE 中部署服務時，最容易犯的錯誤就是所有東西都用 VM (KVM)。實際上，正確的選型應該基於對 &lt;strong&gt;Virtualization Overhead&lt;/strong&gt; 的精確控制。&lt;/p&gt;
+&lt;h3 id=&#34;kvm-kernel-based-virtual-machine絕對的隔離&#34;&gt;KVM (Kernel-based Virtual Machine)：絕對的隔離&lt;/h3&gt;
+&lt;p&gt;KVM 是完整的硬件虛擬化，每個 VM 擁有獨立的內核。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;場景&lt;/strong&gt;：當你需要運行 Windows、BSD，或者需要對內核進行深度調試時，KVM 是唯一選擇。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代價&lt;/strong&gt;：Guest OS 稅。即使是一個簡單的 Linux VM，也會消耗額外的 RAM 和 CPU 來維護其內核。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;lxc-linux-containers近乎原生的性能&#34;&gt;LXC (Linux Containers)：近乎原生的性能&lt;/h3&gt;
+&lt;p&gt;LXC 是操作系統級虛擬化，與宿主機共享內核。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;場景&lt;/strong&gt;：部署 Web 服務、微服務、輕量級 Bot。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;優勢&lt;/strong&gt;：秒級啟動，內存占用極低。如果你運行一個簡單的 Nginx，LXC 的資源開銷幾乎可以忽略不計。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SRE 決策模型&lt;/strong&gt;：$\text{需要不同內核 / 高安全性} \rightarrow \text{KVM}$；$\text{追求性能 / 低開銷} \rightarrow \text{LXC}$。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

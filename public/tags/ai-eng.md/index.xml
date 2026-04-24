@@ -1,17 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai Eng.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/</link><description>Recent content in Ai Eng.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Ai_Eng</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</guid><description>&lt;h1 id="-ai-application-engineering-hub">🤖 AI Application Engineering Hub&lt;/h1>
-&lt;p>Moving from &amp;ldquo;Prompting&amp;rdquo; to &amp;ldquo;Systems Engineering.&amp;rdquo; This hub focuses on the architecture required to build reliable, scalable, and autonomous AI agents.&lt;/p>
-&lt;h2 id="-the-prompt--context-layer">🧠 The Prompt &amp;amp; Context Layer&lt;/h2>
-&lt;p>&lt;em>Focus: Reducing the search space and maximizing LLM reasoning.&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Patterns&lt;/strong>: [[articles/ai-engineering/prompt-patterns|Structural Prompting Patterns]]&lt;/li>
-&lt;li>&lt;strong>Memory&lt;/strong>: [[articles/ai-engineering/context-window-dynamics|Context Window Dynamics &amp;amp; Tokenomics]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-retrieval--knowledge-rag">🔍 Retrieval &amp;amp; Knowledge (RAG)&lt;/h2>
-&lt;p>&lt;em>Focus: Transforming &amp;ldquo;Semantic Search&amp;rdquo; into &amp;ldquo;Knowledge Synthesis.&amp;rdquo;&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>The Truth&lt;/strong>: [[articles/ai-engineering/rag-truth|Why Vector Search Fails]]&lt;/li>
-&lt;li>&lt;strong>Deep Dive&lt;/strong>: [[articles/ai-engineering/rag-deep-dive-chunking-embedding|Chunking &amp;amp; Embedding Strategies]]&lt;/li>
-&lt;li>&lt;strong>Advanced&lt;/strong>: [[articles/ai-engineering/graphrag-deep-dive|GraphRAG &amp;amp; Global Synthesis]] $\rightarrow$ [[articles/ai-engineering/long-context-vs-rag|Long-Context vs RAG]]&lt;/li>
-&lt;/ul>
-&lt;h2 id="-agentic-workflows--llmops">⚙️ Agentic Workflows &amp;amp; LLMOps&lt;/h2>
-&lt;p>&lt;em>Focus: Building autonomous loops and production-grade guardrails.&lt;/em>&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ai Eng.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/</link>
+    <description>Recent content in Ai Eng.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/ai-eng.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ai_Eng</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ai-eng/</guid>
+      <description>&lt;h1 id=&#34;-ai-application-engineering-hub&#34;&gt;🤖 AI Application Engineering Hub&lt;/h1&gt;
+&lt;p&gt;Moving from &amp;ldquo;Prompting&amp;rdquo; to &amp;ldquo;Systems Engineering.&amp;rdquo; This hub focuses on the architecture required to build reliable, scalable, and autonomous AI agents.&lt;/p&gt;
+&lt;h2 id=&#34;-the-prompt--context-layer&#34;&gt;🧠 The Prompt &amp;amp; Context Layer&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Reducing the search space and maximizing LLM reasoning.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Patterns&lt;/strong&gt;: [[articles/ai-engineering/prompt-patterns|Structural Prompting Patterns]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory&lt;/strong&gt;: [[articles/ai-engineering/context-window-dynamics|Context Window Dynamics &amp;amp; Tokenomics]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-retrieval--knowledge-rag&#34;&gt;🔍 Retrieval &amp;amp; Knowledge (RAG)&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Transforming &amp;ldquo;Semantic Search&amp;rdquo; into &amp;ldquo;Knowledge Synthesis.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;The Truth&lt;/strong&gt;: [[articles/ai-engineering/rag-truth|Why Vector Search Fails]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Deep Dive&lt;/strong&gt;: [[articles/ai-engineering/rag-deep-dive-chunking-embedding|Chunking &amp;amp; Embedding Strategies]]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced&lt;/strong&gt;: [[articles/ai-engineering/graphrag-deep-dive|GraphRAG &amp;amp; Global Synthesis]] $\rightarrow$ [[articles/ai-engineering/long-context-vs-rag|Long-Context vs RAG]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-agentic-workflows--llmops&#34;&gt;⚙️ Agentic Workflows &amp;amp; LLMOps&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Focus: Building autonomous loops and production-grade guardrails.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

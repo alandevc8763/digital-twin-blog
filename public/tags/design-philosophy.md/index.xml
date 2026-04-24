@@ -1,26 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Design-Philosophy.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/</link><description>Recent content in Design-Philosophy.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Design Philosophy</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</guid><description>&lt;h1 id="kafka-核心設計哲學分佈式流處理的基石">Kafka 核心設計哲學：分佈式流處理的基石&lt;/h1>
-&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Domain&lt;/strong>: Distributed Systems / Messaging Queue&lt;/li>
-&lt;li>&lt;strong>Signal&lt;/strong>: 🥇 Gold (Architectural Foundation)&lt;/li>
-&lt;/ul>
-&lt;h2 id="core-insight">Core Insight&lt;/h2>
-&lt;p>Kafka 的成功不在於它是一個「消息隊列」，而是在於它將自己定位為一個 &lt;strong>「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong>。透過將隨機寫入轉化為 &lt;strong>順序寫入 (Sequential I/O)&lt;/strong> 並利用 &lt;strong>頁快取 (Page Cache)&lt;/strong> 與 &lt;strong>零拷貝 (Zero Copy)&lt;/strong>，Kafka 打破了傳統 MQ 在吞吐量上的瓶頸，實現了極高規模的數據流處理。&lt;/p>
-&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
-&lt;h3 id="-核心架構三要素">🏗️ 核心架構三要素&lt;/h3>
-&lt;ol>
-&lt;li>&lt;strong>Append-only Log&lt;/strong>：所有數據以追加方式寫入日誌文件，確保了寫入性能的極致，並天然支持多消費者以不同 Offset 讀取。&lt;/li>
-&lt;li>&lt;strong>Partitioning (分區)&lt;/strong>：通過將 Topic 分為多個 Partition，實現了水平擴展 (Horizontal Scaling) 與並行處理能力。&lt;/li>
-&lt;li>&lt;strong>Replication (副本)&lt;/strong>：通過 Leader-Follower 機制確保數據的高可用性，即使部分 Broker 宕機，數據依然可被恢復。&lt;/li>
-&lt;/ol>
-&lt;h3 id="-性能加速秘密">⚡ 性能加速秘密&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>Sequential I/O&lt;/strong>：磁盤順序寫入速度遠快於隨機寫入。&lt;/li>
-&lt;li>&lt;strong>Zero Copy (sendfile)&lt;/strong>：數據直接從內核 Page Cache 傳輸到 NIC 緩衝區，跳過了用戶空間的多次拷貝，極大降低了 CPU 負荷。&lt;/li>
-&lt;li>&lt;strong>Batching&lt;/strong>：將多條消息聚合為一個 Batch 傳輸，減少網絡交互次數。&lt;/li>
-&lt;/ul>
-&lt;h2 id="synergy">Synergy&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>LSM-Tree&lt;/strong>：Kafka 的日誌結構與 NoSQL (如 Cassandra, RocksDB) 的 LSM-Tree 理念一致，均追求寫入性能最大化。&lt;/li>
-&lt;li>&lt;strong>Event Sourcing&lt;/strong>：Kafka 的 Log 結構是實現事件溯源 (Event Sourcing) 的天然基礎，允許系統在任何時間點重建狀態。&lt;/li>
-&lt;/ul></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Design-Philosophy.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/</link>
+    <description>Recent content in Design-Philosophy.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/design-philosophy.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Design Philosophy</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</guid>
+      <description>&lt;h1 id=&#34;kafka-核心設計哲學分佈式流處理的基石&#34;&gt;Kafka 核心設計哲學：分佈式流處理的基石&lt;/h1&gt;
+&lt;h2 id=&#34;taxonomy&#34;&gt;Taxonomy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: Distributed Systems / Messaging Queue&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Signal&lt;/strong&gt;: 🥇 Gold (Architectural Foundation)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;core-insight&#34;&gt;Core Insight&lt;/h2&gt;
+&lt;p&gt;Kafka 的成功不在於它是一個「消息隊列」，而是在於它將自己定位為一個 &lt;strong&gt;「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong&gt;。透過將隨機寫入轉化為 &lt;strong&gt;順序寫入 (Sequential I/O)&lt;/strong&gt; 並利用 &lt;strong&gt;頁快取 (Page Cache)&lt;/strong&gt; 與 &lt;strong&gt;零拷貝 (Zero Copy)&lt;/strong&gt;，Kafka 打破了傳統 MQ 在吞吐量上的瓶頸，實現了極高規模的數據流處理。&lt;/p&gt;
+&lt;h2 id=&#34;implementation-details&#34;&gt;Implementation Details&lt;/h2&gt;
+&lt;h3 id=&#34;-核心架構三要素&#34;&gt;🏗️ 核心架構三要素&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Append-only Log&lt;/strong&gt;：所有數據以追加方式寫入日誌文件，確保了寫入性能的極致，並天然支持多消費者以不同 Offset 讀取。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Partitioning (分區)&lt;/strong&gt;：通過將 Topic 分為多個 Partition，實現了水平擴展 (Horizontal Scaling) 與並行處理能力。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Replication (副本)&lt;/strong&gt;：通過 Leader-Follower 機制確保數據的高可用性，即使部分 Broker 宕機，數據依然可被恢復。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;-性能加速秘密&#34;&gt;⚡ 性能加速秘密&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sequential I/O&lt;/strong&gt;：磁盤順序寫入速度遠快於隨機寫入。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Zero Copy (sendfile)&lt;/strong&gt;：數據直接從內核 Page Cache 傳輸到 NIC 緩衝區，跳過了用戶空間的多次拷貝，極大降低了 CPU 負荷。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Batching&lt;/strong&gt;：將多條消息聚合為一個 Batch 傳輸，減少網絡交互次數。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;synergy&#34;&gt;Synergy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;LSM-Tree&lt;/strong&gt;：Kafka 的日誌結構與 NoSQL (如 Cassandra, RocksDB) 的 LSM-Tree 理念一致，均追求寫入性能最大化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Event Sourcing&lt;/strong&gt;：Kafka 的 Log 結構是實現事件溯源 (Event Sourcing) 的天然基礎，允許系統在任何時間點重建狀態。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>

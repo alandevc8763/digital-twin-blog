@@ -1,28 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Psi-Metrics.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/</link><description>Recent content in Psi-Metrics.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Psi Metrics</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</guid><description>&lt;h1 id="別再看-cpu-利用率了用-psi-衡量系統的痛苦程度">別再看 CPU 利用率了：用 PSI 衡量系統的「痛苦程度」&lt;/h1>
-&lt;p>很多 SRE 在分析性能瓶頸時，習慣看 &lt;code>top&lt;/code> 裡的 CPU% 或 &lt;code>free&lt;/code> 裡的 Mem%。
-但這裡有一個巨大的陷阱：&lt;strong>利用率 (Utilization) $
-eq$ 飽和度 (Saturation)&lt;/strong>。
-一個 CPU 利用率 50% 的系統，依然可能是卡死的。為什麼？因為剩下的 50% 時間，CPU 可能都在等待 I/O 返回，或者在等待記憶體分頁。&lt;/p>
-&lt;h2 id="什麼是-psi-pressure-stall-information">什麼是 PSI (Pressure Stall Information)？&lt;/h2>
-&lt;p>PSI 是 Linux 內核提供的一套指標，它不再告訴你「資源被用了多少」，而是告訴你 &lt;strong>「任務因為等待資源而停頓了多久」&lt;/strong>。
-它將壓力分為三個維度：&lt;strong>CPU、Memory、I/O&lt;/strong>。&lt;/p>
-&lt;h3 id="1-some與full的區別">1. 「Some」與「Full」的區別&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>Some&lt;/strong>：至少有一個任務在等待資源，但系統還能跑其他東西。這是一個 &lt;strong>「警告信號」&lt;/strong>。&lt;/li>
-&lt;li>&lt;strong>Full&lt;/strong>：所有非空閒任務全部在等待資源。CPU 處於完全空轉狀態。這是一個 &lt;strong>「崩潰信號」&lt;/strong>。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-實戰分析讀懂-psi-信號">2. 實戰分析：讀懂 PSI 信號&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>CPU Pressure High&lt;/strong>: 如果 &lt;code>some&lt;/code> 很高但 &lt;code>full&lt;/code> 很低 $
-ightarrow$ 你有太多線程在爭搶核心，上下文切換開銷太大。&lt;/li>
-&lt;li>&lt;strong>Memory Pressure High&lt;/strong>: 如果 &lt;code>full&lt;/code> 突然飆升 $
-ightarrow$ 系統正在進行劇烈的直接回收 (Direct Reclaim) 或 Swap。這通常是 OOM (Out of Memory) 發生前的最後警告。&lt;/li>
-&lt;li>&lt;strong>I/O Pressure High&lt;/strong>: 如果 &lt;code>full&lt;/code> 持續處於高位 $
-ightarrow$ 你的儲存設備已經飽和，應用程序被完全阻塞在 I/O 路徑上。&lt;/li>
-&lt;/ul>
-&lt;h2 id="sre-實踐基於壓力的自動擴展-pressure-based-scaling">SRE 實踐：基於壓力的自動擴展 (Pressure-based Scaling)&lt;/h2>
-&lt;p>傳統的 Auto-scaling 是基於 CPU 閾值（例如 70% 擴容）。這很遲鈍，因為 CPU% 是滯後指標。
-&lt;strong>更先進的做法是監控 &lt;code>/proc/pressure/memory&lt;/code>&lt;/strong>：
-一旦 &lt;code>some&lt;/code> 壓力超過 10% 並持續 30 秒 $
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Psi-Metrics.Md on Alans Digital Twin Blog</title>
+    <link>https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/</link>
+    <description>Recent content in Psi-Metrics.Md on Alans Digital Twin Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/psi-metrics.md/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Psi Metrics</title>
+      <link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</link>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</guid>
+      <description>&lt;h1 id=&#34;別再看-cpu-利用率了用-psi-衡量系統的痛苦程度&#34;&gt;別再看 CPU 利用率了：用 PSI 衡量系統的「痛苦程度」&lt;/h1&gt;
+&lt;p&gt;很多 SRE 在分析性能瓶頸時，習慣看 &lt;code&gt;top&lt;/code&gt; 裡的 CPU% 或 &lt;code&gt;free&lt;/code&gt; 裡的 Mem%。
+但這裡有一個巨大的陷阱：&lt;strong&gt;利用率 (Utilization) $
+eq$ 飽和度 (Saturation)&lt;/strong&gt;。
+一個 CPU 利用率 50% 的系統，依然可能是卡死的。為什麼？因為剩下的 50% 時間，CPU 可能都在等待 I/O 返回，或者在等待記憶體分頁。&lt;/p&gt;
+&lt;h2 id=&#34;什麼是-psi-pressure-stall-information&#34;&gt;什麼是 PSI (Pressure Stall Information)？&lt;/h2&gt;
+&lt;p&gt;PSI 是 Linux 內核提供的一套指標，它不再告訴你「資源被用了多少」，而是告訴你 &lt;strong&gt;「任務因為等待資源而停頓了多久」&lt;/strong&gt;。
+它將壓力分為三個維度：&lt;strong&gt;CPU、Memory、I/O&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;1-some與full的區別&#34;&gt;1. 「Some」與「Full」的區別&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Some&lt;/strong&gt;：至少有一個任務在等待資源，但系統還能跑其他東西。這是一個 &lt;strong&gt;「警告信號」&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Full&lt;/strong&gt;：所有非空閒任務全部在等待資源。CPU 處於完全空轉狀態。這是一個 &lt;strong&gt;「崩潰信號」&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-實戰分析讀懂-psi-信號&#34;&gt;2. 實戰分析：讀懂 PSI 信號&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CPU Pressure High&lt;/strong&gt;: 如果 &lt;code&gt;some&lt;/code&gt; 很高但 &lt;code&gt;full&lt;/code&gt; 很低 $
+ightarrow$ 你有太多線程在爭搶核心，上下文切換開銷太大。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pressure High&lt;/strong&gt;: 如果 &lt;code&gt;full&lt;/code&gt; 突然飆升 $
+ightarrow$ 系統正在進行劇烈的直接回收 (Direct Reclaim) 或 Swap。這通常是 OOM (Out of Memory) 發生前的最後警告。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;I/O Pressure High&lt;/strong&gt;: 如果 &lt;code&gt;full&lt;/code&gt; 持續處於高位 $
+ightarrow$ 你的儲存設備已經飽和，應用程序被完全阻塞在 I/O 路徑上。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;sre-實踐基於壓力的自動擴展-pressure-based-scaling&#34;&gt;SRE 實踐：基於壓力的自動擴展 (Pressure-based Scaling)&lt;/h2&gt;
+&lt;p&gt;傳統的 Auto-scaling 是基於 CPU 閾值（例如 70% 擴容）。這很遲鈍，因為 CPU% 是滯後指標。
+&lt;strong&gt;更先進的做法是監控 &lt;code&gt;/proc/pressure/memory&lt;/code&gt;&lt;/strong&gt;：
+一旦 &lt;code&gt;some&lt;/code&gt; 壓力超過 10% 並持續 30 秒 $
 ightarrow$ 立即觸發擴容或清理快取。
-這是在系統真正崩潰之前，提前捕捉到「痛苦」的唯一方法。&lt;/p></description></item></channel></rss>
+這是在系統真正崩潰之前，提前捕捉到「痛苦」的唯一方法。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
