@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../homelab-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Performance Hub - Alan's Digital Twin Blog</title>
+        <title>從路徑解析到 I/O 阻塞：揭秘 Linux VFS 與「元數據風暴」 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#performance-hub-index-page" class="md-skip">
+        <a href="#vfs" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Performance Hub
+              從路徑解析到 I/O 阻塞：揭秘 Linux VFS 與「元數據風暴」
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -333,7 +329,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../homelab-hub/" class="md-tabs__link">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -350,11 +346,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../performance-hub/" class="md-tabs__link">
         
   
   
@@ -373,7 +367,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -408,7 +402,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -426,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -453,7 +447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../../sre-hub/" class="md-nav__link">
         
   
   
@@ -480,7 +474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../../ai-hub/" class="md-nav__link">
         
   
   
@@ -507,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../homelab-hub/" class="md-nav__link">
+      <a href="../../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -531,19 +525,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../performance-hub/" class="md-nav__link">
         
   
   
@@ -559,7 +544,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -571,7 +555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../../journey/intro/" class="md-nav__link">
         
   
   
@@ -608,8 +592,97 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VFS：儲存世界的「大統一」層
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VFS：儲存世界的「大統一」層">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-inode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Inode (索引節點)：檔案的「身體」
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dentry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dentry (目錄項)：檔案的「名字」
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-page-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Page Cache：記憶體的「快照」
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        實戰診斷：解構「元數據風暴」
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE 解決方案
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vfs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        總結：VFS 診斷矩陣
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -626,30 +699,94 @@
 
 
 
-<hr />
-<h1 id="performance-hub-index-page">Performance Hub Index Page</h1>
-<hr />
-<h1 id="performance-hub-extreme-tuning-kernel-internals">Performance Hub: Extreme Tuning &amp; Kernel Internals</h1>
-<p>Welcome to the Performance Hub. Here we dissect the interaction between software and silicon to eliminate the last microsecond of latency.</p>
-<h2 id="deep-dives">🚀 Deep Dives</h2>
+  <h1>從路徑解析到 I/O 阻塞：揭秘 Linux VFS 與「元數據風暴」</h1>
+
+<p>當你在 Linux 中執行 <code>cat /var/log/app/current/error.log</code> 時，你認為這是一個簡單的讀取操作。但在核心層面，這是一次極其複雜的「路徑解析 (Path Resolution)」之旅。</p>
+<p>很多 SRE 遇到過一種詭異的現象：<strong>系統 CPU 很高 (High %sys)，但 <code>iostat</code> 顯示磁碟利用率極低 (<code>%util</code> 幾乎為 0)，也沒有明顯的 I/O 吞吐量。</strong></p>
+<p>這種情況通常意味著你正處於一場 <strong>「元數據風暴 (Metadata Storm)」</strong> 之中。要理解這個現象，我們必須解構 Linux 的 <strong>VFS (Virtual File System, 虛擬檔案系統)</strong>。</p>
+<h2 id="vfs">VFS：儲存世界的「大統一」層</h2>
+<p>VFS 是 Linux 核心的一個抽象層。無論底層是 ext4, XFS, Btrfs 還是網路儲存 (NFS/Ceph)，對上層應用程式來說，一切都被抽象成了統一的邏輯樹。</p>
+<p>VFS 的運作依賴於三個核心組件，它們決定了你的 I/O 性能：</p>
+<h3 id="1-inode">1. Inode (索引節點)：檔案的「身體」</h3>
+<p>Inode 代表一個物理檔案對象。它記錄了檔案的大小、權限、時間戳，以及最關鍵的：<strong>資料塊在磁碟上的物理位置</strong>。
+- <strong>SRE 訊號</strong>：如果在 <code>slabtop</code> 中看到 <code>inode_cache</code> 佔用極高，代表系統正在追蹤數百萬個小檔案，這會導致記憶體壓力增加並減慢查詢速度。</p>
+<h3 id="2-dentry">2. Dentry (目錄項)：檔案的「名字」</h3>
+<p>Dentry 將「檔案名稱」映射到「Inode」。它代表了邏輯路徑。為了避免每次讀取檔案都要從磁碟根目錄開始遞歸搜尋，核心將其緩存在 <strong>Dentry Cache (dcache)</strong> 中。
+- <strong>SRE 訊號</strong>：<code>dentry</code> slab 異常增長通常指向「過深的目錄結構」或頻繁的冷快取路徑查詢。</p>
+<h3 id="3-page-cache">3. Page Cache：記憶體的「快照」</h3>
+<p>Page Cache 是 VFS 的加速器。當你讀取檔案時，核心會將磁碟塊快照到記憶體中。下次讀取相同位置時，VFS 直接從記憶體返回，完全跳過驅動層。
+- <strong>SRE 訊號</strong>：<code>vmstat</code> 中的 <code>buff/cache</code> 命中率是資料庫與日誌系統性能的生命線。</p>
+<h2 id="_1">實戰診斷：解構「元數據風暴」</h2>
+<p><strong>現象</strong>：一個老舊的 Java 應用程式在啟動或重新載入設定時，出現嚴重的延遲尖峰。<code>top</code> 顯示 <code>%sys</code> 極高，但 <code>iostat</code> 顯示磁碟幾乎沒在工作。</p>
+<p><strong>追蹤路徑 (The Trace)</strong>：</p>
+<ol>
+<li><strong>定位 CPU 瓶頸</strong>：執行 <code>perf top</code>。</li>
+<li><strong>觀察</strong>：頂部符號是 <code>path_lookup</code>, <code>dentry_alloc</code>, <code>namei</code>。這明確指出核心正耗盡 CPU 在「解析路徑」。</li>
+<li><strong>審計核心記憶體</strong>：執行 <code>slabtop -o</code>。</li>
+<li><strong>觀察</strong>：<code>dentry</code> 與 <code>inode_cache</code> 佔用了數 GB 記憶體，但應用程式的 RSS 並不高。</li>
+<li><strong>分析檔案層級</strong>：檢查設定資料夾的深度。</li>
+<li><strong>觀察</strong>：目錄結構深達 20 層以上（例如 <code>/app/config/env/region/service/module/v1/...</code>）。</li>
+<li><strong>驗證快取狀態</strong>：觀察 <code>dentry</code> 的回收率。</li>
+<li><strong>觀察</strong>：由於記憶體壓力，dcache 頻繁被剔除 (eviction)。</li>
+</ol>
+<p><strong>根因分析</strong>：
+這就是典型的 <strong>Metadata Storm</strong>。因為目錄層級過深且快取失效，每次 <code>open()</code> 呼叫都會觸發一次遞歸的「路徑行走 (Path Walk)」。核心必須同步地從磁碟抓取每一層目錄的 Inode $\to$ Dentry $\to$ Inode $\to$ Dentry... 即使總吞吐量很低，但同步的等待次數極多，導致 CPU 在核心態空轉，延遲暴增。</p>
+<h2 id="sre">SRE 解決方案</h2>
 <ul>
-<li><a href="../posts/performance/cpu-topology/">性能的「隱形牆」：CPU Topology 與 NUMA 的深度對齊實踐</a> - 探討數據局部性、L3 快取爭搶與 NUMA 節點對齊。</li>
-<li><a href="../posts/performance/scheduler-cfs/">破解 CPU 飢餓：解構 Linux CFS 調度器與 Throttling 的真相</a> - 剖析 vruntime、紅黑樹與 Quota Throttling 的性能博弈。</li>
-<li><a href="../posts/performance/psi-pressure-stalls/">別被 CPU 使用率騙了：用 PSI 捕捉系統資源的「真實痛苦」</a> - 區分 Activity 與 Pain，利用 PSI 定位隱形資源飢餓。</li>
-<li><a href="../posts/performance/vfs/">從路徑解析到 I/O 阻塞：揭秘 Linux VFS 與「元數據風暴」</a> - 解構 Inode/Dentry 緩存與路徑解析的性能陷阱。</li>
+<li><strong>短期緩解</strong>：調低 <code>vm.vfs_cache_pressure</code> (例如設為 50)。這會告訴核心：「不要這麼激進地回收 dentry 和 inode」，從而保留更多路徑快取。</li>
+<li><strong>長期根治</strong>：<ul>
+<li><strong>扁平化</strong>：將深層目錄結構扁平化。</li>
+<li><strong>封裝化</strong>：將大量小設定檔打包成單一的歸檔 (Archive) 或資料庫。</li>
 </ul>
-<h2 id="tuning-stack">🛠️ Tuning Stack</h2>
-<ul>
-<li><strong>Hardware</strong>: CPU Topology $\rightarrow$ NUMA $\rightarrow$ PCIe Bus</li>
-<li><strong>Kernel</strong>: CFS Scheduler $\rightarrow$ VFS $\rightarrow$ PSI</li>
-<li><strong>Observation</strong>: <code>perf</code> $\rightarrow$ <code>ebpf</code> $\rightarrow$ <code>numastat</code></li>
+</li>
 </ul>
+<h2 id="vfs_1">總結：VFS 診斷矩陣</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">組件</th>
+<th style="text-align: left;">SRE 訊號</th>
+<th style="text-align: left;">根因</th>
+<th style="text-align: left;">診斷工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Dentry Cache</strong></td>
+<td style="text-align: left;">High <code>dentry</code> slab / High CPU in <code>path_lookup</code></td>
+<td style="text-align: left;">目錄過深 / 冷快取</td>
+<td style="text-align: left;"><code>slabtop</code>, <code>perf top</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Inode Cache</strong></td>
+<td style="text-align: left;">High <code>inode_cache</code> slab</td>
+<td style="text-align: left;">數百萬個小檔案</td>
+<td style="text-align: left;"><code>slabtop</code>, <code>df -i</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Page Cache</strong></td>
+<td style="text-align: left;">High <code>wa</code> / Low Cache Hit Rate</td>
+<td style="text-align: left;">記憶體壓力 $\to$ 頁剔除</td>
+<td style="text-align: left;"><code>vmstat</code>, <code>sar -B</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>VFS Layer</strong></td>
+<td style="text-align: left;"><code>open()</code> / <code>stat()</code> 高延遲</td>
+<td style="text-align: left;">元數據飽和 (Disk IOPS 限制)</td>
+<td style="text-align: left;"><code>strace -T</code>, <code>iostat -x</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>記住：I/O 慢不一定是磁碟慢，很有可能是 VFS 在幫你「找路」找太久。</strong></p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -693,10 +830,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

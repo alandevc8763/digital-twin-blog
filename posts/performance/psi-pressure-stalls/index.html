@@ -9,28 +9,24 @@
       
       
       
-        <link rel="prev" href="../homelab-hub/">
-      
-      
-        <link rel="next" href="../journey/intro/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Performance Hub - Alan's Digital Twin Blog</title>
+        <title>別被 CPU 使用率騙了：用 PSI 捕捉系統資源的「真實痛苦」 - Alan's Digital Twin Blog</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../overrides/main.css">
+      <link rel="stylesheet" href="../../../overrides/main.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -157,7 +153,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#performance-hub-index-page" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -171,7 +167,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -191,7 +187,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Performance Hub
+              別被 CPU 使用率騙了：用 PSI 捕捉系統資源的「真實痛苦」
             
           </span>
         </div>
@@ -276,7 +272,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -295,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../sre-hub/" class="md-tabs__link">
+      <a href="../../../sre-hub/" class="md-tabs__link">
         
   
   
@@ -314,7 +310,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../ai-hub/" class="md-tabs__link">
+      <a href="../../../ai-hub/" class="md-tabs__link">
         
   
   
@@ -333,7 +329,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../homelab-hub/" class="md-tabs__link">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
         
   
   
@@ -350,11 +346,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../performance-hub/" class="md-tabs__link">
         
   
   
@@ -373,7 +367,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../journey/intro/" class="md-tabs__link">
+      <a href="../../../journey/intro/" class="md-tabs__link">
         
   
   
@@ -408,7 +402,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -426,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -453,7 +447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sre-hub/" class="md-nav__link">
+      <a href="../../../sre-hub/" class="md-nav__link">
         
   
   
@@ -480,7 +474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai-hub/" class="md-nav__link">
+      <a href="../../../ai-hub/" class="md-nav__link">
         
   
   
@@ -507,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../homelab-hub/" class="md-nav__link">
+      <a href="../../../homelab-hub/" class="md-nav__link">
         
   
   
@@ -531,19 +525,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../performance-hub/" class="md-nav__link">
         
   
   
@@ -559,7 +544,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -571,7 +555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../journey/intro/" class="md-nav__link">
+      <a href="../../../journey/intro/" class="md-nav__link">
         
   
   
@@ -608,8 +592,92 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心邏輯：從「利用率」轉向「壓力值」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="核心邏輯：從「利用率」轉向「壓力值」">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三大資源的痛苦特徵
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre-psi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE 實戰：如何解讀 PSI 訊號？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SRE 實戰：如何解讀 PSI 訊號？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#times-psi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        診斷矩陣：利用率 $\times$ PSI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#psi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        避坑指南：PSI 的陷阱
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        總結
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -626,30 +694,80 @@
 
 
 
-<hr />
-<h1 id="performance-hub-index-page">Performance Hub Index Page</h1>
-<hr />
-<h1 id="performance-hub-extreme-tuning-kernel-internals">Performance Hub: Extreme Tuning &amp; Kernel Internals</h1>
-<p>Welcome to the Performance Hub. Here we dissect the interaction between software and silicon to eliminate the last microsecond of latency.</p>
-<h2 id="deep-dives">🚀 Deep Dives</h2>
+  <h1>別被 CPU 使用率騙了：用 PSI 捕捉系統資源的「真實痛苦」</h1>
+
+<p>在 SRE 的日常診斷中，最令人沮喪的場景莫過於此：<strong>監控面板顯示 CPU 使用率僅 40%，記憶體也綽綽有餘，但應用程式的 p99 延遲卻在瘋狂飆升。</strong></p>
+<p>大多數工程師的第一反應是檢查 CPU Throttling 或網路抖動，但如果這兩者都正常，你可能遇到了 Linux 核心中最隱蔽的性能殺手——<strong>資源飢餓 (Resource Starvation)</strong>。</p>
+<p>傳統的「利用率 (Utilization)」指標其實是一個巨大的誤導。它衡量的是<strong>活動量 (Activity)</strong>，而非<strong>痛苦程度 (Pain)</strong>。一個 CPU 核心即使在 100% 運作，如果它是高效地執行指令，系統是健康的；但如果一個任務因為等待 I/O 或記憶體回收而處於 <code>D</code> 狀態，即使 CPU 利用率極低，你的應用程式依然處於「停擺」狀態。</p>
+<p>為了量化這種「痛苦」，Linux 核心引入了 <strong>PSI (Pressure Stall Information)</strong>。</p>
+<h2 id="_1">核心邏輯：從「利用率」轉向「壓力值」</h2>
+<p>PSI 的核心洞察在於：<strong>真正影響用戶體驗的不是資源被用了多少，而是有多少任務因為等待資源而被迫停下來。</strong></p>
+<p>PSI 將資源爭搶分為兩種維度：</p>
+<ol>
+<li><strong><code>some</code> (部分停擺)</strong>：至少有一個任務在等待資源，但系統中仍有其他任務在運行。這代表系統開始出現延遲，性能正在退化。</li>
+<li><strong><code>full</code> (完全停擺)</strong>：所有非空閒任務在同一時間都被阻塞。這代表資源已完全耗盡，系統進入了短暫的「死鎖」或極端飢餓狀態。</li>
+</ol>
+<h3 id="_2">三大資源的痛苦特徵</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">資源</th>
+<th style="text-align: left;"><code>some</code> 的表現</th>
+<th style="text-align: left;"><code>full</code> 的表現</th>
+<th style="text-align: left;">SRE 的直覺診斷</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>CPU</strong></td>
+<td style="text-align: left;">尾端延遲 (Tail Latency) 增加</td>
+<td style="text-align: left;">應用程式完全失去響應 (Frozen)</td>
+<td style="text-align: left;">CPU 過載 $\to$ CFS Throttling $\to$ 中斷風暴</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Memory</strong></td>
+<td style="text-align: left;">偶發性卡頓，Page Cache 劇烈抖動</td>
+<td style="text-align: left;">系統大面積 Swap，觸發 OOM-Killer</td>
+<td style="text-align: left;">記憶體洩漏 $\to$ 激進的回收 $\to$ 記憶體不足</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>I/O</strong></td>
+<td style="text-align: left;">磁碟寫入緩慢，<code>iowait</code> 升高</td>
+<td style="text-align: left;">應用程式阻塞在同步寫入，檔案系統掛起</td>
+<td style="text-align: left;">磁碟 IOPS 飽和 $\to$ EBS 吞吐量達上限 $\to$ 核心死鎖</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sre-psi">SRE 實戰：如何解讀 PSI 訊號？</h2>
+<p>你可以直接透過 <code>/proc/pressure/</code> 下的偽檔案查看目前的壓力狀況：</p>
+<pre><code class="language-bash">cat /proc/pressure/memory
+# 輸出示例：some avg10=0.00 avg60=0.05 avg300=0.01
+</code></pre>
+<p><strong>解讀</strong>：在過去 60 秒中，有 5% 的時間至少有一個任務因為記憶體問題而停擺。</p>
+<h3 id="times-psi">診斷矩陣：利用率 $\times$ PSI</h3>
+<p>當你將 PSI 與傳統利用率結合時，真正的瓶頸會立即現形：</p>
 <ul>
-<li><a href="../posts/performance/cpu-topology/">性能的「隱形牆」：CPU Topology 與 NUMA 的深度對齊實踐</a> - 探討數據局部性、L3 快取爭搶與 NUMA 節點對齊。</li>
-<li><a href="../posts/performance/scheduler-cfs/">破解 CPU 飢餓：解構 Linux CFS 調度器與 Throttling 的真相</a> - 剖析 vruntime、紅黑樹與 Quota Throttling 的性能博弈。</li>
-<li><a href="../posts/performance/psi-pressure-stalls/">別被 CPU 使用率騙了：用 PSI 捕捉系統資源的「真實痛苦」</a> - 區分 Activity 與 Pain，利用 PSI 定位隱形資源飢餓。</li>
-<li><a href="../posts/performance/vfs/">從路徑解析到 I/O 阻塞：揭秘 Linux VFS 與「元數據風暴」</a> - 解構 Inode/Dentry 緩存與路徑解析的性能陷阱。</li>
+<li><strong>高利用率 + 高 PSI</strong> $\rightarrow$ <strong>真實過載</strong>：資源確實不夠用了。$\text{方案} \to$ 擴容 (Scale-up/out)。</li>
+<li><strong>低利用率 + 高 PSI</strong> $\rightarrow$ <strong>隱形阻塞</strong>：這是最危險的訊號。代表你的應用程式被某個低效的資源路徑（例如單線程阻塞在慢速磁碟 I/O）卡死了。$\text{方案} \to$ 優化 I/O 模式或檢查硬體故障。</li>
 </ul>
-<h2 id="tuning-stack">🛠️ Tuning Stack</h2>
-<ul>
-<li><strong>Hardware</strong>: CPU Topology $\rightarrow$ NUMA $\rightarrow$ PCIe Bus</li>
-<li><strong>Kernel</strong>: CFS Scheduler $\rightarrow$ VFS $\rightarrow$ PSI</li>
-<li><strong>Observation</strong>: <code>perf</code> $\rightarrow$ <code>ebpf</code> $\rightarrow$ <code>numastat</code></li>
-</ul>
+<h2 id="psi">避坑指南：PSI 的陷阱</h2>
+<ol>
+<li><strong>不要對 <code>some</code> 發出 P1 告警</strong>：<code>some</code> 是預警，<code>full</code> 才是危機。除非 <code>some</code> 持續處於高位，否則它通常只是短暫的尖峰。</li>
+<li><strong>不要忽略 I/O PSI</strong>：許多 SRE 習慣監控 CPU 和 Mem，但 I/O PSI 是唯一能區分「程式碼寫得爛」與「核心 Block Layer 太慢」的指標。</li>
+<li><strong>優先看 Cgroup PSI</strong>：在容器化環境中，全域的 <code>/proc/pressure</code> 會被其他容器的噪音干擾。請務必檢查 <code>/sys/fs/cgroup/.../cpu.pressure</code> 以精確定位是哪個 Pod 在痛苦。</li>
+</ol>
+<h2 id="_3">總結</h2>
+<p>PSI 將 Linux 的可觀測性從「資源佔用」提升到了「任務感知」。下次當你面對「CPU 沒滿但系統很慢」的詭異現象時，請直接打開 <code>/proc/pressure</code>。</p>
+<p><strong>記住：利用率衡量的是機器在做什麼，而 PSI 衡量的是應用程式在承受什麼。</strong></p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -693,10 +811,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
