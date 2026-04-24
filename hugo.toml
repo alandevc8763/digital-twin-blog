@@ -19,18 +19,23 @@ theme = 'PaperMod'
         name = 'github'
         url = 'https://github.com/alandevc8763'
 
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            unsafe = true
+
 [menu]
     [[menu.main]]
         name = 'SRE Hub'
-        url = '/categories/sre/'
+        url = '/sre-hub/'
         weight = 10
     [[menu.main]]
         name = 'AI Hub'
-        url = '/categories/ai/'
+        url = '/ai-hub/'
         weight = 20
     [[menu.main]]
         name = 'HomeLab Hub'
-        url = '/categories/homelab/'
+        url = '/homelab-hub/'
         weight = 30
     [[menu.main]]
         name = 'Journey'
