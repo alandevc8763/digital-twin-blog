@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>K8S-Storage-Plumbing.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/</link><description>Recent content in K8S-Storage-Plumbing.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/k8s-storage-plumbing.md/index.xml" rel="self" type="application/rss+xml"/><item><title>K8S Storage Plumbing</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/k8s-storage-plumbing/</guid><description>&lt;h1 id="為什麼你的-pod-一直卡在-containercreating揭秘-k8s-儲存底層的掛載地獄">為什麼你的 Pod 一直卡在 ContainerCreating？：揭秘 K8s 儲存底層的「掛載地獄」&lt;/h1>
+&lt;p>在 Kubernetes 的世界裡，儲存 (Storage) 往往是最容易讓人崩潰的部分。你定義了 PVC，建立了 StorageClass，但 Pod 卻像進入了黑洞一樣，永遠卡在 &lt;code>ContainerCreating&lt;/code>。&lt;/p>
+&lt;p>大多數人習慣執行 &lt;code>kubectl describe pod&lt;/code> 看到 &lt;code>MountVolume.SetUp failed&lt;/code> 就開始猜測是權限問題或雲端配額不足。但作為 SRE，我們必須意識到：&lt;strong>K8s 的 Volume 並不是一個「磁碟」，而是一個被精確管理生命週期的「掛載點 (Mount Point)」。&lt;/strong>&lt;/p>
+&lt;p>從一個 PVC 請求變成 Pod 裡一個可以寫入的目錄，封包和指令經歷了一場從控制平面 $
+ightarrow$ CSI 驅動 $
+ightarrow$ Kubelet $
+ightarrow$ Linux 核心 VFS 的長途跋涉。&lt;/p>
+&lt;h2 id="儲存請求的垂直路徑從-api-到-block">儲存請求的「垂直路徑」：從 API 到 Block&lt;/h2>
+&lt;h3 id="1-宣告層-k8s-api">1. 宣告層 (K8s API)&lt;/h3>
+&lt;p>一切始於 &lt;code>PersistentVolumeClaim&lt;/code> (PVC)。這是一個「願望清單」，告訴 K8s 我需要多少空間、什麼樣的存取模式 (&lt;code>ReadWriteOnce&lt;/code> 等)。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>SRE 訊號&lt;/strong>：如果 PVC 狀態一直是 &lt;code>Pending&lt;/code>，請直接檢查 &lt;code>StorageClass&lt;/code> 設定或雲端供應商的 Quota，不要在 Pod 層面浪費時間。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-編排層-kubelet--csi">2. 編排層 (Kubelet &amp;amp; CSI)&lt;/h3>
+&lt;p>當 Pod 被調度到節點後，真正的「搬運」開始了：&lt;/p></description></item></channel></rss>

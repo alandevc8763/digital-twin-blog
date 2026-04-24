@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Sre Infra.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/sre-infra.md/</link><description>Recent content in Sre Infra.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/sre-infra.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Sre_Infra</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-infra/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/sre-infra/</guid><description>&lt;h1 id="-sre--infrastructure-hub">🛠️ SRE &amp;amp; Infrastructure Hub&lt;/h1>
+&lt;p>Welcome to the SRE Knowledge Map. Here, we dive deep into the Linux kernel, networking stacks, and the art of building stable, high-performance systems.&lt;/p>
+&lt;h2 id="-performance--kernel">🚀 Performance &amp;amp; Kernel&lt;/h2>
+&lt;p>&lt;em>Focus: Squeezing every drop of performance from the hardware.&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>CPU &amp;amp; Memory&lt;/strong>: [[articles/performance/cpu-numa|CPU Topology &amp;amp; NUMA Penalties]] $\rightarrow$ [[articles/performance/cfs-scheduler|CFS Scheduler Deep Dive]]&lt;/li>
+&lt;li>&lt;strong>I/O Path&lt;/strong>: [[articles/performance/vfs-tracing|VFS &amp;amp; Page Cache Tracing]] $\rightarrow$ [[articles/performance/psi-metrics|PSI Pressure Metrics]]&lt;/li>
+&lt;li>&lt;strong>Network Stack&lt;/strong>: [[articles/tcp-stack-deep-dive|TCP Stack Internals]] $\rightarrow$ [[articles/network-tuning-deep-dive|Network Tuning Guide]]&lt;/li>
+&lt;li>&lt;strong>Observability&lt;/strong>: [[articles/ebpf-modern-observability|eBPF Modern Observability]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="-container--orchestration">📦 Container &amp;amp; Orchestration&lt;/h2>
+&lt;p>&lt;em>Focus: The plumbing of modern cloud-native environments.&lt;/em>&lt;/p></description></item></channel></rss>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Autonomous-Coding-Agents.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/</link><description>Recent content in Autonomous-Coding-Agents.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/autonomous-coding-agents.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Autonomous Coding Agents</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/autonomous-coding-agents/</guid><description>&lt;h1 id="從-copilot-到-software-engineer解構-openhands-與-cline-的自主編碼路徑">從 Copilot 到 Software Engineer：解構 OpenHands 與 Cline 的自主編碼路徑&lt;/h1>
+&lt;p>大多數開發者對 AI 編碼的認知還停留在「對話框生成代碼 $
+ightarrow$ 手動複製 $
+ightarrow$ 貼上 $
+ightarrow$ 修 Bug」。這種模式下，AI 是一個助手 (Copilot)，而人類是那個疲憊的「搬運工」。&lt;/p>
+&lt;p>但真正的範式轉移正在發生：&lt;strong>AI 正在從「建議代碼」轉向「自主執行」&lt;/strong>。&lt;/p>
+&lt;p>最近我對比了 &lt;strong>OpenHands&lt;/strong> 與 &lt;strong>Cline&lt;/strong> 這類自主編碼 Agent。它們不再僅僅是建議你怎麼寫，而是直接接管終端、讀取文件、執行測試並根據報錯自行修復。這就是從 Copilot 到 &lt;strong>AI Software Engineer&lt;/strong> 的跨越。&lt;/p>
+&lt;h2 id="核心差異插件-vs-獨立環境">核心差異：插件 vs 獨立環境&lt;/h2>
+&lt;p>雖然兩者都追求自主化，但其工程路徑截然不同：&lt;/p>
+&lt;h3 id="1-cline極致的-ide-融合">1. Cline：極致的 IDE 融合&lt;/h3>
+&lt;p>Cline (原 Claude Dev) 的強項在於對 IDE 的深度集成。它將 LLM 的能力直接注入到編輯器中，透過 MCP (Model Context Protocol) 與本地文件系統、終端互動。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>體驗&lt;/strong>：像是一個住在 VS Code 裡的超級工程師，你給他一個任務，他直接在你的編輯器裡開文件、寫代碼、跑測試。&lt;/li>
+&lt;li>&lt;strong>適用場景&lt;/strong>：快速功能開發、局部重構。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-openhands工業級的-agent-基礎設施">2. OpenHands：工業級的 Agent 基礎設施&lt;/h3>
+&lt;p>與 Cline 不同，OpenHands 的定位更像是一個 &lt;strong>Agent 平台&lt;/strong>。它將 Agent 引擎 (SDK) 與界面 (GUI/CLI) 完全解耦。&lt;/p></description></item></channel></rss>

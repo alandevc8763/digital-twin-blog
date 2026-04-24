@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Claude-Context.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/claude-context.md/</link><description>Recent content in Claude-Context.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/claude-context.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude Context</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/claude-context/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/claude-context/</guid><description>&lt;h1 id="當-context-window-依然不夠用時用-claude-context-構建程式碼的語義地圖">當 Context Window 依然不夠用時：用 Claude Context 構建程式碼的「語義地圖」&lt;/h1>
+&lt;p>很多開發者在面對 200K 甚至 1M 的上下文窗口 (Context Window) 時，容易陷入一個誤區：認為只要把所有程式碼全部塞進去，LLM 就能理解一切。&lt;/p>
+&lt;p>但事實是，即使窗口夠大，&lt;strong>「大海撈針 (Needle In A Haystack)」&lt;/strong> 效應依然存在。過多的冗餘資訊會稀釋關鍵信號，導致模型產生幻覺或遺漏細節。對於真正的生產級 codebase 來說，我們需要的不是更大的窗口，而是一個能精確導航的 &lt;strong>「語義地圖」&lt;/strong>。&lt;/p>
+&lt;p>這就是 &lt;strong>Claude Context&lt;/strong> 試圖解決的問題。&lt;/p>
+&lt;h2 id="為什麼簡單的-rag-對於程式碼來說是失敗的">為什麼簡單的 RAG 對於程式碼來說是失敗的？&lt;/h2>
+&lt;p>大多數的 RAG (檢索增強生成) 系統在處理文本時表現良好，但在處理程式碼時往往表現糟糕。原因在於：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>塊分割 (Chunking) 太隨機&lt;/strong>：傳統 RAG 按照字符數分割，經常把一個函數切成兩半，導致語義丟失。&lt;/li>
+&lt;li>&lt;strong>缺乏結構意識&lt;/strong>：它不理解函數調用鏈、類繼承或模組依賴，只把程式碼當成普通的字符串。&lt;/li>
+&lt;/ul>
+&lt;p>Claude Context 透過以下技術打破了這個僵局：&lt;/p>
+&lt;h3 id="1-ast-aware-chunking-基於抽象語法樹的切分">1. AST-Aware Chunking (基於抽象語法樹的切分)&lt;/h3>
+&lt;p>它不再隨機切分，而是利用 &lt;strong>AST (Abstract Syntax Tree)&lt;/strong> 根據程式碼的邏輯結構（如函數邊界、類定義）進行切分。這確保了被檢索出來的每一個片段都是一個「完整的邏輯單元」。&lt;/p>
+&lt;h3 id="2-混合搜索-semantic-hybrid-search">2. 混合搜索 (Semantic Hybrid Search)&lt;/h3>
+&lt;p>單純的向量搜索 (Dense Vector Search) 有時會太過「模糊」，而關鍵字搜索 (BM25) 又太過「死板」。Claude Context 將兩者結合：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>精確匹配&lt;/strong>：快速定位特定的函數名或變量名。&lt;/li>
+&lt;li>&lt;strong>概念關聯&lt;/strong>：即使你沒有使用精確的詞彙，也能通過語義關聯找到相關邏輯。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-增量索引-incremental-indexing">3. 增量索引 (Incremental Indexing)&lt;/h3>
+&lt;p>對於大型項目，重新索引整個 codebase 是不可接受的。它引入了 &lt;strong>Merkle Tree&lt;/strong> 機制，僅對修改過的檔案進行更新，確保索引始終與最新代碼同步，且幾乎不消耗額外資源。&lt;/p></description></item></channel></rss>

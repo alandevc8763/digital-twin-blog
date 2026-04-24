@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Homelab.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/homelab.md/</link><description>Recent content in Homelab.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/homelab.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Homelab</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/homelab/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/homelab/</guid><description>&lt;h1 id="-homelab-deep-dive-hub">🏠 HomeLab Deep Dive Hub&lt;/h1>
+&lt;p>Where SRE meets the home. This hub is about building &amp;ldquo;Sovereign Infrastructure&amp;rdquo; — having total control over your compute, storage, and AI.&lt;/p>
+&lt;h2 id="-storage-mastery">💾 Storage Mastery&lt;/h2>
+&lt;p>&lt;em>Focus: Data durability and the fight against Bit Rot.&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>ZFS&lt;/strong>: [[articles/homelab/nas-zfs-integrity|NAS ZFS &amp;amp; Data Integrity]]&lt;/li>
+&lt;li>&lt;strong>Architecture&lt;/strong>: [[articles/homelab/nas-vs-das|NAS vs DAS: Choosing your Pipe]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="-hypervisor--compute">🖥️ Hypervisor &amp;amp; Compute&lt;/h2>
+&lt;p>&lt;em>Focus: Virtualization at scale on consumer hardware.&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Proxmox&lt;/strong>: [[articles/homelab/proxmox-deep-dive|Proxmox VE Deep Dive]]&lt;/li>
+&lt;li>&lt;strong>GPU&lt;/strong>: [[articles/homelab/local-ai-infra|Local AI Infra: GPU Passthrough]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="-app-ecosystem">📦 App Ecosystem&lt;/h2>
+&lt;p>&lt;em>Focus: Moving from &amp;ldquo;managing files&amp;rdquo; to &amp;ldquo;managing services.&amp;rdquo;&lt;/em>&lt;/p></description></item></channel></rss>

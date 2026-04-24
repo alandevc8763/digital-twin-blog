@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ops-Guide.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/</link><description>Recent content in Ops-Guide.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/ops-guide.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Ops Guide</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</guid><description>&lt;h1 id="kafka-快速操作指南從部署到調試">Kafka 快速操作指南：從部署到調試&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Operations / SRE&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Operational Tooling)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>對於 SRE 而言，掌握 Kafka 的 CLI 工具不僅是為了部署，更是為了在故障發生時快速定位問題。理解 &lt;code>kafka-topics&lt;/code> $\rightarrow$ &lt;code>kafka-console-producer&lt;/code> $\rightarrow$ &lt;code>kafka-console-consumer&lt;/code> 的數據流向是所有調試的基礎。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-核心指令速查表">🛠️ 核心指令速查表&lt;/h3>
+&lt;h4 id="1-topic-管理-the-skeleton">1. Topic 管理 (The Skeleton)&lt;/h4>
+&lt;ul>
+&lt;li>&lt;strong>創建 Topic&lt;/strong>：
+&lt;code>kafka-topics.sh --create --topic my-topic --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2&lt;/code>&lt;/li>
+&lt;li>&lt;strong>查看 Topic 詳情&lt;/strong>：
+&lt;code>kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;li>&lt;strong>刪除 Topic&lt;/strong>：
+&lt;code>kafka-topics.sh --delete --topic my-topic --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h4 id="2-數據生產與消費-the-flow">2. 數據生產與消費 (The Flow)&lt;/h4>
+&lt;ul>
+&lt;li>&lt;strong>快速發送消息 (Producer)&lt;/strong>：
+&lt;code>kafka-console-producer.sh --topic my-topic --bootstrap-server localhost:9092&lt;/code> $\rightarrow$ &lt;em>進入交互模式後輸入消息&lt;/em>&lt;/li>
+&lt;li>&lt;strong>從頭讀取所有消息 (Consumer)&lt;/strong>：
+&lt;code>kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;li>&lt;strong>指定消費者組讀取 (Consumer Group)&lt;/strong>：
+&lt;code>kafka-console-consumer.sh --topic my-topic --group my-group --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h4 id="3-狀態監控-the-health-check">3. 狀態監控 (The Health Check)&lt;/h4>
+&lt;ul>
+&lt;li>&lt;strong>查看消費者組偏移量 (Consumer Lag)&lt;/strong>：
+&lt;code>kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092&lt;/code>
+&lt;em>$\text{關鍵指標}$：$\text{LOG-END-OFFSET} - \text{CURRENT-OFFSET} = \text{LAG}$&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;h3 id="-sre-實操坑洞">⚠️ SRE 實操坑洞&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Zookeeper 依賴&lt;/strong>：在舊版本中，所有元數據都在 ZK，如果 ZK 響應慢，會導致所有 Broker 劇烈抖動。&lt;/li>
+&lt;li>&lt;strong>Partition 數量不可減少&lt;/strong>：一旦 Topic 創建，Partition 數量只能增加不能減少。建議在創建時根據預期吞吐量合理設定。&lt;/li>
+&lt;/ul>
+&lt;h2 id="synergy">Synergy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Prometheus Monitoring&lt;/strong>：建議將 &lt;code>kafka-exporter&lt;/code> 接入 Prometheus，將上述 CLI 指標轉化為實時 Dashboard 監控。&lt;/li>
+&lt;li>&lt;strong>Log Aggregation&lt;/strong>：Kafka 是 ELK 棧 (Elasticsearch-Logstash-Kibana) 中最核心的緩衝層。&lt;/li>
+&lt;/ul></description></item></channel></rss>

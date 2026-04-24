@@ -1,23 +1,18 @@
 baseURL = 'https://alandevc8763.github.io/digital-twin-blog/'
 languageCode = 'zh-tw'
-title = "Alan's Digital Twin Blog"
+title = "Alans Digital Twin Blog"
 theme = 'PaperMod'
 
 [params]
     env = 'production'
-    title = 'Alan\'s Digital Twin Blog'
+    title = 'Alans Digital Twin Blog'
     description = 'SRE, HomeLab, and AI Engineering Insights'
     author = 'Alan'
-    
-    # 視覺風格配置 (Gold-on-Slate)
-    # PaperMod 原生支持 Class-based theme switching, 
-    # 我們將通過 custom CSS 進一步精細化 Gold 顏色
     defaultTheme = 'dark'
     showCodeCopy = true
-    
-    # 導航配置
+
     [params.homeInfoParams]
-        Title = 'Alan\'s Digital Twin'
+        Title = 'Alans Digital Twin'
         Content = 'Architecting the bridge from Silicon to Prompt. Exploring SRE, HomeLab, and AI Engineering.'
 
     [[params.socialIcons]]

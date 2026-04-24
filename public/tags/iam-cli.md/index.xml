@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Iam-Cli.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/</link><description>Recent content in Iam-Cli.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/iam-cli.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Iam Cli</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</guid><description>&lt;h1 id="aws-cli高效帳號切換實踐">AWS-CLI：高效帳號切換實踐&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Operations / CLI Efficiency&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Productivity Hack)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>對於管理多個 AWS 環境 (Dev/Staging/Prod) 的 SRE 而言，頻繁的帳號切換是最高頻的痛點。透過 &lt;strong>環境變數隔離&lt;/strong> 與 &lt;strong>Shell Function 封裝&lt;/strong>，可以將切換成本從「手動修改配置」降低至「單次指令」。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-三種切換方案對比">🚀 三種切換方案對比&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">方案&lt;/th>
+&lt;th style="text-align: left">操作方式&lt;/th>
+&lt;th style="text-align: left">適用場景&lt;/th>
+&lt;th style="text-align: left">優缺點&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>&amp;ndash;profile 參數&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">&lt;code>aws s3 ls --profile lab&lt;/code>&lt;/td>
+&lt;td style="text-align: left">單次指令&lt;/td>
+&lt;td style="text-align: left">$\checkmark$ 最安全 $\text{X}$ 輸入冗長&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>環境變數&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">&lt;code>export AWS_PROFILE=lab&lt;/code>&lt;/td>
+&lt;td style="text-align: left">當前 Session&lt;/td>
+&lt;td style="text-align: left">$\checkmark$ 快速 $\text{X}$ 容易忘記切換導致誤操作&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Shell Function&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">&lt;code>change_aws_profile lab&lt;/code>&lt;/td>
+&lt;td style="text-align: left">全局快速切換&lt;/td>
+&lt;td style="text-align: left">$\checkmark$ 極速 $\text{X}$ 需配置 &lt;code>.zshrc/.bashrc&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="-最佳實踐shell-function-封裝">🛠️ 最佳實踐：Shell Function 封裝&lt;/h3>
+&lt;p>在 &lt;code>.zshrc&lt;/code> 或 &lt;code>.bashrc&lt;/code> 中添加以下代碼：&lt;/p></description></item></channel></rss>

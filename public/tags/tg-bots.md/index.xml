@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tg-Bots.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/tg-bots.md/</link><description>Recent content in Tg-Bots.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/tg-bots.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Tg Bots</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/tg-bots/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/tg-bots/</guid><description>&lt;h1 id="telegram-憑證監控機器人代碼優化實踐">Telegram 憑證監控機器人：代碼優化實踐&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Automation / Security Monitoring&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Engineering Improvement)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>自動化工具的生命週期在於 &lt;strong>「可維護性」&lt;/strong>。將硬編碼 (Hard-coded) 的參數轉移至配置文件 (YAML)，並通過指令化界面 (Command Interface) 暴露內部狀態，能將一個單純的「腳本」提升為一個「可運行的服務」。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-優化核心配置外部化">🛠️ 優化核心：配置外部化&lt;/h3>
+&lt;p>將 API Token、資料庫連接字串等敏感資訊從 Python 代碼移至 &lt;code>config.yaml&lt;/code>。
+&lt;strong>優點&lt;/strong>：無需修改代碼即可切換環境（Dev $\rightarrow$ Prod），且能避免密鑰洩漏至 Git 倉庫。&lt;/p>
+&lt;h3 id="-功能擴展狀態可視化">🤖 功能擴展：狀態可視化&lt;/h3>
+&lt;p>新增兩個核心指令提升可操作性：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>/show_cert_info&lt;/code>：直接從 MongoDB 讀取並格式化輸出目標域名的證書詳情（Subject, Issuer, Expiry）。&lt;/li>
+&lt;li>&lt;code>/help&lt;/code>：提供自助式指令指南，降低用戶進入門檻。&lt;/li>
+&lt;/ul>
+&lt;h3 id="-技術棧">⚙️ 技術棧&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Language&lt;/strong>: Python 3.9+&lt;/li>
+&lt;li>&lt;strong>Storage&lt;/strong>: MongoDB (儲存憑證狀態與監控清單)&lt;/li>
+&lt;li>&lt;strong>Interface&lt;/strong>: Telegram Bot API&lt;/li>
+&lt;/ul>
+&lt;h2 id="synergy">Synergy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Observability&lt;/strong>：此模式可延伸至所有基礎設施監控工具，將「被動告警」轉化為「主動查詢」。&lt;/li>
+&lt;li>&lt;strong>Agentic Workflow&lt;/strong>：此機器人可作為 AI Agent 的一個「感知端 (Sensing Layer)」，讓 Agent 能夠監控憑證狀態並自動觸發更新流程。&lt;/li>
+&lt;/ul></description></item></channel></rss>

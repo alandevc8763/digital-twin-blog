@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cloud Infra on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/cloud-infra/</link><description>Recent content in Cloud Infra on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/cloud-infra/index.xml" rel="self" type="application/rss+xml"/><item><title>Aws Msk</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/aws-msk/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/aws-msk/</guid><description>&lt;h1 id="aws-msk實作-iam-角色型身份驗證">AWS MSK：實作 IAM 角色型身份驗證&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Infrastructure / Message Queue&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥈 Silver (Operational Best Practice)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>在企業級環境中，捨棄 SASL/SCRAM 而採用 &lt;strong>IAM 角色型驗證&lt;/strong> 是為了實現「零密鑰管理」與「精細權限控制」。透過 AWS IAM，我們可以將權限直接綁定到執行個體的 Role，徹底消除密鑰洩漏風險，並簡化跨服務（如 MSK Connect）的集成過程。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-叢集部署要點">🎯 叢集部署要點&lt;/h3>
+&lt;ol>
+&lt;li>&lt;strong>叢集設定&lt;/strong>：選擇自訂建立 $\rightarrow$ 規格最小化（開發環境） $\rightarrow$ 3 個可用區 (AZ) 以確保高可用。&lt;/li>
+&lt;li>&lt;strong>網路配置&lt;/strong>：使用預設 VPC，確保每個 AZ 擁有獨立子網。&lt;/li>
+&lt;li>&lt;strong>安全設定&lt;/strong>：
+&lt;ul>
+&lt;li>&lt;strong>驗證方式&lt;/strong>：選定 &lt;code>IAM role-based authentication&lt;/code>。&lt;/li>
+&lt;li>&lt;strong>加密&lt;/strong>：使用 AWS 受管金鑰加密靜態資料。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="-iam-policy-權限拆解">🔐 IAM Policy 權限拆解&lt;/h3>
+&lt;p>為了確保最小權限原則，Policy 應分為三個維度：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Cluster Level&lt;/strong> (&lt;code>Connect&lt;/code>, &lt;code>AlterCluster&lt;/code>, &lt;code>DescribeCluster&lt;/code>)：允許 Client 端與叢集建立通信。&lt;/li>
+&lt;li>&lt;strong>Topic Level&lt;/strong> (&lt;code>*Topic*&lt;/code>, &lt;code>WriteData&lt;/code>, &lt;code>ReadData&lt;/code>)：控制訊息的讀寫權限。&lt;/li>
+&lt;li>&lt;strong>Group Level&lt;/strong>：管理消費者分組的權限。&lt;/li>
+&lt;/ul>
+&lt;h3 id="-實作坑洞">🛠️ 實作坑洞&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>連接器兼容性&lt;/strong>：部分第三方連接器不支援 SASL/SCRAM，必須切換至 IAM 驗證方可正常運作。&lt;/li>
+&lt;li>&lt;strong>建立時間&lt;/strong>：MSK 叢集建立約需 15 分鐘，建議在 CI/CD Pipeline 中設置適當的等待時間。&lt;/li>
+&lt;/ul>
+&lt;h2 id="synergy">Synergy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Infrastructure as Code (IaC)&lt;/strong>：此流程可直接轉化為 Terraform 或 CloudFormation 模組。&lt;/li>
+&lt;li>&lt;strong>Zero Trust Architecture&lt;/strong>：IAM 驗證是實現雲端零信任架構的核心步驟。&lt;/li>
+&lt;/ul></description></item><item><title>Core Concepts</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</guid><description>&lt;h1 id="kafka-核心概念與元件詳解">Kafka 核心概念與元件詳解&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Distributed Systems / Message Queue&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥇 Gold (Foundational Knowledge)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>Kafka 的強大在於它將訊息系統抽象為一個 &lt;strong>「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong>。透過將 Topic 拆分為 Partition，並使用 Offset 作為消費游標，Kafka 實現了極高吞吐量的順序寫入與並行消費，從而解耦了生產者與消費者的處理速度。&lt;/p>
+&lt;h2 id="核心元件詳解">核心元件詳解&lt;/h2>
+&lt;h3 id="1-topic-主題">1. Topic (主題)&lt;/h3>
+&lt;p>Topic 是 Kafka 中對訊息進行邏輯分類的單位。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>特性&lt;/strong>：一個 Topic 可以包含多個 Partition。&lt;/li>
+&lt;li>&lt;strong>設計要點&lt;/strong>：Topic 的命名應反映其數據的語義（例如 &lt;code>user_login_events&lt;/code>），且一旦創建，Partition 數量增加後通常無法減少。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-partition-分區-rightarrow-並行度的核心">2. Partition (分區) $\rightarrow$ 並行度的核心&lt;/h3>
+&lt;p>Partition 是 Topic 的物理拆分，是 Kafka 實現水平擴展的基礎。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>分發邏輯&lt;/strong>：生產者根據 Key 的 Hash 值決定訊息進入哪個 Partition。若 Key 為空，則採用輪詢 (Round-robin) 策略。&lt;/li>
+&lt;li>&lt;strong>順序保證&lt;/strong>：Kafka 僅保證 &lt;strong>單個 Partition 內&lt;/strong> 的訊息順序，不保證整個 Topic 的全局順序。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-messagerecord-訊息">3. Message/Record (訊息)&lt;/h3>
+&lt;p>訊息是 Kafka 傳輸的最小原子單位。&lt;/p></description></item><item><title>Design Philosophy</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/design-philosophy/</guid><description>&lt;h1 id="kafka-核心設計哲學分佈式流處理的基石">Kafka 核心設計哲學：分佈式流處理的基石&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Distributed Systems / Messaging Queue&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥇 Gold (Architectural Foundation)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>Kafka 的成功不在於它是一個「消息隊列」，而是在於它將自己定位為一個 &lt;strong>「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong>。透過將隨機寫入轉化為 &lt;strong>順序寫入 (Sequential I/O)&lt;/strong> 並利用 &lt;strong>頁快取 (Page Cache)&lt;/strong> 與 &lt;strong>零拷貝 (Zero Copy)&lt;/strong>，Kafka 打破了傳統 MQ 在吞吐量上的瓶頸，實現了極高規模的數據流處理。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-核心架構三要素">🏗️ 核心架構三要素&lt;/h3>
+&lt;ol>
+&lt;li>&lt;strong>Append-only Log&lt;/strong>：所有數據以追加方式寫入日誌文件，確保了寫入性能的極致，並天然支持多消費者以不同 Offset 讀取。&lt;/li>
+&lt;li>&lt;strong>Partitioning (分區)&lt;/strong>：通過將 Topic 分為多個 Partition，實現了水平擴展 (Horizontal Scaling) 與並行處理能力。&lt;/li>
+&lt;li>&lt;strong>Replication (副本)&lt;/strong>：通過 Leader-Follower 機制確保數據的高可用性，即使部分 Broker 宕機，數據依然可被恢復。&lt;/li>
+&lt;/ol>
+&lt;h3 id="-性能加速秘密">⚡ 性能加速秘密&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Sequential I/O&lt;/strong>：磁盤順序寫入速度遠快於隨機寫入。&lt;/li>
+&lt;li>&lt;strong>Zero Copy (sendfile)&lt;/strong>：數據直接從內核 Page Cache 傳輸到 NIC 緩衝區，跳過了用戶空間的多次拷貝，極大降低了 CPU 負荷。&lt;/li>
+&lt;li>&lt;strong>Batching&lt;/strong>：將多條消息聚合為一個 Batch 傳輸，減少網絡交互次數。&lt;/li>
+&lt;/ul>
+&lt;h2 id="synergy">Synergy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>LSM-Tree&lt;/strong>：Kafka 的日誌結構與 NoSQL (如 Cassandra, RocksDB) 的 LSM-Tree 理念一致，均追求寫入性能最大化。&lt;/li>
+&lt;li>&lt;strong>Event Sourcing&lt;/strong>：Kafka 的 Log 結構是實現事件溯源 (Event Sourcing) 的天然基礎，允許系統在任何時間點重建狀態。&lt;/li>
+&lt;/ul></description></item><item><title>Iam Cli</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/iam-cli/</guid><description>&lt;h1 id="aws-cli高效帳號切換實踐">AWS-CLI：高效帳號切換實踐&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Operations / CLI Efficiency&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Productivity Hack)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>對於管理多個 AWS 環境 (Dev/Staging/Prod) 的 SRE 而言，頻繁的帳號切換是最高頻的痛點。透過 &lt;strong>環境變數隔離&lt;/strong> 與 &lt;strong>Shell Function 封裝&lt;/strong>，可以將切換成本從「手動修改配置」降低至「單次指令」。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-三種切換方案對比">🚀 三種切換方案對比&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">方案&lt;/th>
+&lt;th style="text-align: left">操作方式&lt;/th>
+&lt;th style="text-align: left">適用場景&lt;/th>
+&lt;th style="text-align: left">優缺點&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>&amp;ndash;profile 參數&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">&lt;code>aws s3 ls --profile lab&lt;/code>&lt;/td>
+&lt;td style="text-align: left">單次指令&lt;/td>
+&lt;td style="text-align: left">$\checkmark$ 最安全 $\text{X}$ 輸入冗長&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>環境變數&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">&lt;code>export AWS_PROFILE=lab&lt;/code>&lt;/td>
+&lt;td style="text-align: left">當前 Session&lt;/td>
+&lt;td style="text-align: left">$\checkmark$ 快速 $\text{X}$ 容易忘記切換導致誤操作&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Shell Function&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">&lt;code>change_aws_profile lab&lt;/code>&lt;/td>
+&lt;td style="text-align: left">全局快速切換&lt;/td>
+&lt;td style="text-align: left">$\checkmark$ 極速 $\text{X}$ 需配置 &lt;code>.zshrc/.bashrc&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="-最佳實踐shell-function-封裝">🛠️ 最佳實踐：Shell Function 封裝&lt;/h3>
+&lt;p>在 &lt;code>.zshrc&lt;/code> 或 &lt;code>.bashrc&lt;/code> 中添加以下代碼：&lt;/p></description></item><item><title>Ops Guide</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ops-guide/</guid><description>&lt;h1 id="kafka-快速操作指南從部署到調試">Kafka 快速操作指南：從部署到調試&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Cloud Operations / SRE&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥉 Bronze (Operational Tooling)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>對於 SRE 而言，掌握 Kafka 的 CLI 工具不僅是為了部署，更是為了在故障發生時快速定位問題。理解 &lt;code>kafka-topics&lt;/code> $\rightarrow$ &lt;code>kafka-console-producer&lt;/code> $\rightarrow$ &lt;code>kafka-console-consumer&lt;/code> 的數據流向是所有調試的基礎。&lt;/p>
+&lt;h2 id="implementation-details">Implementation Details&lt;/h2>
+&lt;h3 id="-核心指令速查表">🛠️ 核心指令速查表&lt;/h3>
+&lt;h4 id="1-topic-管理-the-skeleton">1. Topic 管理 (The Skeleton)&lt;/h4>
+&lt;ul>
+&lt;li>&lt;strong>創建 Topic&lt;/strong>：
+&lt;code>kafka-topics.sh --create --topic my-topic --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2&lt;/code>&lt;/li>
+&lt;li>&lt;strong>查看 Topic 詳情&lt;/strong>：
+&lt;code>kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;li>&lt;strong>刪除 Topic&lt;/strong>：
+&lt;code>kafka-topics.sh --delete --topic my-topic --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h4 id="2-數據生產與消費-the-flow">2. 數據生產與消費 (The Flow)&lt;/h4>
+&lt;ul>
+&lt;li>&lt;strong>快速發送消息 (Producer)&lt;/strong>：
+&lt;code>kafka-console-producer.sh --topic my-topic --bootstrap-server localhost:9092&lt;/code> $\rightarrow$ &lt;em>進入交互模式後輸入消息&lt;/em>&lt;/li>
+&lt;li>&lt;strong>從頭讀取所有消息 (Consumer)&lt;/strong>：
+&lt;code>kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;li>&lt;strong>指定消費者組讀取 (Consumer Group)&lt;/strong>：
+&lt;code>kafka-console-consumer.sh --topic my-topic --group my-group --bootstrap-server localhost:9092&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h4 id="3-狀態監控-the-health-check">3. 狀態監控 (The Health Check)&lt;/h4>
+&lt;ul>
+&lt;li>&lt;strong>查看消費者組偏移量 (Consumer Lag)&lt;/strong>：
+&lt;code>kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092&lt;/code>
+&lt;em>$\text{關鍵指標}$：$\text{LOG-END-OFFSET} - \text{CURRENT-OFFSET} = \text{LAG}$&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;h3 id="-sre-實操坑洞">⚠️ SRE 實操坑洞&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Zookeeper 依賴&lt;/strong>：在舊版本中，所有元數據都在 ZK，如果 ZK 響應慢，會導致所有 Broker 劇烈抖動。&lt;/li>
+&lt;li>&lt;strong>Partition 數量不可減少&lt;/strong>：一旦 Topic 創建，Partition 數量只能增加不能減少。建議在創建時根據預期吞吐量合理設定。&lt;/li>
+&lt;/ul>
+&lt;h2 id="synergy">Synergy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Prometheus Monitoring&lt;/strong>：建議將 &lt;code>kafka-exporter&lt;/code> 接入 Prometheus，將上述 CLI 指標轉化為實時 Dashboard 監控。&lt;/li>
+&lt;li>&lt;strong>Log Aggregation&lt;/strong>：Kafka 是 ELK 棧 (Elasticsearch-Logstash-Kibana) 中最核心的緩衝層。&lt;/li>
+&lt;/ul></description></item></channel></rss>

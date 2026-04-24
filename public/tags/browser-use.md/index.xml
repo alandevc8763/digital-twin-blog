@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Browser-Use.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/browser-use.md/</link><description>Recent content in Browser-Use.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/browser-use.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Browser Use</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/browser-use/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/browser-use/</guid><description>&lt;h1 id="告別傳統爬蟲當-ai-agent-真正擁有眼睛與手指">告別傳統爬蟲：當 AI Agent 真正擁有「眼睛」與「手指」&lt;/h1>
+&lt;p>如果你曾經為了寫一個爬蟲，花數小時分析 HTML 結構、處理惱人的反爬蟲機制 (Anti-bot)、或是被動態加載的 SPA 頁面搞得心力交瘁，那麼你應該慶幸：&lt;strong>傳統的 Web Scraping 時代正在終結，Agentic Browser Control 時代已經到來。&lt;/strong>&lt;/p>
+&lt;p>最近我深入研究了 &lt;strong>Browser Use&lt;/strong>，這是一個讓 AI Agent 能夠像人類一樣「操作」瀏覽器的框架。它不再是簡單地提取數據，而是讓 Agent 真正具備了在互聯網上完成複雜任務的能力。&lt;/p>
+&lt;h2 id="為什麼傳統爬蟲不再夠用">為什麼傳統爬蟲不再夠用？&lt;/h2>
+&lt;p>傳統爬蟲的核心是「解析 (Parsing)」。我們定義路徑 $
+ightarrow$ 提取內容 $
+ightarrow$ 處理異常。但這種方式有兩個致命缺陷：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>脆弱性 (Fragility)&lt;/strong>：網站只要改一個 CSS Class，你的爬蟲就崩潰了。&lt;/li>
+&lt;li>&lt;strong>互動能力缺失&lt;/strong>：爬蟲很擅長「讀」，但很差於「做」。面對需要登錄、點擊複雜下拉菜單、或是在多個頁面間跳轉的任務，傳統工具極其笨重。&lt;/li>
+&lt;/ol>
+&lt;h2 id="browser-use讓-ai-像人類一樣上網">Browser Use：讓 AI 像人類一樣上網&lt;/h2>
+&lt;p>Browser Use 的核心邏輯是將瀏覽器視為 Agent 的一個 &lt;strong>Tool&lt;/strong>。它不再關注 HTML 的標籤，而關注&lt;strong>視覺與結構的意圖&lt;/strong>。&lt;/p>
+&lt;p>其技術亮點在於：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>LLM 驅動的控制流&lt;/strong>：Agent 直接觀察頁面狀態，決定下一步是 &lt;code>click&lt;/code>、&lt;code>type&lt;/code> 還是 &lt;code>scroll&lt;/code>。這意味著即使頁面結構改變，只要功能還在，Agent 就能找到路徑。&lt;/li>
+&lt;li>&lt;strong>隱匿基礎設施 (Stealth Infra)&lt;/strong>：這是生產級應用的關鍵。通過代理 IP 輪轉和 CAPTCHA 自動破解，它能有效避開大多數網站的機器人檢測，讓 Agent 能在不被封禁的情況下穩定運行。&lt;/li>
+&lt;li>&lt;strong>高精度基準 (High-Accuracy Benchmarks)&lt;/strong>：它針對瀏覽器操作對模型進行了優化，使得完成任務的速度比通用模型快 3-5 倍，且成功率大幅提升。&lt;/li>
+&lt;/ul>
+&lt;h2 id="從數據提取到任務自動化">從「數據提取」到「任務自動化」&lt;/h2>
+&lt;p>有了 Browser Use，我們定義任務的方式發生了根本性的改變。&lt;/p></description></item></channel></rss>

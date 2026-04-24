@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Core-Concepts.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/core-concepts.md/</link><description>Recent content in Core-Concepts.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/core-concepts.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Core Concepts</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/core-concepts/</guid><description>&lt;h1 id="kafka-核心概念與元件詳解">Kafka 核心概念與元件詳解&lt;/h1>
+&lt;h2 id="taxonomy">Taxonomy&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Domain&lt;/strong>: Distributed Systems / Message Queue&lt;/li>
+&lt;li>&lt;strong>Signal&lt;/strong>: 🥇 Gold (Foundational Knowledge)&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-insight">Core Insight&lt;/h2>
+&lt;p>Kafka 的強大在於它將訊息系統抽象為一個 &lt;strong>「分佈式提交日誌 (Distributed Commit Log)」&lt;/strong>。透過將 Topic 拆分為 Partition，並使用 Offset 作為消費游標，Kafka 實現了極高吞吐量的順序寫入與並行消費，從而解耦了生產者與消費者的處理速度。&lt;/p>
+&lt;h2 id="核心元件詳解">核心元件詳解&lt;/h2>
+&lt;h3 id="1-topic-主題">1. Topic (主題)&lt;/h3>
+&lt;p>Topic 是 Kafka 中對訊息進行邏輯分類的單位。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>特性&lt;/strong>：一個 Topic 可以包含多個 Partition。&lt;/li>
+&lt;li>&lt;strong>設計要點&lt;/strong>：Topic 的命名應反映其數據的語義（例如 &lt;code>user_login_events&lt;/code>），且一旦創建，Partition 數量增加後通常無法減少。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-partition-分區-rightarrow-並行度的核心">2. Partition (分區) $\rightarrow$ 並行度的核心&lt;/h3>
+&lt;p>Partition 是 Topic 的物理拆分，是 Kafka 實現水平擴展的基礎。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>分發邏輯&lt;/strong>：生產者根據 Key 的 Hash 值決定訊息進入哪個 Partition。若 Key 為空，則採用輪詢 (Round-robin) 策略。&lt;/li>
+&lt;li>&lt;strong>順序保證&lt;/strong>：Kafka 僅保證 &lt;strong>單個 Partition 內&lt;/strong> 的訊息順序，不保證整個 Topic 的全局順序。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-messagerecord-訊息">3. Message/Record (訊息)&lt;/h3>
+&lt;p>訊息是 Kafka 傳輸的最小原子單位。&lt;/p></description></item></channel></rss>

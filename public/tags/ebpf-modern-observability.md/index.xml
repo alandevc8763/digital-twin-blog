@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ebpf-Modern-Observability.Md on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/</link><description>Recent content in Ebpf-Modern-Observability.Md on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/tags/ebpf-modern-observability.md/index.xml" rel="self" type="application/rss+xml"/><item><title>Ebpf Modern Observability</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/general/ebpf-modern-observability/</guid><description>&lt;h1 id="超越-tcpdump用-ebpf-將-linux-核心轉化為可編程的監控引擎">超越 tcpdump：用 eBPF 將 Linux 核心轉化為可編程的監控引擎&lt;/h1>
+&lt;p>對於大多數工程師來說，診斷網路或系統問題的工具箱通常是：&lt;code>ping&lt;/code> $
+ightarrow$ &lt;code>curl&lt;/code> $
+ightarrow$ &lt;code>tcpdump&lt;/code> $
+ightarrow$ &lt;code>strace&lt;/code>。但在面對極端的高併發環境或「幽靈般」的延遲尖峰時，這些工具會顯得力不從心。&lt;/p>
+&lt;p>&lt;code>tcpdump&lt;/code> 只能告訴你封包是否到達了網卡，但不能告訴你封包在核心內部為什麼被丟棄；&lt;code>strace&lt;/code> 能看到系統呼叫，但會讓進程速度大幅下降，甚至改變 Bug 的觸發條件（即 Heisenbug）。&lt;/p>
+&lt;p>這正是 &lt;strong>eBPF (Extended Berkeley Packet Filter)&lt;/strong> 登場的意義。它將 Linux 核心從一個靜態的二進制文件，變成了一個&lt;strong>可編程的平台&lt;/strong>。&lt;/p>
+&lt;h2 id="ebpf-的本質在核心內部植入探針">eBPF 的本質：在核心內部植入「探針」&lt;/h2>
+&lt;p>簡單來說，eBPF 允許 SRE 在不需要重新編譯核心、不需要重啟伺服器且不風險導致核心崩潰 (Kernel Panic) 的情況下，將自定義邏輯直接注入到核心的執行路徑中。&lt;/p>
+&lt;h3 id="1-從代碼到執行的垂直路徑">1. 從代碼到執行的「垂直路徑」&lt;/h3>
+&lt;p>一個 eBPF 程序的旅程如下：
+&lt;strong>SRE 腳本 (&lt;code>bpftrace&lt;/code>/&lt;code>Cilium&lt;/code>)&lt;/strong> $
+ightarrow$ &lt;strong>LLVM 編譯&lt;/strong> $
+ightarrow$ &lt;strong>&lt;code>bpf()&lt;/code> 系統呼叫&lt;/strong> $
+ightarrow$ &lt;strong>Verifier (驗證器)&lt;/strong> $
+ightarrow$ &lt;strong>JIT 編譯&lt;/strong> $
+ightarrow$ &lt;strong>核心掛鉤點 (Hook Point)&lt;/strong> $
+ightarrow$ &lt;strong>事件觸發&lt;/strong>。&lt;/p></description></item></channel></rss>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>SRE on Alans Digital Twin Blog</title><link>https://alandevc8763.github.io/digital-twin-blog/categories/sre/</link><description>Recent content in SRE on Alans Digital Twin Blog</description><generator>Hugo</generator><language>zh-tw</language><lastBuildDate>Fri, 24 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://alandevc8763.github.io/digital-twin-blog/categories/sre/index.xml" rel="self" type="application/rss+xml"/><item><title>Cfs Scheduler</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cfs-scheduler/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cfs-scheduler/</guid><description>&lt;h1 id="公平與延遲的戰爭解構-linux-cfs-調度器">公平與延遲的戰爭：解構 Linux CFS 調度器&lt;/h1>
+&lt;p>在 Linux 世界裡，CFS (Completely Fair Scheduler) 是絕對的主角。它的名字裡有一個詞非常關鍵：&lt;strong>Fair (公平)&lt;/strong>。
+但對於高性能應用工程師來說，「公平」往往是低延遲的最大敵人。&lt;/p>
+&lt;h2 id="vruntime公平的代價">vruntime：公平的代價&lt;/h2>
+&lt;p>CFS 不使用傳統的「時間片」概念，而是使用一個紅黑樹來追蹤每個進程的 &lt;code>vruntime&lt;/code> (虛擬運行時間)。&lt;/p>
+&lt;ul>
+&lt;li>誰的 &lt;code>vruntime&lt;/code> 最小 $
+ightarrow$ 誰最「委屈」 $
+ightarrow$ 誰優先被調度執行。
+這種機制保證了系統不會有進程被完全餓死，但它也導致了一個問題：&lt;strong>調度抖動&lt;/strong>。
+當大量短暫的任務（例如大量的小請求）同時進入系統時，CFS 會為了維持「公平」，頻繁地在不同任務之間切換。這種 &lt;strong>Context Switch Storm (上下文切換風暴)&lt;/strong> 會導致 CPU 緩存被不斷刷新，讓你的 P99 延遲劇烈飆升。&lt;/li>
+&lt;/ul>
+&lt;h2 id="繞過公平追求確定性執行">繞過「公平」：追求確定性執行&lt;/h2>
+&lt;p>如果你在構建一個實時數據處理管線，你不需要公平，你需要的是 &lt;strong>確定性 (Determinism)&lt;/strong>。&lt;/p>
+&lt;h3 id="1-cpu-隔離-isolcpus">1. CPU 隔離 (isolcpus)&lt;/h3>
+&lt;p>最極端的做法是在內核啟動參數中加入 &lt;code>isolcpus=1,2,3&lt;/code>。這告訴內核：「不要把任何普通任務調度到這幾個核心上」。然後，你使用 &lt;code>taskset&lt;/code> 將你的關鍵進程強行綁定到這些隔離核心上。
+這樣，你的進程在該核心上擁有 &lt;strong>絕對的霸權&lt;/strong>，不再受 CFS 的公平調度干擾。&lt;/p>
+&lt;h3 id="2-實時調度策略-real-time-policy">2. 實時調度策略 (Real-Time Policy)&lt;/h3>
+&lt;p>透過 &lt;code>chrt&lt;/code> 將進程設置為 &lt;code>SCHED_FIFO&lt;/code> 或 &lt;code>SCHED_RR&lt;/code>。這讓你的進程跳出了 CFS 的紅黑樹，只要它想運行，就能立即搶佔任何普通進程。&lt;/p>
+&lt;h2 id="總結公平是政策不是性能">總結：公平是政策，不是性能&lt;/h2>
+&lt;p>CFS 是為了讓通用作業系統「好用」，但它不是為了讓高性能應用「快」。&lt;strong>真正的性能優化，就是學會如何在正確的地方放棄公平。&lt;/strong>&lt;/p></description></item><item><title>Cpu Numa</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/cpu-numa/</guid><description>&lt;h1 id="記憶體的物理學cpu-拓撲與-numa-懲罰">記憶體的物理學：CPU 拓撲與 NUMA 懲罰&lt;/h1>
+&lt;p>很多人在調優高性能應用時，習慣於監控 CPU 使用率。當看到 CPU 只有 50% 但吞吐量卻上不去時，第一反應通常是「程式有鎖」或「網路慢」。
+但對於跑在多路伺服器上的應用，真正的兇手往往是 &lt;strong>NUMA (Non-Uniform Memory Access)&lt;/strong>。&lt;/p>
+&lt;h2 id="記憶體訪問不再是均一的">記憶體訪問不再是「均一」的&lt;/h2>
+&lt;p>在單路 CPU 時代，CPU 訪問記憶體就像在同一個房間拿東西。但在現代多路伺服器中，每個 CPU 都有自己的本地記憶體控制器。
+如果你在 Socket 0 上運行一個線程，但它訪問的數據卻落在 Socket 1 的記憶體中，這個請求必須經過 &lt;strong>UPI (Intel)&lt;/strong> 或 &lt;strong>Infinity Fabric (AMD)&lt;/strong> 總線。這就是所謂的 &lt;strong>Remote Memory Access&lt;/strong>。
+&lt;strong>這導致了一個殘酷的事實：訪問遠端記憶體的延遲，比本地記憶體高出 30% 到 50%。&lt;/strong>&lt;/p>
+&lt;h2 id="sre-的實戰對策追求極致的局部性-locality">SRE 的實戰對策：追求極致的局部性 (Locality)&lt;/h2>
+&lt;p>如果你在處理高頻交易、實時音頻或大規模資料庫，你不能把記憶體訪問交給內核隨機分配。&lt;/p>
+&lt;h3 id="1-cpu-pinning-與記憶體親和性">1. CPU Pinning 與記憶體親和性&lt;/h3>
+&lt;p>不要讓內核在不同的核心之間隨機搬移你的線程（Context Switch）。使用 &lt;code>numactl&lt;/code> 強制將進程綁定在特定的 NUMA 節點上：
+&lt;code>numactl --cpunodebind=0 --membind=0 ./my_app&lt;/code>
+這確保了 &lt;strong>「計算」與「數據」在物理空間上是最近的&lt;/strong>。&lt;/p>
+&lt;h3 id="2-禁用-smt-超線程">2. 禁用 SMT (超線程)&lt;/h3>
+&lt;p>對於極致低延遲的場景，超線程 (Hyper-Threading) 其實是一種干擾。兩個邏輯核心共享同一個物理算術邏輯單元 (ALU)，這會引入不可預測的抖動 (Jitter)。在追求 P99.99 穩定性的系統中，直接在 BIOS 裡關掉 SMT。&lt;/p></description></item><item><title>Psi Metrics</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/psi-metrics/</guid><description>&lt;h1 id="別再看-cpu-利用率了用-psi-衡量系統的痛苦程度">別再看 CPU 利用率了：用 PSI 衡量系統的「痛苦程度」&lt;/h1>
+&lt;p>很多 SRE 在分析性能瓶頸時，習慣看 &lt;code>top&lt;/code> 裡的 CPU% 或 &lt;code>free&lt;/code> 裡的 Mem%。
+但這裡有一個巨大的陷阱：&lt;strong>利用率 (Utilization) $
+eq$ 飽和度 (Saturation)&lt;/strong>。
+一個 CPU 利用率 50% 的系統，依然可能是卡死的。為什麼？因為剩下的 50% 時間，CPU 可能都在等待 I/O 返回，或者在等待記憶體分頁。&lt;/p>
+&lt;h2 id="什麼是-psi-pressure-stall-information">什麼是 PSI (Pressure Stall Information)？&lt;/h2>
+&lt;p>PSI 是 Linux 內核提供的一套指標，它不再告訴你「資源被用了多少」，而是告訴你 &lt;strong>「任務因為等待資源而停頓了多久」&lt;/strong>。
+它將壓力分為三個維度：&lt;strong>CPU、Memory、I/O&lt;/strong>。&lt;/p>
+&lt;h3 id="1-some與full的區別">1. 「Some」與「Full」的區別&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Some&lt;/strong>：至少有一個任務在等待資源，但系統還能跑其他東西。這是一個 &lt;strong>「警告信號」&lt;/strong>。&lt;/li>
+&lt;li>&lt;strong>Full&lt;/strong>：所有非空閒任務全部在等待資源。CPU 處於完全空轉狀態。這是一個 &lt;strong>「崩潰信號」&lt;/strong>。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-實戰分析讀懂-psi-信號">2. 實戰分析：讀懂 PSI 信號&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>CPU Pressure High&lt;/strong>: 如果 &lt;code>some&lt;/code> 很高但 &lt;code>full&lt;/code> 很低 $
+ightarrow$ 你有太多線程在爭搶核心，上下文切換開銷太大。&lt;/li>
+&lt;li>&lt;strong>Memory Pressure High&lt;/strong>: 如果 &lt;code>full&lt;/code> 突然飆升 $
+ightarrow$ 系統正在進行劇烈的直接回收 (Direct Reclaim) 或 Swap。這通常是 OOM (Out of Memory) 發生前的最後警告。&lt;/li>
+&lt;li>&lt;strong>I/O Pressure High&lt;/strong>: 如果 &lt;code>full&lt;/code> 持續處於高位 $
+ightarrow$ 你的儲存設備已經飽和，應用程序被完全阻塞在 I/O 路徑上。&lt;/li>
+&lt;/ul>
+&lt;h2 id="sre-實踐基於壓力的自動擴展-pressure-based-scaling">SRE 實踐：基於壓力的自動擴展 (Pressure-based Scaling)&lt;/h2>
+&lt;p>傳統的 Auto-scaling 是基於 CPU 閾值（例如 70% 擴容）。這很遲鈍，因為 CPU% 是滯後指標。
+&lt;strong>更先進的做法是監控 &lt;code>/proc/pressure/memory&lt;/code>&lt;/strong>：
+一旦 &lt;code>some&lt;/code> 壓力超過 10% 並持續 30 秒 $
+ightarrow$ 立即觸發擴容或清理快取。
+這是在系統真正崩潰之前，提前捕捉到「痛苦」的唯一方法。&lt;/p></description></item><item><title>Vfs Tracing</title><link>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</link><pubDate>Fri, 24 Apr 2026 00:00:00 +0000</pubDate><guid>https://alandevc8763.github.io/digital-twin-blog/posts/sre/vfs-tracing/</guid><description>&lt;h1 id="隱藏的-io-稅vfs-與-page-cache-的追蹤實踐">隱藏的 I/O 稅：VFS 與 Page Cache 的追蹤實踐&lt;/h1>
+&lt;p>當你調用 &lt;code>read()&lt;/code> 讀取一個檔案時，你以為數據直接從磁碟來到記憶體？
+不，它經歷了一場極其複雜的旅程。&lt;/p>
+&lt;h2 id="vfs文件系統的外交官">VFS：文件系統的「外交官」&lt;/h2>
+&lt;p>VFS (Virtual File System) 是 Linux 內核的一層抽象。無論底層是 Ext4、XFS 還是 NFS，對應用程序來說都一樣。但這個抽象層是有成本的。&lt;/p>
+&lt;h3 id="1-dentry-cache名稱的陷阱">1. Dentry Cache：名稱的陷阱&lt;/h3>
+&lt;p>每次打開檔案，內核都要將路徑（如 &lt;code>/var/log/syslog&lt;/code>）轉換為 Inode 編號。這個過程依賴於 &lt;strong>Dentry Cache&lt;/strong>。如果你的系統有數百萬個小檔案且快取不足，你會發現 CPU 消耗在 &lt;code>dentry_lookup&lt;/code> 上，而磁碟 IOPS 卻很低。&lt;/p>
+&lt;h3 id="2-page-cache最強的加速器也是最大的坑">2. Page Cache：最強的加速器，也是最大的坑&lt;/h3>
+&lt;p>Linux 會利用幾乎所有剩餘記憶體作為 Page Cache。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Read-ahead (預讀)&lt;/strong>：內核猜測你要讀接下來的塊，提前加載。&lt;/li>
+&lt;li>&lt;strong>Write-back (回寫)&lt;/strong>：&lt;code>write()&lt;/code> 調用幾乎總是瞬間完成，因為它只寫到了記憶體。
+&lt;strong>SRE 的噩夢：Write-out Spike&lt;/strong>
+當記憶體中的髒頁 (Dirty Pages) 過多，觸發內核的 &lt;code>pdflush&lt;/code> 強制回寫時，整個系統的 I/O 會突然被佔滿，導致所有讀寫操作卡死。這就是為什麼有些系統會莫名其妙地出現數秒的「凍結」。&lt;/li>
+&lt;/ul>
+&lt;h2 id="實戰用-ebpf-穿透-vfs">實戰：用 eBPF 穿透 VFS&lt;/h2>
+&lt;p>當 &lt;code>iostat&lt;/code> 告訴你磁碟很慢，但你懷疑是內核層的問題時，請使用 eBPF。
+使用 &lt;code>bpftrace&lt;/code> 追蹤 &lt;code>vfs_read&lt;/code> 的延遲分佈：
+&lt;code>bpftrace -e 'kprobe:vfs_read { @start[tid] = nsecs; } kretprobe:vfs_read /@start[tid]/ { @latency = hist(nsecs - @start[tid]); delete(@start[tid]); }'&lt;/code>
+這能讓你一眼看出：延遲是發生在 &lt;strong>VFS 層 (軟體開銷)&lt;/strong> 還是 &lt;strong>Block Layer (硬體開銷)&lt;/strong>。&lt;/p></description></item></channel></rss>
