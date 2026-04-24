@@ -1,0 +1,782 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>別把 NAS 當成儲存盒：ZFS 與數據完整性的真相 - Alan's Digital Twin Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../overrides/main.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<style>
+  :root {
+    --gold-primary: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --slate-dark: #0f172a;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(212, 175, 55, 0.4);
+  }
+
+  /* 強制覆蓋 Material 主題的核心顏色 */
+  body.md-light {
+    --md-primary-fg-color: var(--gold-primary) !important;
+  }
+  body.md-dark {
+    --md-primary-fg-color: var(--gold-primary) !important;
+    --md-primary-bg-color: var(--slate-dark) !important;
+  }
+
+  /* Header 顏色強行修正 */
+  .md-header {
+    background-color: var(--slate-dark) !important;
+    border-bottom: 1px solid var(--gold-primary) !important;
+  }
+
+  /* 數位花園卡片佈局 - 強制權重 */
+  .garden-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin: 2rem 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .garden-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: block !important;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .garden-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 10px 25px -5px var(--gold-glow) !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+  }
+
+  .garden-card h3 {
+    color: var(--gold-primary) !important;
+    margin-top: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+  }
+
+  .garden-card p {
+    color: #94a3b8 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 隱藏 Material 預設的連結底線 */
+  .md-typeset a {
+    text-decoration: none !important;
+  }
+  
+  .md-typeset .garden-card a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+</style>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nas-zfs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Alan's Digital Twin Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              別把 NAS 當成儲存盒：ZFS 與數據完整性的真相
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../sre-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../ai-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  AI Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../homelab-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  HomeLab Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../journey/intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Journey
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Alan's Digital Twin Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sre-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../homelab-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HomeLab Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journey/intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        硬件層：被忽視的「地雷」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="硬件層：被忽視的「地雷」">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-smr-raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. SMR 硬碟：RAID 的噩夢
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ecc-ramzfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ECC RAM：ZFS 的保命符
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        文件系統：從「被動儲存」到「主動修復」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="文件系統：從「被動儲存」到「主動修復」">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#copy-on-write-cow-write-hole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copy-on-Write (CoW) 與寫入洞 (Write Hole)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zfs-vdevs-raid-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ZFS VDEVs：放棄 RAID 5 的執念
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bit-rot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        實戰分析：對抗 Bit Rot
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        總結：思考維度的轉移
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Related Insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="nas-zfs">別把 NAS 當成儲存盒：ZFS 與數據完整性的真相</h1>
+<p>很多人對 NAS 的認知還停留在「買個機殼 $\rightarrow$ 插滿硬碟 $\rightarrow$ 設定 RAID $\rightarrow$ 儲存檔案」。在這種認知下，NAS 就像是一個巨大的儲存桶，只要 RAID 顯示 <code>Healthy</code>，數據就是安全的。
+但對 SRE 來說，這是最危險的錯覺。
+真正的儲存挑戰不在於「硬碟壞了怎麼辦」（這是 20 年前的問題），而是在於 <strong>Silent Data Corruption (靜默數據損毀)</strong>，也就是俗稱的 <strong>Bit Rot</strong>。當你的 RAID 顯示健康，但打開一個 5 年前的 PDF 卻提示「檔案損毀」時，你才會意識到，傳統的 RAID 其實根本沒在保護你的數據。</p>
+<h2 id="_1">硬件層：被忽視的「地雷」</h2>
+<p>在討論軟體之前，硬件層有兩個最容易掉進去的坑。</p>
+<h3 id="1-smr-raid">1. SMR 硬碟：RAID 的噩夢</h3>
+<p>如果你在買硬碟時沒區分 <strong>CMR (Conventional Magnetic Recording)</strong> 和 <strong>SMR (Shingled Magnetic Recording)</strong>，你可能已經埋下了炸彈。
+SMR 為了增加容量，將數據像瓦片一樣重疊寫入。這導致它在進行大量隨機寫入或 RAID 重構（Rebuild）時，會產生極其嚴重的寫入放大。我見過太多人在 Rebuild 時因為 SMR 的性能崩潰，導致重建時間從 24 小時拉長到一週，甚至直接導致另一顆硬碟崩潰而全盤丟失。</p>
+<h3 id="2-ecc-ramzfs">2. ECC RAM：ZFS 的保命符</h3>
+<p>很多人覺得家用伺服器不需要 ECC 記憶體，但如果你用 ZFS，這不是選項，而是必要條件。
+ZFS 的 ARC (Adaptive Replacement Cache) 會在記憶體中快取大量的 metadata 和數據。如果記憶體發生一次 Bit-flip（位元翻轉），而你沒有 ECC 糾錯，ZFS 可能會將這個錯誤的數據「忠實地」寫入硬碟。這就變成了一場悲劇：你的文件系統在努力地幫你把損毀的數據永久化。</p>
+<h2 id="_2">文件系統：從「被動儲存」到「主動修復」</h2>
+<p>為什麼我強烈建議放棄傳統硬件 RAID 而選擇 ZFS？因為 ZFS 將儲存從一個「被動的桶」變成了一個「主動的完整性引擎」。</p>
+<h3 id="copy-on-write-cow-write-hole">Copy-on-Write (CoW) 與寫入洞 (Write Hole)</h3>
+<p>傳統文件系統在更新數據時是直接覆蓋（Overwrite）。如果寫到一半斷電，就可能出現數據半新半舊的 <code>Write Hole</code> 狀態。
+ZFS 採取 <strong>CoW (Copy-on-Write)</strong>：它永遠不會覆蓋原數據，而是先將新數據寫到新區塊，確認寫入成功後才更新指針。這意味著無論什麼時候斷電，你的數據要麼是舊的，要麼是新的，但絕對不會是「損毀的」。</p>
+<h3 id="zfs-vdevs-raid-5">ZFS VDEVs：放棄 RAID 5 的執念</h3>
+<p>在設計冗餘時，很多人迷信 RAID 5 (Z1)。但在大容量硬碟時代，Z1 的風險太高。在 Rebuild 過程中，任何一次不可恢復的讀取錯誤 (URE) 都會導致整個陣列崩潰。
+<strong>我的建議是 Z2 (雙拋錯)</strong>。對於家庭伺服器，Z2 是穩定性與容量的最佳平衡點；如果你在存儲極其重要的歷史檔案，直接上 Z3。</p>
+<h2 id="bit-rot">實戰分析：對抗 Bit Rot</h2>
+<p>讓我們回到最開始的噩夢：檔案損毀但 RAID 顯示正常。
+<strong>傳統 RAID 的邏輯</strong>：
+- 監控硬碟的 S.M.A.R.T 狀態。
+- 硬碟沒死 $\rightarrow$ 數據沒錯。
+- $\rightarrow$ <strong>結果</strong>：完全無法發現磁介質老化導致的 Bit-flip。
+<strong>ZFS 的邏輯</strong>：
+- 每個數據塊都攜帶一個 <strong>Checksum (校驗碼)</strong>。
+- 當你讀取檔案時，ZFS 會計算當前數據的校驗碼，並與儲存的校驗碼比對。
+- 如果比對失敗 $\rightarrow$ ZFS 知道數據壞了 $\rightarrow$ 立即從鏡像或奇偶校驗塊中提取正確數據 $\rightarrow$ <strong>自動修復</strong> 損毀的塊。
+這個過程在 ZFS 中稱為 <code>scrub</code>。如果你不定期執行 <code>zpool scrub</code>，你的 ZFS 也就失去了靈魂。</p>
+<h2 id="_3">總結：思考維度的轉移</h2>
+<p>請停止思考「容量」，開始思考「完整性」。
+一個沒有校驗機制的文件系統，無論容量多大、RAID 等級多高，在本質上都只是一個隨時會爆炸的數據炸彈。真正的儲存方案，應該是在數據損毀發生的那一刻，系統能告訴你：「發現一個損毀塊，但我已經幫你修好了。」</p>
+<hr />
+<h2 id="related-insights">🔗 Related Insights</h2>
+<ul>
+<li>Comparing this integrity-first approach with DAS raw speed: <a href="../nas-vs-das/">Nas Vs Das</a></li>
+<li>Deep dive into the VFS path ZFS uses for checksumming: <a href="../../performance/vfs-tracing/">Vfs Tracing</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

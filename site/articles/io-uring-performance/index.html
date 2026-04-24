@@ -1,0 +1,759 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>告別系統呼叫稅：為什麼 io_uring 是高性能 Linux 服務的未來？ - Alan's Digital Twin Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../overrides/main.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<style>
+  :root {
+    --gold-primary: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --slate-dark: #0f172a;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(212, 175, 55, 0.4);
+  }
+
+  /* 強制覆蓋 Material 主題的核心顏色 */
+  body.md-light {
+    --md-primary-fg-color: var(--gold-primary) !important;
+  }
+  body.md-dark {
+    --md-primary-fg-color: var(--gold-primary) !important;
+    --md-primary-bg-color: var(--slate-dark) !important;
+  }
+
+  /* Header 顏色強行修正 */
+  .md-header {
+    background-color: var(--slate-dark) !important;
+    border-bottom: 1px solid var(--gold-primary) !important;
+  }
+
+  /* 數位花園卡片佈局 - 強制權重 */
+  .garden-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin: 2rem 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .garden-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: block !important;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .garden-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 10px 25px -5px var(--gold-glow) !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+  }
+
+  .garden-card h3 {
+    color: var(--gold-primary) !important;
+    margin-top: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+  }
+
+  .garden-card p {
+    color: #94a3b8 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 隱藏 Material 預設的連結底線 */
+  .md-typeset a {
+    text-decoration: none !important;
+  }
+  
+  .md-typeset .garden-card a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+</style>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#io_uring-linux" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Alan's Digital Twin Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              告別系統呼叫稅：為什麼 io_uring 是高性能 Linux 服務的未來？
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sre-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../ai-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  AI Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  HomeLab Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../journey/intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Journey
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Alan's Digital Twin Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HomeLab Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journey/intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心機制：兩把環形緩衝區
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="核心機制：兩把環形緩衝區">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-submission-queue-sq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 提交隊列 (Submission Queue, SQ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-completion-queue-cq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 完成隊列 (Completion Queue, CQ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-exton-exto1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 從 $ ext{O(N)}$ 到 $ ext{O(1)}$ 的進化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        垂直軌跡：一個 I/O 請求的生命週期
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE 的觀測視角：瓶頸在哪裡？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：從同步到真正的非同步
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="io_uring-linux">告別系統呼叫稅：為什麼 io_uring 是高性能 Linux 服務的未來？</h1>
+<p>在高性能伺服器的開發中，我們一直面臨一個巨大的瓶頸：<strong>系統呼叫 (Syscall) 稅</strong>。</p>
+<p>每當應用程式想要讀取檔案或發送網路封包時，它必須通過 <code>read()</code> 或 <code>write()</code> 進入核心。這次切換（Context Switch）伴隨著權限檢查、暫存器保存和快取失效。在每秒處理數百萬次 I/O 的極端場景下，這些微小的開銷會累積成巨大的效能損失。</p>
+<p><code>io_uring</code> 的出現，徹底改變了 Linux 處理 I/O 的方式。它不再是「請求 $
+ightarrow$ 等待 $
+ightarrow$ 回應」，而是一場基於 <strong>共享記憶體環形緩衝區 (Ring Buffers)</strong> 的非同步協作。</p>
+<h2 id="_1">核心機制：兩把環形緩衝區</h2>
+<p><code>io_uring</code> 的精髓在於它在用戶空間與核心空間之間建立了兩塊共享記憶體區域，徹底消除了大多數 I/O 操作中的系統呼叫需求。</p>
+<h3 id="1-submission-queue-sq">1. 提交隊列 (Submission Queue, SQ)</h3>
+<p>應用程式不再呼叫 <code>read()</code>，而是將一個「提交條目 (SQE)」直接寫入 SQ 環形緩衝區。這個條目詳細描述了操作內容（例如：從哪個 FD 讀取多少資料到哪個緩衝區）。</p>
+<h3 id="2-completion-queue-cq">2. 完成隊列 (Completion Queue, CQ)</h3>
+<p>核心處理完 I/O 後，會將結果（例如：讀到了多少個 Byte）寫入 CQ 環形緩衝區。應用程式只需要定期檢查 CQ 環，就能知道哪些操作已完成。</p>
+<h3 id="3-exton-exto1">3. 從 $  ext{O(N)}$ 到 $  ext{O(1)}$ 的進化</h3>
+<ul>
+<li><strong>傳統 I/O</strong>：$N$ 次 I/O 操作 $
+ightarrow$ $N$ 次系統呼叫。</li>
+<li><strong>io_uring</strong>：$N$ 次 I/O 操作 $
+ightarrow$ 1 次 <code>io_uring_enter()</code>（甚至 0 次，如果開啟了 <code>SQPOLL</code> 模式）。</li>
+</ul>
+<hr />
+<h2 id="io">垂直軌跡：一個 I/O 請求的生命週期</h2>
+<ol>
+<li><strong>提交 (Submission)</strong>：應用程式在 SQ 中填寫一個 SQE $
+ightarrow$ 呼叫 <code>io_uring_enter()</code> 通知核心（或由核心執行緒自動輪詢）。</li>
+<li><strong>非同步執行 (Async Execution)</strong>：核心接收到 SQE 後，將工作分派給內部工作執行緒或硬體驅動，立即將控制權交還給用戶空間。</li>
+<li><strong>完成 (Completion)</strong>：當硬體完成 I/O 後，核心將結果寫入 CQ 環。</li>
+<li><strong>收割 (Harvesting)</strong>：應用程式從 CQ 環中讀取結果，全程無需再次進入核心。</li>
+</ol>
+<h2 id="sre">SRE 的觀測視角：瓶頸在哪裡？</h2>
+<p>雖然 <code>io_uring</code> 極其強大，但它也引入了新的調優維度：</p>
+<ul>
+<li><strong>SQ 溢出 (SQ Overflow)</strong>：如果提交速度快於核心處理速度，SQ 會滿，導致 <code>io_uring_enter</code> 阻塞。需要檢查 <code>sq_entries</code> 配置。</li>
+<li><strong>CQ 溢出 (CQ Overflow)</strong>：如果應用程式讀取結果太慢，CQ 會滿，核心可能會停止處理新的請求。</li>
+<li><strong>SQPOLL 的代價</strong>：開啟 <code>IORING_SETUP_SQPOLL</code> 可以實現零系統呼叫，但代價是核心會永遠佔用一個 CPU 核心來輪詢 SQ。這是在「CPU 消耗」與「極低延遲」之間的權衡。</li>
+</ul>
+<h2 id="_2">結語：從同步到真正的非同步</h2>
+<p><code>io_uring</code> 不僅僅是一個新 API，它代表了 Linux I/O 模型的一次範式轉移。它將 I/O 從「指令式」變成了「宣告式」：<strong>我告訴核心我想做什麼，核心在完成後通知我。</strong></p>
+<p>對於追求極致吞吐量的資料庫、快取系統或高併發 Gateway 來說，<code>io_uring</code> 是目前 Linux 平台上最強大的武器。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- io_uring (非同步 I/O)
+- Ring Buffer (環形緩衝區)
+- SQE / CQE (提交/完成條目)
+- SQPOLL (提交輪詢)
+- Syscall Tax (系統呼叫開銷)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

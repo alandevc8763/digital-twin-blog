@@ -1,0 +1,753 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤 - Alan's Digital Twin Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../overrides/main.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<style>
+  :root {
+    --gold-primary: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --slate-dark: #0f172a;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(212, 175, 55, 0.4);
+  }
+
+  /* 強制覆蓋 Material 主題的核心顏色 */
+  body.md-light {
+    --md-primary-fg-color: var(--gold-primary) !important;
+  }
+  body.md-dark {
+    --md-primary-fg-color: var(--gold-primary) !important;
+    --md-primary-bg-color: var(--slate-dark) !important;
+  }
+
+  /* Header 顏色強行修正 */
+  .md-header {
+    background-color: var(--slate-dark) !important;
+    border-bottom: 1px solid var(--gold-primary) !important;
+  }
+
+  /* 數位花園卡片佈局 - 強制權重 */
+  .garden-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin: 2rem 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .garden-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: block !important;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .garden-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 10px 25px -5px var(--gold-glow) !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+  }
+
+  .garden-card h3 {
+    color: var(--gold-primary) !important;
+    margin-top: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+  }
+
+  .garden-card p {
+    color: #94a3b8 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 隱藏 Material 預設的連結底線 */
+  .md-typeset a {
+    text-decoration: none !important;
+  }
+  
+  .md-typeset .garden-card a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+</style>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#packet-loss-tcpip-conntrack" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-header__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Alan's Digital Twin Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="gold" data-md-color-accent="gold"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sre-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../ai-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  AI Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../homelab-hub/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  HomeLab Hub
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../journey/intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Journey
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Alan&#39;s Digital Twin Blog" class="md-nav__button md-logo" aria-label="Alan's Digital Twin Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Alan's Digital Twin Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../homelab-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HomeLab Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journey/intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        封包的「垂直旅程」：從 Pod 到物理網卡
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="封包的「垂直旅程」：從 Pod 到物理網卡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pod-the-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Pod 命名空間 (The Source)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-jump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 命名空間跳躍 (The Jump)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-netfilter-kube-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 主機導向邏輯 (Netfilter &amp; Kube-Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-tcp-the-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. TCP 狀態機 (The Engine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mtu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        結語：從「看日誌」到「看軌跡」
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="packet-loss-tcpip-conntrack">當你的服務出現 Packet Loss 時，底層到底發生了什麼？：TCP/IP 棧與 Conntrack 深度追蹤</h1>
+<p>對於大多數開發者來說，發送一個網路請求就像是按下開關 $
+ightarrow$ 等待燈亮。但在 SRE 的眼中，一個封包在 Kubernetes 叢集中的旅程，根本不是簡單的「發送」，而是一場複雜的<strong>路徑導向 (Steering)</strong>。</p>
+<p>如果你曾經遇到過這種情況：<code>ping</code> 沒問題，小請求能通，但大數據量時連接突然「掛掉」 (Hanging)，或者在 CPU 沒滿的情況下出現隨機的 <code>Connection Timeout</code> —— 那麼你面對的可能不是應用程式 Bug，而是 Linux 核心網路棧的底層陷阱。</p>
+<h2 id="pod">封包的「垂直旅程」：從 Pod 到物理網卡</h2>
+<p>在 K8s 中，一個封包從 Pod 出發到到達物理網卡，會經歷多次 <strong>Context Handoffs (上下文交接)</strong>。這正是潛在延遲和丟包的來源。</p>
+<h3 id="1-pod-the-source">1. Pod 命名空間 (The Source)</h3>
+<p>應用程式呼叫 <code>connect()</code>，核心在 Pod 的網路命名空間 (<code>netns</code>) 建立 Socket。此時封包被綁定在 Pod 的本地路由表。
+- <strong>追蹤點</strong>：<code>Pod App</code> $
+ightarrow$ <code>Socket Buffer (sk_buff)</code> $
+ightarrow$ <code>eth0</code>。</p>
+<h3 id="2-the-jump">2. 命名空間跳躍 (The Jump)</h3>
+<p>封包離開 Pod 的 <code>eth0</code>，通過一個 <strong>Virtual Ethernet (<code>veth</code>) pair</strong>。<code>veth</code> 就像一條虛擬補丁線，將封包從 Pod 的命名空間直接「拉」到主機的 root 命名空間。
+- <strong>SRE 訊號</strong>：如果這裡丟包，通常意味著 CNI 插件崩潰或介面被意外刪除。</p>
+<h3 id="3-netfilter-kube-proxy">3. 主機導向邏輯 (Netfilter &amp; Kube-Proxy)</h3>
+<p>進入 root 命名空間後，封包會撞上 <strong>Netfilter</strong> 的鉤子。如果目標是 <code>ClusterIP</code>，<code>iptables</code> 或 <code>IPVS</code> 會執行 <strong>DNAT (目的地址轉換)</strong>，將虛擬 IP 改為真實的 Pod IP。
+- <strong>致命瓶頸：Conntrack (連接追蹤)</strong>
+  核心必須記錄每一次轉換的狀態。如果 <code>nf_conntrack_max</code> 達到上限，核心會<strong>靜默丟棄 (Silent Drop)</strong> 封包。這就是為什麼在高併發環境下，你會看到隨機的連線失敗，而日誌裡卻找不到任何錯誤。</p>
+<h3 id="4-tcp-the-engine">4. TCP 狀態機 (The Engine)</h3>
+<p>最後，核心處理 TCP 協議邏輯：管理三次握手、計算擁塞窗口 (<code>cwnd</code>) 以及處理重傳定時器 (RTO)。</p>
+<hr />
+<h2 id="mtu">實戰案例：為什麼大請求會「掛掉」？ (MTU 黑洞)</h2>
+<p>這是 SRE 面試中最經典的場景：<strong>小請求秒回，大請求超時。</strong></p>
+<p><strong>現象</strong>：API 呼叫 <code>GET /health</code> 正常，但 <code>GET /large-report</code> 導致連線永久掛起。</p>
+<p><strong>底層 Trace 過程</strong>：
+1. <strong>抓包分析</strong>：在 Pod 和 Host 同時 <code>tcpdump</code>。發現伺服器發出了 1500 bytes 的大封包，但客戶端永遠沒有回傳 <code>ACK</code>。
+2. <strong>MTU 驗證</strong>：檢查發現 Pod 的 MTU 是 1500，但 CNI 的 Overlay 網路 (如 VXLAN) 因為封裝開銷，實際 MTU 只有 1450。
+3. <strong>根因</strong>：這是一個 <strong>「MTU 黑洞」</strong>。封包太大，中間路由器丟棄了它並發出 <code>Fragmentation Needed</code> 訊號，但該訊號被防火牆攔截了。發送端在傻傻地等待一個永遠不會到來的 <code>ACK</code>。</p>
+<p><strong>解決方案</strong>：統一對齊 MTU，或開啟 <strong>TCP MSS Clamping</strong>，強制在握手階段協商較小的最大段大小。</p>
+<h2 id="_1">結語：從「看日誌」到「看軌跡」</h2>
+<p>真正的 SRE 不應該依賴 <code>kubectl logs</code>，而應該依賴於對 <strong>軌跡 (Trace)</strong> 的理解。</p>
+<p>當你能從 <code>ss -ntie</code> 查看 <code>cwnd</code>，用 <code>conntrack -L</code> 檢查狀態表，用 <code>tcpdump</code> 對比 <code>veth</code> 與 <code>eth0</code> 的時間戳時，網路就不再是一個黑盒，而是一條清晰的數據流。</p>
+<hr />
+<p><strong>技術關鍵字：</strong>
+- Netfilter / Conntrack (連線追蹤)
+- veth Pair (虛擬乙太網)
+- MTU Mismatch (最大傳輸單元不匹配)
+- TCP State Machine (TCP 狀態機)
+- DNAT / ClusterIP (目的地址轉換)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

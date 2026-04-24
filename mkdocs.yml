@@ -1,6 +1,8 @@
+
 site_name: Alan's Digital Twin Blog
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - scheme: slate
       primary: gold
@@ -15,19 +17,7 @@ extra_css:
 
 nav:
   - Home: index.md
-  - Insights:
-      - SRE Stability: articles/sre-stability-myth.md
-      - Agent-Native UI: articles/copilotkit-agent-ui.md
-  - Cloud Infrastructure: 
-    - AWS MSK: cloud_infra/aws-msk.md
-    - IAM & CLI: cloud_infra/iam-cli.md
-    - Kafka Guide:
-      - Design Philosophy: cloud_infra/kafka/design-philosophy.md
-      - Core Concepts: cloud_infra/kafka/core-concepts.md
-      - Operations Guide: cloud_infra/kafka/ops-guide.md
-  - Database Engineering:
-    - MongoDB: db_eng/mongodb.md
-  - Automation:
-    - Telegram Bots: automation/tg-bots.md
-  - Digital Twin Journey:
-    - Introduction: journey/intro.md
+  - SRE Hub: sre-hub.md
+  - AI Hub: ai-hub.md
+  - HomeLab Hub: homelab-hub.md
+  - Journey: journey/intro.md
